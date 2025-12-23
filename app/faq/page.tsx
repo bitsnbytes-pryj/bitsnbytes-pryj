@@ -24,136 +24,88 @@ const WebGLShader = dynamic(
 interface FAQItem {
   question: string;
   answer: string;
-  category: string;
 }
 
 const faqs: FAQItem[] = [
-  // Joining
   {
-    category: "Joining",
-    question: "Who can join Bits&Bytes?",
+    question: "Can I come with a pre-formed team? Do I need to?",
     answer:
-      "Bits&Bytes is open to all students aged 13-19 who are passionate about technology, coding, design, or building things. You don't need any prior experience—just enthusiasm to learn and grow with our community.",
+      "You don't need to come with a team to CodeDay. In fact, most people don't come with a team! At the beginning of the event, everyone has the chance to pitch ideas for apps or games they want to make. You can find an idea to work on then. Teams can be made up of anyone you'd like, they don't need to attend your same school, be in your same grade, etc. Even volunteers can be on your team, if you can convince them!",
   },
   {
-    category: "Joining",
-    question: "Is there a membership fee?",
+    question: "What if I want to come with a pre-formed team?",
     answer:
-      "No! Bits&Bytes is completely free to join. We believe tech education should be accessible to everyone. All our workshops, resources, and community access are provided at no cost.",
+      'That\'s totally ok, too! We do encourage pre-formed teams to stay open to adding new teammates—welcoming others can bring fresh ideas and it might even make the experience more fun! Remember that, if you\'ve done any work in advance, you need to disclose that to the judges. Doing work in advance might disqualify you for the "Best in Show" and "Best in Class" prizes.',
   },
   {
-    category: "Joining",
-    question: "I'm not from Lucknow. Can I still join?",
+    question: "What if I decide not to work with a team at all?",
     answer:
-      "Absolutely! While Bits&Bytes was founded in Lucknow, we now have members from across India. Most of our activities happen online through Discord, so you can participate from anywhere. We occasionally host in-person events in various cities too.",
+      "Also totally ok; many students work by themselves. We do find that students have more fun when participating as a team, however. Judges will do their best to take the size and experience of each team into account when deciding on prizes.",
   },
   {
-    category: "Joining",
-    question: "How long does the application take to be reviewed?",
+    question: 'Is CodeDay a "hackathon"?',
     answer:
-      "We review applications weekly, and you'll typically hear back within 7 days. If accepted, you'll receive a Discord invite and onboarding materials to get you started with the community.",
-  },
-
-  // Experience & Skills
-  {
-    category: "Experience",
-    question: "Do I need to know how to code to join?",
-    answer:
-      "Not at all! We welcome complete beginners. Our mentorship program pairs newcomers with experienced members who guide them through their first projects. We have resources for all skill levels, from 'Hello World' to advanced AI projects.",
+      "Kind of. Although it follows the usual format, CodeDay isn't a traditional hackathon. Some key differences: CodeDay has few prizes and little swag; you won't find or meet companies directly recruiting for internships; judging is done by attendees; no business plans or pitch decks (CodeDay is focused on creativity); lots of attendees are newer to coding. If that sounds like fun to you, they'd love to have you!",
   },
   {
-    category: "Experience",
-    question: "I'm interested in design, not coding. Is there a place for me?",
+    question: "How are projects judged?",
     answer:
-      "Yes! We value designers as much as developers. Our projects need UI/UX designers, graphic designers, and creative thinkers. Many of our most successful projects are the result of designer-developer collaboration.",
+      'Judges are asked to evaluate projects on the basis of, in order of importance: (1) Difficulty: given what you knew going in, how hard did you have to work to create your project? (2) Creativity: how original and fun is your project? (3) Polish: this is the "anything else" category, and includes things like having great UI, a tutorial level, etc. Judges do not consider: how technically difficult the project is in absolute terms; or business plans, marketing collateral, or a pitch deck (except as part of "polish").',
   },
   {
-    category: "Experience",
-    question: "What programming languages/technologies do you work with?",
+    question: "When does judging happen?",
     answer:
-      "We work with a wide range of technologies including JavaScript/TypeScript, Python, React, Next.js, Node.js, and more. We also explore AI/ML, mobile development with React Native, and emerging technologies. Members are encouraged to learn whatever interests them most.",
-  },
-
-  // Time Commitment
-  {
-    category: "Time",
-    question: "How much time do I need to commit?",
-    answer:
-      "We recommend 2-4 hours per week, but it's flexible based on your schedule. Some weeks you might attend a workshop, others you might work on a project asynchronously. During hackathons, expect more intensive time blocks (usually 24-48 hours over a weekend).",
+      "Judges walk around at 9am, before presentations. At least one judge will try each project, and talk to the team. Deliberation happens during presentations, so please don't create a presentation: it will only bore your friends and family.",
   },
   {
-    category: "Time",
-    question: "Can I participate if I have a busy school schedule?",
+    question: "Can I volunteer for CodeDay?",
     answer:
-      "Definitely! Many of our members balance school, extracurriculars, and Bits&Bytes. Our Discord is always active, so you can catch up on discussions and participate at times that work for you. We understand academics come first.",
+      "Absolutely! They're almost always looking for help with the following: organizers, general day-of volunteers, workshops, mentors, and judges. You can learn more on their volunteer page.",
   },
   {
-    category: "Time",
-    question: "What's the minimum participation required?",
+    question: "What kind of things can be made at CodeDay?",
     answer:
-      "We ask members to participate in at least one project or event per quarter and stay somewhat active in Discord discussions. This ensures everyone contributes to and benefits from the community.",
-  },
-
-  // Projects & Activities
-  {
-    category: "Projects",
-    question: "What kind of projects do members work on?",
-    answer:
-      "Our members build web apps, mobile apps, AI tools, games, design systems, and more. Projects range from personal portfolio pieces to team collaborations that serve real users. We've shipped event platforms, study tools, community bots, and creative experiments.",
+      "You can make anything at CodeDay. Anything at all. The only limit is yourself. Well, almost. You can't create anything that violates their Code of Conduct. This is usually a little less strict than \"school appropriate,\" but in general you can't create a project which uses offensive language referring to people's gender, race, sexual orientation, religion, or disabilities; uses sexualized language or imagery; harasses someone; or is unsafe or illegal.",
   },
   {
-    category: "Projects",
-    question: "Can I bring my own project idea?",
+    question: "What do most people make?",
     answer:
-      "Absolutely! We encourage members to pitch their ideas during our 'Pitch Nights.' If your idea gets traction, you can form a team and start building with mentorship support. Some of our best projects started as member ideas.",
+      "Common projects vary from city to city, but in general, most CodeDay attendees create games, a sizable minority create mobile apps, and a small number create websites or electronics projects. You can technically even create non-coding projects at CodeDay; they've seen people present paintings and record albums before. If you're not sure what you want to make, you'll also have the opportunity to join an existing team.",
   },
   {
-    category: "Projects",
-    question: "How do hackathons work?",
+    question: "Can you work on existing projects at CodeDay?",
     answer:
-      "Our hackathons are typically 24-48 hour events where teams build projects from scratch around a theme. You can participate solo or in teams of 2-4. We provide mentors, workshops during the event, and prizes for top projects. Scrapyard Lucknow is our flagship annual hackathon.",
-  },
-
-  // Community
-  {
-    category: "Community",
-    question: "What's the community like?",
-    answer:
-      "We're a supportive, inclusive community of 120+ teen builders. Our Discord is active with code help, project discussions, memes, and general chat. We prioritize a safe, welcoming environment where everyone can learn without judgment.",
+      'Yes, but only if you\'re ok with not competing for "Best in Show" and "Best in Class" awards. You\'ll still be eligible for "Special Prize" awards.',
   },
   {
-    category: "Community",
-    question: "Is there mentorship available?",
+    question: "Can parents attend CodeDay?",
     answer:
-      "Yes! We pair newer members with experienced mentors who provide one-on-one guidance. We also have office hours for technical questions and regular code reviews. Our alumni network includes members now at top tech companies and universities.",
+      "For security reasons, parents are generally not allowed at CodeDay, except for the following two times: Kickoff (Saturday, 11am–12:30pm) and Presentations and Awards (Sunday, 10am–12pm). Parents may attend if they are accepted as a volunteer and pass a background check and training, or are a chaperone for a school group.",
   },
   {
-    category: "Community",
-    question: "How do I get help when I'm stuck on something?",
+    question: "Should we bring anything to CodeDay?",
     answer:
-      "Post in our Discord help channels! Our community is quick to respond, and there's usually someone who's faced a similar problem. We also have scheduled office hours with mentors for more in-depth help.",
-  },
-
-  // Parents
-  {
-    category: "Parents",
-    question: "Is Bits&Bytes safe for my child?",
-    answer:
-      "Absolutely. We have a strict Code of Conduct, active moderation, and verification processes. All community interactions happen in moderated Discord channels. We take safety seriously and have zero tolerance for bullying or inappropriate behavior.",
+      "Yes. Generally, you need to bring a computer with you to CodeDay, unless you specifically requested a loaner computer or a Chromebook as part of your registration.",
   },
   {
-    category: "Parents",
-    question: "How can parents stay informed about activities?",
+    question: "For students staying overnight, what should they bring?",
     answer:
-      "Parents can request to receive our monthly newsletter summarizing upcoming events and community highlights. For major events like hackathons, we send detailed information including schedules, supervision details, and contact information.",
+      "For students staying overnight, it's recommended to bring: a toothbrush and toothpaste, a sleeping bag, a pillow, and a camping pad if you have one.",
+  },
+  {
+    question: "For students with desktop computers, what should they bring?",
+    answer:
+      "While desktop computers are welcome at CodeDay, they do not have any equipment available for students to use with their desktop computers. You will need to bring everything, including: a keyboard, mouse, and monitor; headphones (speakers are not allowed); a wifi adapter, since most CodeDay venues do not allow participants to connect to wired ethernet; and all necessary cables.",
+  },
+  {
+    question: "Can students leave CodeDay and then come back?",
+    answer:
+      "Yes, however students who are minors will need to have a parent present to pick them up, or bring a signed note allowing them to leave early on their own. Students may not be able to return at all times of day. Venues are typically locked down overnight, and depending on building security they may not be able to let you back in until the morning.",
   },
 ];
 
-const categories = [...new Set(faqs.map((faq) => faq.category))];
-
 export default function FAQ() {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
@@ -165,29 +117,25 @@ export default function FAQ() {
     setOpenItems(newOpenItems);
   };
 
-  const filteredFaqs = activeCategory
-    ? faqs.filter((faq) => faq.category === activeCategory)
-    : faqs;
-
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden text-white">
+      <section className="relative min-h-[40vh] sm:min-h-[45vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
-        <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-12 md:py-20">
-          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-[32px] md:rounded-[40px] p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-[28px] md:rounded-[36px] py-8 px-4 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
+        <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-12 md:py-20">
+          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-2xl sm:rounded-[32px] md:rounded-[40px] p-1 sm:p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
+            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-xl sm:rounded-[28px] md:rounded-[36px] py-6 sm:py-8 px-4 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
               <div className="absolute inset-0 bg-[var(--brand-purple)]/20" />
-              <div className="relative z-10 space-y-4 text-center">
+              <div className="relative z-10 space-y-3 sm:space-y-4 text-center">
                 <p className="text-[10px] md:text-xs uppercase tracking-[0.35em] text-white/70">
                   FAQ
                 </p>
-                <h1 className="font-display text-3xl sm:text-4xl md:text-5xl leading-tight font-extrabold text-white">
-                  Frequently asked questions
+                <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-extrabold text-white">
+                  Frequently Asked Questions
                 </h1>
-                <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-                  Everything you need to know about joining and participating in
-                  Bits&Bytes.
+                <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+                  Everything you need to know about CodeDay and how to
+                  participate.
                 </p>
               </div>
             </div>
@@ -196,62 +144,27 @@ export default function FAQ() {
       </section>
 
       <main className="relative z-10 bg-transparent">
-        {/* Category Filter */}
+        {/* FAQ Accordion */}
         <PageSection>
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            <button
-              onClick={() => setActiveCategory(null)}
-              className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-all duration-300",
-                activeCategory === null
-                  ? "bg-[var(--brand-pink)] text-white shadow-[var(--glow-soft)]"
-                  : "border border-white/20 bg-white/5 text-muted-foreground hover:border-white/40 hover:text-foreground",
-              )}
-            >
-              All Questions
-            </button>
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition-all duration-300",
-                  activeCategory === category
-                    ? "bg-[var(--brand-pink)] text-white shadow-[var(--glow-soft)]"
-                    : "border border-white/20 bg-white/5 text-muted-foreground hover:border-white/40 hover:text-foreground",
-                )}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* FAQ Accordion */}
-          <div className="mx-auto max-w-3xl space-y-4">
-            {filteredFaqs.map((faq, index) => {
-              const globalIndex = faqs.indexOf(faq);
-              const isOpen = openItems.has(globalIndex);
+          <div className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
+            {faqs.map((faq, index) => {
+              const isOpen = openItems.has(index);
 
               return (
                 <div
-                  key={globalIndex}
+                  key={index}
                   className="glass-card relative isolate overflow-hidden shadow-xl transition-all duration-300 hover:shadow-[var(--glow-strong)]"
                 >
                   <button
-                    onClick={() => toggleItem(globalIndex)}
-                    className="flex w-full items-start justify-between gap-4 p-6 text-left"
+                    onClick={() => toggleItem(index)}
+                    className="flex w-full items-start justify-between gap-3 sm:gap-4 p-4 sm:p-6 text-left"
                   >
-                    <div className="flex-1">
-                      <span className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
-                        {faq.category}
-                      </span>
-                      <h3 className="font-display text-lg font-bold text-foreground dark:text-white">
-                        {faq.question}
-                      </h3>
-                    </div>
+                    <h3 className="font-display text-sm sm:text-base md:text-lg font-bold text-foreground dark:text-white pr-2">
+                      {faq.question}
+                    </h3>
                     <ChevronDown
                       className={cn(
-                        "h-5 w-5 shrink-0 text-[var(--brand-pink)] transition-transform duration-300",
+                        "h-5 w-5 shrink-0 text-[var(--brand-pink)] transition-transform duration-300 mt-0.5",
                         isOpen && "rotate-180",
                       )}
                     />
@@ -263,7 +176,7 @@ export default function FAQ() {
                     )}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed">
+                      <p className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-muted-foreground leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>
@@ -276,28 +189,28 @@ export default function FAQ() {
 
         {/* Still have questions CTA */}
         <PageSection align="center">
-          <div className="glass-card p-8 md:p-12 text-center">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground dark:text-white">
+          <div className="glass-card p-6 sm:p-8 md:p-12 text-center">
+            <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-foreground dark:text-white">
               Still have questions?
             </h2>
-            <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+            <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
               Can't find what you're looking for? Reach out to us directly and
-              we'll get back to you within a couple of days.
+              we'll get back to you as soon as possible.
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
+            <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Button
                 asChild
-                className="rounded-full bg-[var(--brand-pink)] px-8 py-6 text-base font-semibold text-white shadow-[var(--glow-strong)]"
+                className="rounded-full bg-[var(--brand-pink)] px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold text-white shadow-[var(--glow-strong)] w-full sm:w-auto"
               >
                 <Link href="/contact">
                   Contact Us
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
-                className="rounded-full border-white/40 bg-white/10 px-8 py-6 text-base hover:bg-white/20"
+                className="rounded-full border-white/40 bg-white/10 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base hover:bg-white/20 w-full sm:w-auto"
               >
                 <Link href="/join">Apply to Join</Link>
               </Button>

@@ -1,14 +1,23 @@
 "use client";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from "three";
 import ThreeGlobe from "three-globe";
-import { useThree, Canvas } from "@react-three/fiber";
+import { useThree, Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import countries from "@public/globe.json";
 
 const RING_PROPAGATION_SPEED = 3;
 const aspect = 1.2;
 const cameraZ = 300;
+
+// Detect Safari/Firefox for performance adjustments
+const isSafari =
+  typeof navigator !== "undefined" &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const isFirefox =
+  typeof navigator !== "undefined" &&
+  navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+const isLowPerfBrowser = isSafari || isFirefox;
 
 type Position = {
   order: number;
@@ -55,23 +64,37 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const { scene } = useThree();
   const globeRef = useRef<ThreeGlobe | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const frameCountRef = useRef(0);
 
-  const defaultProps = useMemo(() => ({
-    pointSize: 1,
-    atmosphereColor: "#ffffff",
-    showAtmosphere: true,
-    atmosphereAltitude: 0.1,
-    polygonColor: "rgba(255,255,255,0.7)",
-    globeColor: "#1d072e",
-    emissive: "#000000",
-    emissiveIntensity: 0.1,
-    shininess: 0.9,
-    arcTime: 2000,
-    arcLength: 0.9,
-    rings: 1,
-    maxRings: 3,
-    ...globeConfig,
-  }), [globeConfig]);
+  // Reduce quality on Safari/Firefox
+  const defaultProps = useMemo(
+    () => ({
+      pointSize: isLowPerfBrowser ? 0.5 : 1,
+      atmosphereColor: "#ffffff",
+      showAtmosphere: !isLowPerfBrowser, // Disable atmosphere on low-perf browsers
+      atmosphereAltitude: 0.1,
+      polygonColor: "rgba(255,255,255,0.7)",
+      globeColor: "#1d072e",
+      emissive: "#000000",
+      emissiveIntensity: 0.1,
+      shininess: 0.9,
+      arcTime: isLowPerfBrowser ? 3000 : 2000, // Slower animations
+      arcLength: 0.9,
+      rings: isLowPerfBrowser ? 0 : 1, // Disable rings on low-perf browsers
+      maxRings: isLowPerfBrowser ? 1 : 3,
+      ...globeConfig,
+    }),
+    [globeConfig],
+  );
+
+  // Throttle rendering on low-perf browsers
+  useFrame(() => {
+    if (isLowPerfBrowser) {
+      frameCountRef.current++;
+      // Skip every other frame on Safari/Firefox
+      if (frameCountRef.current % 2 !== 0) return;
+    }
+  });
 
   // Initialize globe once
   useEffect(() => {
@@ -81,9 +104,9 @@ export function Globe({ globeConfig, data }: WorldProps) {
       waitForGlobeReady: true,
       animateIn: true,
     });
-    
+
     globeRef.current = globe;
-    
+
     // Set material properties
     const globeMaterial = globe.globeMaterial() as any;
     globeMaterial.color = new Color(defaultProps.globeColor);
@@ -98,13 +121,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
-      
+
       if (globeRef.current) {
         scene.remove(globeRef.current);
         globeRef.current = null;
       }
     };
-  }, [scene, defaultProps.globeColor, defaultProps.emissive, defaultProps.emissiveIntensity, defaultProps.shininess]);
+  }, [
+    scene,
+    defaultProps.globeColor,
+    defaultProps.emissive,
+    defaultProps.emissiveIntensity,
+    defaultProps.shininess,
+  ]);
 
   useEffect(() => {
     if (!globeRef.current || !data) return;
@@ -144,7 +173,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     // Configure globe
     globe
       .hexPolygonsData(countries.features)
-      .hexPolygonResolution(3)
+      .hexPolygonResolution(isLowPerfBrowser ? 2 : 3) // Lower resolution on Safari/Firefox
       .hexPolygonMargin(0.7)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
@@ -193,7 +222,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
 
     intervalRef.current = setInterval(() => {
       if (!globeRef.current || !data) return;
-      
+
       const newNumbersOfRings = genRandomNumbers(
         0,
         data.length,
@@ -226,7 +255,11 @@ export function WebGLRendererConfig() {
   const { gl, size } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
+    // Reduce pixel ratio on Safari/Firefox for better performance
+    const pixelRatio = isLowPerfBrowser
+      ? Math.min(window.devicePixelRatio, 1)
+      : Math.min(window.devicePixelRatio, 1.5);
+    gl.setPixelRatio(pixelRatio);
     gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
   }, [gl, size]);
@@ -236,49 +269,93 @@ export function WebGLRendererConfig() {
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
-  
+  const [isVisible, setIsVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Intersection observer to pause when not visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 },
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const scene = useMemo(() => {
     const s = new Scene();
     s.fog = new Fog(0xffffff, 400, 2000);
     return s;
   }, []);
 
-  const camera = useMemo(() => new PerspectiveCamera(50, aspect, 180, 1800), []);
-  
+  const camera = useMemo(
+    () => new PerspectiveCamera(50, aspect, 180, 1800),
+    [],
+  );
+
+  // Don't render canvas if not visible (saves resources)
+  if (!isVisible) {
+    return (
+      <div
+        ref={containerRef}
+        className="w-full h-full flex items-center justify-center"
+        style={{
+          background: "radial-gradient(circle, #3E1E68 0%, #1d072e 100%)",
+          borderRadius: "inherit",
+        }}
+      >
+        <div className="text-white/50 text-sm">Globe paused</div>
+      </div>
+    );
+  }
+
   return (
-    <Canvas 
-      scene={scene} 
-      camera={camera}
-      gl={{ antialias: true, alpha: true }}
-      dpr={[1, 2]}
-    >
-      <WebGLRendererConfig />
-      <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
-      <directionalLight
-        color={globeConfig.directionalLeftLight}
-        position={new Vector3(-400, 100, 400)}
-      />
-      <directionalLight
-        color={globeConfig.directionalTopLight}
-        position={new Vector3(-200, 500, 200)}
-      />
-      <pointLight
-        color={globeConfig.pointLight}
-        position={new Vector3(-200, 500, 200)}
-        intensity={0.8}
-      />
-      <Globe {...props} />
-      <OrbitControls
-        enablePan={false}
-        enableZoom={false}
-        minDistance={cameraZ}
-        maxDistance={cameraZ}
-        autoRotateSpeed={1}
-        autoRotate={true}
-        minPolarAngle={Math.PI / 3.5}
-        maxPolarAngle={Math.PI - Math.PI / 3}
-      />
-    </Canvas>
+    <div ref={containerRef} className="w-full h-full">
+      <Canvas
+        scene={scene}
+        camera={camera}
+        gl={{
+          antialias: !isLowPerfBrowser, // Disable antialiasing on Safari/Firefox
+          alpha: true,
+          powerPreference: isLowPerfBrowser ? "low-power" : "default",
+        }}
+        dpr={isLowPerfBrowser ? [1, 1] : [1, 2]}
+        frameloop={isLowPerfBrowser ? "demand" : "always"}
+      >
+        <WebGLRendererConfig />
+        <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
+        <directionalLight
+          color={globeConfig.directionalLeftLight}
+          position={new Vector3(-400, 100, 400)}
+        />
+        <directionalLight
+          color={globeConfig.directionalTopLight}
+          position={new Vector3(-200, 500, 200)}
+        />
+        <pointLight
+          color={globeConfig.pointLight}
+          position={new Vector3(-200, 500, 200)}
+          intensity={0.8}
+        />
+        <Globe {...props} />
+        <OrbitControls
+          enablePan={false}
+          enableZoom={false}
+          minDistance={cameraZ}
+          maxDistance={cameraZ}
+          autoRotateSpeed={isLowPerfBrowser ? 0.5 : 1}
+          autoRotate={true}
+          minPolarAngle={Math.PI / 3.5}
+          maxPolarAngle={Math.PI - Math.PI / 3}
+        />
+      </Canvas>
+    </div>
   );
 }
 

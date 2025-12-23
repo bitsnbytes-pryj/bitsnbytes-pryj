@@ -30,62 +30,52 @@ const faqs: FAQItem[] = [
   {
     question: "Can I come with a pre-formed team? Do I need to?",
     answer:
-      "You don't need to come with a team to CodeDay. In fact, most people don't come with a team! At the beginning of the event, everyone has the chance to pitch ideas for apps or games they want to make. You can find an idea to work on then. Teams can be made up of anyone you'd like, they don't need to attend your same school, be in your same grade, etc. Even volunteers can be on your team, if you can convince them!",
+      "You can come to our hackathon with a pre-formed team, or you can form a team once you're on the ground. At the beginning of the event, everyone has the chance to pitch ideas for apps or games they want to make. You can find an idea to work on then. Teams can be made up of anyone you'd like—they don't need to attend your same school or be in your same grade.",
   },
   {
     question: "What if I want to come with a pre-formed team?",
     answer:
-      'That\'s totally ok, too! We do encourage pre-formed teams to stay open to adding new teammates—welcoming others can bring fresh ideas and it might even make the experience more fun! Remember that, if you\'ve done any work in advance, you need to disclose that to the judges. Doing work in advance might disqualify you for the "Best in Show" and "Best in Class" prizes.',
+      "That's totally ok! We do encourage pre-formed teams to stay open to adding new teammates—welcoming others can bring fresh ideas and it might even make the experience more fun!",
   },
   {
     question: "What if I decide not to work with a team at all?",
     answer:
-      "Also totally ok; many students work by themselves. We do find that students have more fun when participating as a team, however. Judges will do their best to take the size and experience of each team into account when deciding on prizes.",
+      "Also totally ok; many students work by themselves. We do find that students have more fun when participating as a team, however.",
   },
   {
-    question: 'Is CodeDay a "hackathon"?',
+    question: "What is Bits and Bytes?",
     answer:
-      "Kind of. Although it follows the usual format, CodeDay isn't a traditional hackathon. Some key differences: CodeDay has few prizes and little swag; you won't find or meet companies directly recruiting for internships; judging is done by attendees; no business plans or pitch decks (CodeDay is focused on creativity); lots of attendees are newer to coding. If that sounds like fun to you, they'd love to have you!",
+      "Bits and Bytes is a student-led tech club that runs hackathons and other events. Our hackathons follow the usual format but aren't traditional—we have some inspirations from Hack Club style hackathons. Our focus is on creativity; lots of attendees are newer to coding. If that sounds like fun to you, we'd love to have you!",
   },
   {
-    question: "How are projects judged?",
+    question: "Can I volunteer for Bits and Bytes?",
     answer:
-      'Judges are asked to evaluate projects on the basis of, in order of importance: (1) Difficulty: given what you knew going in, how hard did you have to work to create your project? (2) Creativity: how original and fun is your project? (3) Polish: this is the "anything else" category, and includes things like having great UI, a tutorial level, etc. Judges do not consider: how technically difficult the project is in absolute terms; or business plans, marketing collateral, or a pitch deck (except as part of "polish").',
+      "Absolutely! We're almost always looking for help with the following: organizers, general day-of volunteers, workshops, and mentors. Reach out to us through our contact page to learn more.",
   },
   {
-    question: "When does judging happen?",
+    question: "What kind of things can be made at our hackathons?",
     answer:
-      "Judges walk around at 9am, before presentations. At least one judge will try each project, and talk to the team. Deliberation happens during presentations, so please don't create a presentation: it will only bore your friends and family.",
-  },
-  {
-    question: "Can I volunteer for CodeDay?",
-    answer:
-      "Absolutely! They're almost always looking for help with the following: organizers, general day-of volunteers, workshops, mentors, and judges. You can learn more on their volunteer page.",
-  },
-  {
-    question: "What kind of things can be made at CodeDay?",
-    answer:
-      "You can make anything at CodeDay. Anything at all. The only limit is yourself. Well, almost. You can't create anything that violates their Code of Conduct. This is usually a little less strict than \"school appropriate,\" but in general you can't create a project which uses offensive language referring to people's gender, race, sexual orientation, religion, or disabilities; uses sexualized language or imagery; harasses someone; or is unsafe or illegal.",
+      "You can make anything at our hackathons. Anything at all. The only limit is yourself. Well, almost. You can't create anything that violates our Code of Conduct. This is usually a little less strict than \"school appropriate,\" but in general you can't create a project which uses offensive language referring to people's gender, race, sexual orientation, religion, or disabilities; uses sexualized language or imagery; harasses someone; or is unsafe or illegal.",
   },
   {
     question: "What do most people make?",
     answer:
-      "Common projects vary from city to city, but in general, most CodeDay attendees create games, a sizable minority create mobile apps, and a small number create websites or electronics projects. You can technically even create non-coding projects at CodeDay; they've seen people present paintings and record albums before. If you're not sure what you want to make, you'll also have the opportunity to join an existing team.",
+      "Common projects vary, but in general, most attendees create games, a sizable minority create mobile apps, and a small number create websites or electronics projects. You can technically even create non-coding projects; we've seen people present paintings and record albums before. If you're not sure what you want to make, you'll also have the opportunity to join an existing team.",
   },
   {
-    question: "Can you work on existing projects at CodeDay?",
+    question: "Can I show existing projects at Bits and Bytes?",
     answer:
-      'Yes, but only if you\'re ok with not competing for "Best in Show" and "Best in Class" awards. You\'ll still be eligible for "Special Prize" awards.',
+      "No, you cannot show existing projects at our hackathons. All projects must be created during the event.",
   },
   {
-    question: "Can parents attend CodeDay?",
+    question: "Can parents attend Bits and Bytes?",
     answer:
-      "For security reasons, parents are generally not allowed at CodeDay, except for the following two times: Kickoff (Saturday, 11am–12:30pm) and Presentations and Awards (Sunday, 10am–12pm). Parents may attend if they are accepted as a volunteer and pass a background check and training, or are a chaperone for a school group.",
+      "For security reasons, parents are generally not allowed on the main premises. However, they can attend the kickoffs and presentation awards. Parents may also attend if they are accepted as a volunteer and pass a background check and training, or are a chaperone for a school group.",
   },
   {
-    question: "Should we bring anything to CodeDay?",
+    question: "Should we bring anything to the hackathon?",
     answer:
-      "Yes. Generally, you need to bring a computer with you to CodeDay, unless you specifically requested a loaner computer or a Chromebook as part of your registration.",
+      "Yes. You can bring anything on your device. Generally, you need to bring a laptop with you to the hackathon.",
   },
   {
     question: "For students staying overnight, what should they bring?",
@@ -95,10 +85,10 @@ const faqs: FAQItem[] = [
   {
     question: "For students with desktop computers, what should they bring?",
     answer:
-      "While desktop computers are welcome at CodeDay, they do not have any equipment available for students to use with their desktop computers. You will need to bring everything, including: a keyboard, mouse, and monitor; headphones (speakers are not allowed); a wifi adapter, since most CodeDay venues do not allow participants to connect to wired ethernet; and all necessary cables.",
+      "While desktop computers are welcome, we recommend bringing a laptop instead. If you do bring a desktop, you will need to bring everything, including: a keyboard, mouse, and monitor; headphones (speakers are not allowed); a wifi adapter, since most venues do not allow participants to connect to wired ethernet; and all necessary cables.",
   },
   {
-    question: "Can students leave CodeDay and then come back?",
+    question: "Can students leave the hackathon and then come back?",
     answer:
       "Yes, however students who are minors will need to have a parent present to pick them up, or bring a signed note allowing them to leave early on their own. Students may not be able to return at all times of day. Venues are typically locked down overnight, and depending on building security they may not be able to let you back in until the morning.",
   },
@@ -134,7 +124,7 @@ export default function FAQ() {
                   Frequently Asked Questions
                 </h1>
                 <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-                  Everything you need to know about CodeDay and how to
+                  Everything you need to know about Bits and Bytes and how to
                   participate.
                 </p>
               </div>

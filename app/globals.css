@@ -170,7 +170,7 @@
     .glass-panel {
         background: hsla(0, 0%, 100%, 0.18);
         box-shadow: 0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset;
-        @apply rounded-3xl dark:bg-[hsla(0,0%,100%,0.1)];
+        @apply rounded-3xl dark:bg-white/10;
     }
 
     /* Only apply backdrop-filter on devices that handle it well */
@@ -186,7 +186,7 @@
     .glass-card {
         background: hsla(0, 0%, 100%, 0.18);
         box-shadow: 0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset;
-        @apply rounded-3xl border border-white/20 dark:border-white/10 dark:bg-[hsla(0,0%,100%,0.1)];
+        @apply rounded-3xl border border-white/20 dark:border-white/10 dark:bg-white/10;
         /* Use transform instead of translate for better GPU acceleration */
         transform: translateY(0) translateZ(0);
         transition:
@@ -241,11 +241,9 @@
     .dark .bg-grid-faint {
         background-image:
             linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(
-                90deg,
+            linear-gradient(90deg,
                 rgba(255, 255, 255, 0.03) 1px,
-                transparent 1px
-            );
+                transparent 1px);
     }
 
     .dark .bg-noise-texture {
@@ -255,6 +253,7 @@
 
 /* Reduced motion: disable animations */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -264,11 +263,53 @@
     }
 }
 
+@keyframes bounce-x {
+
+    0%,
+    100% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+    }
+
+    50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    }
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+        filter: blur(2px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0px) translateZ(0);
     }
+
     50% {
         transform: translateY(-10px) translateZ(0);
     }
@@ -279,6 +320,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -290,6 +332,7 @@
         opacity: 0;
         transform: translateY(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -300,16 +343,19 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
 
 @keyframes pulse-glow {
+
     0%,
     100% {
         box-shadow: 0 0 20px rgba(228, 90, 146, 0.3);
     }
+
     50% {
         box-shadow: 0 0 40px rgba(228, 90, 146, 0.6);
     }
@@ -319,6 +365,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -328,27 +375,35 @@
     0% {
         inset: 0 35px 35px 0;
     }
+
     12.5% {
         inset: 0 35px 0 0;
     }
+
     25% {
         inset: 35px 35px 0 0;
     }
+
     37.5% {
         inset: 35px 0 0 0;
     }
+
     50% {
         inset: 35px 0 0 35px;
     }
+
     62.5% {
         inset: 0 0 0 35px;
     }
+
     75% {
         inset: 0 0 35px 35px;
     }
+
     87.5% {
         inset: 0 0 35px 0;
     }
+
     100% {
         inset: 0 35px 35px 0;
     }
@@ -385,8 +440,7 @@
 }
 
 .animate-scroll {
-    animation: scroll var(--animation-duration, 40s)
-        var(--animation-direction, forwards) linear infinite;
+    animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
     will-change: transform;
     /* Force GPU acceleration */
     transform: translateZ(0);
@@ -394,7 +448,8 @@
 }
 
 /* Reduce animation complexity on mobile/low-power devices */
-@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+@media (max-width: 768px),
+(prefers-reduced-motion: reduce) {
     .animate-scroll {
         animation-duration: 60s !important;
     }
@@ -456,5 +511,25 @@
 
     .solid-border {
         border: 2px solid var(--brand-pink);
+    }
+
+    .lighting-button {
+        animation: bounce-x 1.5s ease-in-out infinite;
+    }
+
+    .lighting-button:hover {
+        animation: none;
+        transform: translateX(0);
+    }
+
+    .light-glow {
+        animation: glow 2s ease-in-out infinite;
+    }
+
+    .word-float {
+        animation: float-up 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        will-change: transform, opacity, filter;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
     }
 }

@@ -233,8 +233,6 @@ const footerLinks = [
         links: [
             { id: 5, title: "FAQ", url: "/faq" },
             { id: 6, title: "Code of Conduct", url: "/coc" },
-            { id: 7, title: "Blog", url: "/blog" },
-            { id: 8, title: "Events", url: "/events" },
         ],
     },
 ];

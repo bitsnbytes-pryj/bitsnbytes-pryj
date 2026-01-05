@@ -39,7 +39,7 @@ export default function Navigation() {
         className={cn(
           "w-full max-w-full border-b border-white/10 bg-white/90 px-3 sm:px-4 py-2 sm:py-3 shadow-[var(--shadow-card)] backdrop-blur-2xl transition-all dark:border-white/10 dark:bg-white/5",
           isScrolled &&
-            "border-white/20 bg-white shadow-[var(--glow-soft)] dark:bg-white/10",
+          "border-white/20 bg-white shadow-[var(--glow-soft)] dark:bg-white/10",
         )}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-4">

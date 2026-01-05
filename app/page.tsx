@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Code2,
+  CodeXml,
   Users,
   Rocket,
   Lightbulb,
@@ -79,7 +79,7 @@ const focusAreas = [
     ],
   },
   {
-    icon: <Code2 className="w-full h-full" />,
+    icon: <CodeXml className="w-full h-full" />,
     color: "purple-pink",
     label: "Projects",
     description: "Real-world builds that ship to production",

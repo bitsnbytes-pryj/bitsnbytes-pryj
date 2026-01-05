@@ -4,6 +4,11 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { PageSection } from "@/components/page-section";
 import { LoadingInline } from "@/components/loading-wrapper";
+import {
+  GlowingCard,
+  GlowingCardTitle,
+  GlowingCardDescription,
+} from "@/components/ui/glowing-card";
 
 // Lazy load heavy components
 const TeamCaseStudy = dynamic(() => import("@/components/team-case-study"), {
@@ -194,22 +199,29 @@ export default function About() {
           title={aboutContent.title}
           description={aboutContent.description}
         >
-          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
-            {aboutContent.sections.map((section, index) => (
-              <div
-                key={section.title}
-                className="glass-card relative isolate overflow-hidden p-4 sm:p-6 text-foreground shadow-xl hover:shadow-[var(--glow-strong)] dark:text-white"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <h3 className="font-display text-lg sm:text-xl md:text-2xl font-semibold text-foreground dark:text-white">
-                  {section.title}
-                </h3>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-foreground/80 dark:text-white/80">
-                  {section.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-2 lg:gap-4">
+            {aboutContent.sections.map((section, index) => {
+              // Define grid areas for each card
+              const gridAreas = [
+                "md:[grid-area:1/1/2/7]",
+                "md:[grid-area:1/7/2/13]",
+                "md:[grid-area:2/1/3/7]",
+                "md:[grid-area:2/7/3/13]",
+              ];
+              return (
+                <li key={section.title} className={gridAreas[index]}>
+                  <GlowingCard animationDelay={index * 0.05}>
+                    <div className="space-y-3">
+                      <GlowingCardTitle>{section.title}</GlowingCardTitle>
+                      <GlowingCardDescription>
+                        {section.description}
+                      </GlowingCardDescription>
+                    </div>
+                  </GlowingCard>
+                </li>
+              );
+            })}
+          </ul>
         </PageSection>
 
         <PageSection

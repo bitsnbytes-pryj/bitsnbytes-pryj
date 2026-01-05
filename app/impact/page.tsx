@@ -9,6 +9,12 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { LiquidGlassBackdrop } from "@/components/ui/liquid-glass-effect";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { LoadingInline } from "@/components/loading-wrapper";
+import {
+  GlowingCard,
+  GlowingCardTitle,
+  GlowingCardDescription,
+  GlowingCardNumber,
+} from "@/components/ui/glowing-card";
 
 // Lazy load heavy components
 const TeamGlobe = dynamic(() => import("@/components/team-globe"), {
@@ -238,27 +244,29 @@ export default function Impact() {
           title="What we stand for"
           description="We’re intentional about the energy in every room—how we collaborate, how we support each other, how we chase impact."
         >
-          <div className="grid gap-6 md:grid-cols-3">
-            {culturePillars.map((pillar, idx) => (
-              <div
-                key={pillar.title}
-                className="glass-card relative isolate overflow-hidden p-6 text-left text-foreground shadow-xl hover:shadow-[var(--glow-strong)] dark:text-white animate-slide-in-up"
-                style={{ animationDelay: `${idx * 0.12}s` }}
-              >
-                <div className="relative z-10">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--brand-pink)]">
-                    0{idx + 1}
-                  </p>
-                  <h3 className="mt-3 font-display text-lg font-bold text-foreground dark:text-white sm:text-xl">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-foreground/80 dark:text-white/80 sm:text-base">
-                    {pillar.copy}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 lg:gap-4">
+            {culturePillars.map((pillar, idx) => {
+              // Define grid areas for 3-column layout
+              const gridAreas = [
+                "md:[grid-area:1/1/2/5]",
+                "md:[grid-area:1/5/2/9]",
+                "md:[grid-area:1/9/2/13]",
+              ];
+              return (
+                <li key={pillar.title} className={gridAreas[idx]}>
+                  <GlowingCard animationDelay={idx * 0.12}>
+                    <div className="space-y-3">
+                      <GlowingCardNumber index={idx + 1} />
+                      <GlowingCardTitle className="mt-3">{pillar.title}</GlowingCardTitle>
+                      <GlowingCardDescription>
+                        {pillar.copy}
+                      </GlowingCardDescription>
+                    </div>
+                  </GlowingCard>
+                </li>
+              );
+            })}
+          </ul>
         </PageSection>
       </main>
     </>

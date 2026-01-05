@@ -34,7 +34,7 @@ Quick reference for “who to ping for what”.
 | **Yash**  | Co‑Founder & Lead Dev     | Full‑stack dev, AI, web architecture                    |
 | **Saksham** | Co‑Founder & Designer   | UI/UX, design systems, visual identity                  |
 | **Aadrika** | Community Lead          | Community building, mentoring, event hosting            |
-| **Akshat**  | Project Manager         | Project planning, timelines, coordination               |
+| **Akshat Kushwaha**  | Project Manager         | Project planning, timelines, coordination               |
 | **Devansh** | Backend Specialist      | Databases, APIs, system design                          |
 | **Maryam**  | Mobile Dev Lead         | iOS, Android, cross‑platform apps                       |
 | **Kaustubh**| DevOps Engineer         | Infra, CI/CD, deployment, security                      |
@@ -83,7 +83,7 @@ Quick reference for “who to ping for what”.
   - You want to host a community activity or workshop  
   - You see community issues that need care or support
 
-#### Akshat – Project Manager
+#### Akshat Kushwaha – Project Manager
 - **Expertise:** Planning, coordination, strategy, execution tracking  
 - **Owns:**
   - Project timelines, milestones, and sprint planning

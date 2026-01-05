@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useState, useRef } from "react";
 import { CometCard } from "@/components/ui/comet-card";
 import { cn } from "@/lib/utils";
-import { Linkedin } from "lucide-react";
+import { Linkedin, User } from "lucide-react";
 
-interface TeamMember {
+interface CoreTeamMember {
   id: number;
   name: string;
   role: string;
@@ -18,8 +18,16 @@ interface TeamMember {
   isFounder?: boolean;
 }
 
+interface Volunteer {
+  id: number;
+  name: string;
+  image: string;
+  linkedin?: string;
+}
+
 interface TeamCaseStudyProps {
-  members: TeamMember[];
+  coreTeam: CoreTeamMember[];
+  volunteers: Volunteer[];
 }
 
 const brandColors = [
@@ -32,7 +40,7 @@ function TeamCard({
   member,
   bgColor,
 }: {
-  member: TeamMember;
+  member: CoreTeamMember;
   bgColor: string;
 }) {
   const [dominantColor, setDominantColor] = useState<string | null>(null);
@@ -178,18 +186,97 @@ function TeamCard({
   );
 }
 
-export default function TeamCaseStudy({ members }: TeamCaseStudyProps) {
-  return (
-    <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {members.map((member, index) => {
-        const bgColor = brandColors[index % brandColors.length];
+function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
+  const [imageError, setImageError] = useState(false);
+  const isPlaceholder = volunteer.image.includes("placeholder");
 
-        return (
-          <div key={member.id} className="flex">
-            <TeamCard member={member} bgColor={bgColor} />
-          </div>
-        );
-      })}
+  return (
+    <div className="group relative flex flex-col items-center w-24 sm:w-32">
+      <div className="relative mb-2 sm:mb-3">
+        {/* Glow effect */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[var(--brand-purple)] via-[var(--brand-pink)] to-[var(--brand-plum)] opacity-50 blur-lg group-hover:opacity-80 transition-opacity duration-300" />
+
+        {/* Avatar container */}
+        <div className="relative h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-white/20 bg-gradient-to-br from-[var(--brand-purple)] to-[var(--brand-plum)] group-hover:border-[var(--brand-pink)]/50 transition-all duration-300 group-hover:scale-105">
+          {isPlaceholder || imageError ? (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[var(--brand-purple)]/80 to-[var(--brand-plum)]/80">
+              <User className="h-8 w-8 sm:h-10 sm:w-10 text-white/60" />
+            </div>
+          ) : (
+            <Image
+              src={volunteer.image}
+              alt={volunteer.name}
+              fill
+              sizes="(max-width: 768px) 64px, (max-width: 1024px) 80px, 96px"
+              quality={85}
+              className="object-cover"
+              onError={() => setImageError(true)}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-1 text-center w-full">
+        <h4 className="font-semibold text-sm sm:text-base text-white truncate w-full px-1">
+          {volunteer.name}
+        </h4>
+        <span className="text-[0.6rem] sm:text-xs font-medium uppercase tracking-wider text-[var(--brand-pink)]/80">
+          Volunteer
+        </span>
+        {/* Fixed height container for LinkedIn to keep grids aligned */}
+        <div className="mt-1 h-7 flex items-center justify-center">
+          {volunteer.linkedin ? (
+            <a
+              href={volunteer.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-white/10 transition-all hover:bg-white/20 hover:scale-110"
+              aria-label={`${volunteer.name}'s LinkedIn`}
+            >
+              <Linkedin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            </a>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }
+
+export default function TeamCaseStudy({ coreTeam, volunteers }: TeamCaseStudyProps) {
+  return (
+    <div className="flex flex-col gap-8 sm:gap-16">
+      {/* Core Team - Flex wrap centered for 5 members */}
+      <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8">
+        {coreTeam.map((member, index) => {
+          const bgColor = brandColors[index % brandColors.length];
+
+          return (
+            <div key={member.id} className="flex min-w-[280px] max-w-[340px] flex-1">
+              <TeamCard member={member} bgColor={bgColor} />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Divider */}
+      <div className="relative flex items-center justify-center py-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-white/10" />
+        </div>
+        <div className="relative bg-background px-4 sm:px-6">
+          <span className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[var(--brand-pink)]/70">
+            Volunteers
+          </span>
+        </div>
+      </div>
+
+      {/* Volunteers Section - Improved Grid for Alignment */}
+      <div className="flex flex-wrap items-start justify-center gap-6 sm:gap-10 md:gap-14 lg:gap-16">
+        {volunteers.map((volunteer) => (
+          <VolunteerCard key={volunteer.id} volunteer={volunteer} />
+        ))}
+      </div>
+    </div>
+  );
+}
+

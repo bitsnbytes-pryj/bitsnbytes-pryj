@@ -55,7 +55,8 @@ const aboutContent = {
   ],
 };
 
-const teamMembers = [
+// Core Team - Top tier
+const coreTeam = [
   {
     id: 1,
     name: "Yash",
@@ -118,48 +119,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/devaanshpa/",
   },
   {
-    id: 5,
-    name: "Saksham",
-    role: "Ideation & Research Lead",
-    image: "/team/saksham.jpeg",
-    bio: "Brainstorms new concepts, supports ongoing initiatives with research, and helps refine plans for events and content.",
-    expertise: [
-      "Strategic Ideation",
-      "Research & Analysis",
-      "Concept Development",
-      "Event Planning",
-    ],
-    linkedin: "https://www.linkedin.com/in/sakshm/",
-  },
-  {
     id: 6,
-    name: "Kaustubh",
-    role: "Content & Video Producer",
-    image: "/team/kaustubh.jpeg",
-    bio: "Creates compelling video content, edits event highlights, and works on storytelling that attracts attention.",
-    expertise: [
-      "Video Production",
-      "Content Creation",
-      "Video Editing",
-      "Brand Storytelling",
-    ],
-  },
-  {
-    id: 7,
-    name: "Oviyaa",
-    role: "Outreach Lead",
-    image: "/team/oviyaa.jpeg",
-    bio: "Builds and maintains connections with schools, clubs, local communities, and potential collaborators.",
-    expertise: [
-      "Outreach",
-      "Digital Marketing",
-      "Community Engagement",
-      "Growth Strategy",
-    ],
-    linkedin: "https://www.linkedin.com/in/oviyaa-singh-3a183a370/",
-  },
-  {
-    id: 8,
     name: "Maryam",
     role: "Social Media & Promotions Head",
     image: "/team/maryam.jpeg",
@@ -172,19 +132,44 @@ const teamMembers = [
     ],
     linkedin: "https://www.linkedin.com/in/maryam-fatima-9719aa377/",
   },
+];
+
+// Volunteers - smaller cards section
+const volunteers = [
+  {
+    id: 5,
+    name: "Saksham",
+    image: "/team/saksham.jpeg",
+    linkedin: "https://www.linkedin.com/in/sakshm/",
+  },
+  {
+    id: 10,
+    name: "Kaustubh",
+    image: "/team/kaustubh.jpeg",
+    linkedin: "https://www.linkedin.com/in/kaustubh-shaw-905ab3381/",
+  },
+  {
+    id: 11,
+    name: "Oviyaa",
+    image: "/team/oviyaa.jpeg",
+    linkedin: "https://www.linkedin.com/in/oviyaa-singh-3a183a370/",
+  },
+  {
+    id: 7,
+    name: "Areeb",
+    image: "/team/areeb.png",
+    linkedin: "https://www.linkedin.com/in/areeb-ahmad-066547315/",
+  },
+  {
+    id: 8,
+    name: "Atharva",
+    image: "/team/atharva.jpg",
+    linkedin: "https://www.linkedin.com/in/atharvaupadhyay/",
+  },
   {
     id: 9,
-    name: "Areeb",
-    role: "Backend Developer",
-    image: "/team/areeb.png",
-    bio: "Assists in backend development tasks, collaborates on building robust APIs, and ensures smooth data management for various projects.",
-    expertise: [
-      "Backend Development",
-      "API Design",
-      "Database Management",
-      "Collaboration",
-    ],
-    linkedin: "https://www.linkedin.com/in/areeb-ahmad-066547315/",
+    name: "Kavan",
+    image: "/team/kavan.jpg",
   },
 ];
 
@@ -231,7 +216,7 @@ export default function About() {
           description="A tight crew of designers, engineers, club leads, and storytellers powering India-wide teen-led tech movements."
         >
           <Suspense fallback={<LoadingInline />}>
-            <TeamCaseStudy members={teamMembers} />
+            <TeamCaseStudy coreTeam={coreTeam} volunteers={volunteers} />
           </Suspense>
           <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-muted-foreground px-4 sm:px-0">
             *Roles stay flexible as our team and club grow.

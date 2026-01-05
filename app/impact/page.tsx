@@ -35,28 +35,28 @@ const WebGLShader = dynamic(
 
 const highlightStats = [
   {
-    value: "120+",
+    value: "200+",
     label: "Students active",
     description: "From across India",
     timeframe: "Since Jan 2024 ↑",
   },
   {
-    value: "10",
+    value: "10+",
     label: "Schools represented",
     description: "Cross-campus exchange",
     timeframe: "Growing monthly ↑",
   },
   {
-    value: "60+",
-    label: "Projects launched",
+    value: "15+",
+    label: "Projects shipped",
     description: "Products, apps, AI",
-    timeframe: "In 6 months ↑",
+    timeframe: "Building the future ↑",
   },
   {
-    value: "1st",
-    label: "Student-led hackathon",
-    description: "Scrapyard Lucknow 2024",
-    timeframe: "Historic milestone",
+    value: "100%",
+    label: "Student-led",
+    description: "Community built for teens",
+    timeframe: "Always will be",
   },
 ];
 

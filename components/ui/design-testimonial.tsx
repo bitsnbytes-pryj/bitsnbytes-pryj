@@ -7,57 +7,33 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 
 const testimonials = [
   {
-    quote: "Scrapyard hackathon felt electric—40+ teens building, pitching, and cheering each other on. It proved students can run world-class events.",
+    quote: "Leading this community has shown me that there's no limit to what ambitious teens can achieve when they have the right ecosystem to build in.",
+    author: "Yash",
+    role: "Founder & Local Lead",
+    company: "Bits&Bytes",
+  },
+  {
+    quote: "We're crafting a brand that represents the future of Indian tech—bold, creative, and unapologetically teen-led.",
     author: "Aadrika",
     role: "Co-Founder & Chief Creative Strategist",
     company: "Bits&Bytes",
   },
   {
-    quote: "We pair first-time coders with experienced mentors, so everyone ships something real. The confidence boost is unreal.",
-    author: "Yash",
-    role: "Co-Founder & Local Lead",
-    company: "Bits&Bytes",
-  },
-  {
-    quote: "Building this platform has been incredible. We're not just coding—we're creating opportunities for the next generation of India's teen tech talent.",
+    quote: "Scaling our infrastructure to support hundreds of builders while maintaining a seamless developer experience is my top priority. We're building real tech for real impact.",
     author: "Akshat",
     role: "Co-Founder & Technical Lead",
     company: "Bits&Bytes",
   },
   {
-    quote: "The backend work we do here isn't just about databases and APIs—it's about creating a stable foundation that allows every member to build boldly.",
+    quote: "The systems we're building here aren't just for show—they're the backbone that allows every member to ship their wildest ideas with confidence.",
     author: "Devansh",
     role: "Founding Member & Backend Lead",
     company: "Bits&Bytes",
   },
   {
-    quote: "From brainstorming wild ideas to seeing them come alive at events, every moment here pushes us to think bigger and execute faster.",
-    author: "Oviyaa",
-    role: "Outreach Lead",
-    company: "Bits&Bytes",
-  },
-  {
-    quote: "I never thought I could build apps until I joined. The mentorship here is different—everyone actually wants you to win.",
+    quote: "Telling our story isn't just about social media; it's about inspiring every teen in India to stop consuming and start building their own future.",
     author: "Maryam",
     role: "Social Media & Promotions Head",
-    company: "Bits&Bytes",
-  },
-  {
-    quote: "From design systems to deployment pipelines, we learn by doing. It's the best way to grow as an engineer.",
-    author: "Kaustubh",
-    role: "Content & Video Producer",
-    company: "Bits&Bytes",
-  },
-  {
-    quote: "Brainstorming new concepts and refining event plans has taught me how ideas evolve into real impact. This club turns creativity into action.",
-    author: "Saksham",
-    role: "Ideation & Research Lead",
-    company: "Bits&Bytes",
-  },
-  {
-    quote: "Working on backend systems here gave me real-world experience I couldn't get anywhere else. Every API we build serves actual users.",
-    author: "Areeb",
-    role: "Backend Developer",
     company: "Bits&Bytes",
   },
 ]

@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface EntropyProps {
     className?: string
@@ -9,23 +9,39 @@ interface EntropyProps {
 export function Entropy({ className = "", size = 400 }: EntropyProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
+    const [isVisible, setIsVisible] = React.useState(true);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+        if (canvasRef.current) observer.observe(canvasRef.current);
+        return () => observer.disconnect();
+    }, []);
+
     useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
+        if (!isVisible) return; // Pause when not visible
 
-        const ctxMaybe = canvas.getContext('2d')
+        const ctxMaybe = canvas.getContext('2d', { alpha: false }) // Optimization: Disable alpha if possible
         if (!ctxMaybe) return
         const ctx: CanvasRenderingContext2D = ctxMaybe
 
-        // 基础设置
-        const dpr = window.devicePixelRatio || 1
+        // Detect low-perf
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isLowPerf = isMobile || window.innerWidth < 768;
+
+        // Base settings
+        const dpr = Math.min(window.devicePixelRatio || 1, isLowPerf ? 1 : 2)
         canvas.width = size * dpr
         canvas.height = size * dpr
         canvas.style.width = `${size}px`
         canvas.style.height = `${size}px`
         ctx.scale(dpr, dpr)
 
-        // 使用黑色主题
+        // Use black theme
         const particleColor = '#ffffff'
 
         class Particle {
@@ -44,7 +60,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                 this.y = y
                 this.originalX = x
                 this.originalY = y
-                this.size = 2
+                this.size = isLowPerf ? 1.5 : 2
                 this.order = order
                 this.velocity = {
                     x: (Math.random() - 0.5) * 2,
@@ -56,11 +72,9 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
 
             update() {
                 if (this.order) {
-                    // 有序粒子受混沌影响的运动
                     const dx = this.originalX - this.x
                     const dy = this.originalY - this.y
 
-                    // 计算来自混沌粒子的影响
                     const chaosInfluence = { x: 0, y: 0 }
                     this.neighbors.forEach(neighbor => {
                         if (!neighbor.order) {
@@ -72,14 +86,10 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                         }
                     })
 
-                    // 混合有序运动和混沌影响
                     this.x += dx * 0.05 * (1 - this.influence) + chaosInfluence.x * this.influence
                     this.y += dy * 0.05 * (1 - this.influence) + chaosInfluence.y * this.influence
-
-                    // 影响逐渐减弱
                     this.influence *= 0.99
                 } else {
-                    // 混沌运动
                     this.velocity.x += (Math.random() - 0.5) * 0.5
                     this.velocity.y += (Math.random() - 0.5) * 0.5
                     this.velocity.x *= 0.95
@@ -87,7 +97,6 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                     this.x += this.velocity.x
                     this.y += this.velocity.y
 
-                    // 边界检查
                     if (this.x < size / 2 || this.x > size) this.velocity.x *= -1
                     if (this.y < 0 || this.y > size) this.velocity.y *= -1
                     this.x = Math.max(size / 2, Math.min(size, this.x))
@@ -106,9 +115,9 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
             }
         }
 
-        // 创建粒子网格
+        // Create particle grid - Reduced size for performance
         const particles: Particle[] = []
-        const gridSize = 25
+        const gridSize = isLowPerf ? 15 : 25
         const spacing = size / gridSize
 
         for (let i = 0; i < gridSize; i++) {
@@ -120,38 +129,43 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
             }
         }
 
-        // 更新邻居关系
         function updateNeighbors() {
             particles.forEach(particle => {
                 particle.neighbors = particles.filter(other => {
                     if (other === particle) return false
                     const distance = Math.hypot(particle.x - other.x, particle.y - other.y)
-                    return distance < 100
+                    return distance < (isLowPerf ? 70 : 100)
                 })
             })
         }
 
         let time = 0
         let animationId: number
+        let lastFrameTime = 0
+        const frameInterval = 1000 / (isLowPerf ? 30 : 60);
 
-        function animate() {
-            ctx.clearRect(0, 0, size, size)
+        function animate(currentTime: number) {
+            animationId = requestAnimationFrame(animate)
 
-            // 更新邻居关系
-            if (time % 30 === 0) {
+            if (currentTime - lastFrameTime < frameInterval) return;
+            lastFrameTime = currentTime;
+
+            ctx.fillStyle = '#000000'
+            ctx.fillRect(0, 0, size, size)
+
+            if (time % (isLowPerf ? 60 : 30) === 0) {
                 updateNeighbors()
             }
 
-            // 更新和绘制所有粒子
             particles.forEach(particle => {
                 particle.update()
                 particle.draw(ctx)
 
-                // 绘制连接线
                 particle.neighbors.forEach(neighbor => {
                     const distance = Math.hypot(particle.x - neighbor.x, particle.y - neighbor.y)
-                    if (distance < 50) {
-                        const alpha = 0.2 * (1 - distance / 50)
+                    const limit = isLowPerf ? 35 : 50
+                    if (distance < limit) {
+                        const alpha = 0.2 * (1 - distance / limit)
                         ctx.strokeStyle = `${particleColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
                         ctx.beginPath()
                         ctx.moveTo(particle.x, particle.y)
@@ -161,7 +175,6 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                 })
             })
 
-            // 添加分隔线和文字
             ctx.strokeStyle = `${particleColor}4D`
             ctx.lineWidth = 0.5
             ctx.beginPath()
@@ -169,22 +182,17 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
             ctx.lineTo(size / 2, size)
             ctx.stroke()
 
-            ctx.font = '12px monospace'
-            ctx.fillStyle = '#ffffff'
-            ctx.textAlign = 'center'
-
             time++
-            animationId = requestAnimationFrame(animate)
         }
 
-        animate()
+        animationId = requestAnimationFrame(animate)
 
         return () => {
             if (animationId) {
                 cancelAnimationFrame(animationId)
             }
         }
-    }, [size])
+    }, [size, isVisible])
 
     return (
         <div className={`relative bg-black ${className}`} style={{ width: size, height: size }}>

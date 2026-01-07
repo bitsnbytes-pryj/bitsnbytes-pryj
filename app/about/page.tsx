@@ -170,6 +170,12 @@ const volunteers = [
     name: "Kavan",
     image: "/team/kavan.jpg",
   },
+  {
+    id: 12,
+    name: "Srishti",
+    image: "/team/srishti.jpeg",
+    linkedin: "https://www.linkedin.com/in/srishti-singh-ab6a1b391",
+  },
 ];
 
 export default function About() {

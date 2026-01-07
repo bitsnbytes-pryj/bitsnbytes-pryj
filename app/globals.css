@@ -161,6 +161,9 @@
     .section-shell {
         @apply relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 overflow-x-hidden;
         max-width: min(72rem, 100vw);
+        /* Performance optimizations for off-screen rendering */
+        content-visibility: auto;
+        contain-intrinsic-size: 1px 500px;
     }
 
     .section-eyebrow {
@@ -171,11 +174,14 @@
         background: hsla(0, 0%, 100%, 0.18);
         box-shadow: 0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset;
         @apply rounded-3xl dark:bg-white/10;
+        /* Hardware acceleration */
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 
     /* Only apply backdrop-filter on devices that handle it well */
     @supports (backdrop-filter: blur(12px)) {
-        @media (prefers-reduced-motion: no-preference) {
+        @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
             .glass-panel {
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
@@ -193,15 +199,16 @@
             transform 0.2s ease-out,
             box-shadow 0.2s ease-out;
         will-change: transform;
+        backface-visibility: hidden;
     }
 
     .glass-card:hover {
         transform: translateY(-4px) translateZ(0);
     }
 
-    /* Only apply backdrop-filter on devices that handle it well */
+    /* Only apply backdrop-filter on devices that handle it well and not on mobile for battery saving */
     @supports (backdrop-filter: blur(12px)) {
-        @media (prefers-reduced-motion: no-preference) {
+        @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
             .glass-card {
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
@@ -211,6 +218,7 @@
 
     .card-surface {
         @apply rounded-3xl border border-white/10 bg-card/80 p-6 shadow-[var(--shadow-card)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[var(--glow-soft)];
+        transform: translateZ(0);
     }
 
     .tag-chip {

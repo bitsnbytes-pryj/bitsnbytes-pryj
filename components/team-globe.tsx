@@ -17,6 +17,8 @@ const World = dynamic(
 );
 
 export default function TeamGlobe() {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   const globeConfig = useMemo(
     () => ({
       pointSize: 4,
@@ -38,9 +40,9 @@ export default function TeamGlobe() {
       maxRings: 3,
       initialPosition: { lat: 26.8467, lng: 80.9462 }, // Lucknow coordinates
       autoRotate: true,
-      autoRotateSpeed: 0.5,
+      autoRotateSpeed: isMobile ? 0.3 : 0.5,
     }),
-    [],
+    [isMobile],
   );
 
   const teamArcs = useMemo(

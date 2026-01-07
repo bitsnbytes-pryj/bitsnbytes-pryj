@@ -26,22 +26,39 @@ export const CardContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
 
+  const requestRef = useRef<number | null>(null);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    const { left, top, width, height } =
-      containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
-    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+
+    // Throttle move events to requestAnimationFrame
+    if (requestRef.current) return;
+
+    requestRef.current = requestAnimationFrame(() => {
+      if (!containerRef.current) {
+        requestRef.current = null;
+        return;
+      }
+
+      const { left, top, width, height } =
+        containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - left - width / 2) / 25;
+      const y = (e.clientY - top - height / 2) / 25;
+      containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+      requestRef.current = null;
+    });
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsMouseEntered(true);
-    if (!containerRef.current) return;
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
+    if (requestRef.current) {
+      cancelAnimationFrame(requestRef.current);
+      requestRef.current = null;
+    }
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
   };
@@ -123,7 +140,7 @@ export const CardItem = ({
 
   useEffect(() => {
     handleAnimations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMouseEntered]);
 
   const handleAnimations = () => {

@@ -53,6 +53,8 @@ const stats = [
 
 // Focus Areas are now handled within the Features component
 
+import { GlassContainer } from "@/components/ui/glass-container";
+
 export default function Home() {
   return (
     <div className="flex flex-col w-full max-w-full overflow-x-hidden">
@@ -65,22 +67,25 @@ export default function Home() {
       >
         <div className="grid gap-6 md:grid-cols-3">
           {stats.map((stat) => (
-            <Card
+            <GlassContainer
               key={stat.label}
-              className="glass-card relative isolate overflow-hidden p-6 text-foreground shadow-xl hover:shadow-[var(--glow-strong)] dark:text-white"
+              className="p-8"
+              glowColor={stat.label === "Projects shipped" ? "pink" : "purple"}
             >
-              <CardContent className="relative z-10 p-0">
-                <p className="text-4xl font-bold text-[var(--brand-pink)]">
+              <div className="space-y-4">
+                <p className="text-5xl font-black text-white tracking-tighter">
                   {stat.value}
                 </p>
-                <CardTitle className="mt-2 text-lg text-foreground dark:text-white">
-                  {stat.label}
-                </CardTitle>
-                <CardDescription className="text-base text-foreground/70 dark:text-white/70">
-                  {stat.detail}
-                </CardDescription>
-              </CardContent>
-            </Card>
+                <div>
+                  <h3 className="text-xl font-bold text-white uppercase tracking-tight">
+                    {stat.label}
+                  </h3>
+                  <p className="text-base text-white/60 font-medium">
+                    {stat.detail}
+                  </p>
+                </div>
+              </div>
+            </GlassContainer>
           ))}
         </div>
       </PageSection>

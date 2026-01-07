@@ -27,6 +27,8 @@ const WebGLShader = dynamic(() => import("@/components/ui/web-gl-shader").then(m
 const fieldClass =
   "w-full rounded-2xl border border-white/20 bg-card/90 px-4 py-3 text-base text-foreground shadow-inner shadow-black/5 transition focus:border-[var(--brand-pink)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-pink)]/30 dark:border-white/15 dark:bg-white/5 dark:text-white"
 
+import { GlassContainer } from "@/components/ui/glass-container"
+
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<null | { type: "success" | "error"; message: string }>(null)
@@ -74,23 +76,23 @@ export default function Contact() {
 
   return (
     <>
+      {/* Hero Section */}
       <section className="relative min-h-[50vh] md:min-h-[65vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
         <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-12 md:py-24">
-          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-[32px] md:rounded-[40px] p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-[28px] md:rounded-[36px] py-8 px-4 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[var(--brand-purple)]/20" />
-              <div className="relative z-10 space-y-4 text-center">
-                <p className="text-[10px] md:text-xs uppercase tracking-[0.35em] text-white/70">Contact</p>
-                <h1 className="font-display text-3xl sm:text-4xl md:text-5xl leading-tight font-extrabold text-white">
-                  Let's co-create the next big sprint
-                </h1>
-                <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-                  Partner with us on hackathons, workshops, or custom experiences for schools across Lucknow.
-                </p>
-              </div>
+          <GlassContainer className="px-6 py-12 md:py-20 sm:px-10 lg:px-16 text-center">
+            <div className="flex flex-col items-center gap-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md shadow-inner">
+                Contact
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight font-black text-white tracking-tighter drop-shadow-2xl">
+                Let's co-create <br className="hidden sm:block" /> the next big sprint
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
+                Partner with us on hackathons, workshops, or custom experiences for schools across Lucknow.
+              </p>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </section>
 
@@ -101,136 +103,128 @@ export default function Contact() {
           title="Reach the team"
           description="We love partnering with schools, sponsors, mentors, and students. Drop a note and we'll get back within a couple days."
         >
-          <div className="mx-auto w-full max-w-6xl">
-            <Suspense fallback={<LoadingInline />}>
-              <ContactCard
-                title="Get in Touch"
-                description="Have questions about our hackathons, workshops, or programs? We'd love to hear from you! Fill out the form and we'll respond within 1-2 business days."
-                contactInfo={[
-                  {
-                    icon: Mail,
-                    label: 'Email',
-                    value: 'hello@gobitsnbytes.org',
-                  },
-                  {
-                    icon: MapPin,
-                    label: 'Location',
-                    value: 'Lucknow, India',
-                  },
-                  {
-                    icon: Clock,
-                    label: 'Established',
-                    value: 'Teen-led since 2025',
-                    className: 'md:col-span-2 lg:col-span-1',
-                  }
-                ]}
-                className="rounded-[24px] md:rounded-[40px] border-white/30 bg-white/50 shadow-2xl backdrop-blur-3xl dark:border-white/10 dark:bg-white/5 overflow-hidden"
-              >
-                <form onSubmit={handleSubmit} className="w-full space-y-4">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-foreground dark:text-white">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Your name"
-                      className={fieldClass}
-                      required
-                    />
+          <div className="mx-auto w-full max-w-5xl">
+            <GlassContainer className="p-0 overflow-hidden" glowColor="both">
+              <div className="grid md:grid-cols-5 h-full">
+                {/* Info Sidebar */}
+                <div className="md:col-span-2 bg-white/5 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10">
+                  <h3 className="font-display text-2xl font-black text-white mb-6">Get in Touch</h3>
+                  <div className="space-y-8">
+                    {[
+                      { icon: Mail, label: "Email", value: "hello@gobitsnbytes.org", color: "text-(--brand-pink)" },
+                      { icon: MapPin, label: "Location", value: "Lucknow, India", color: "text-(--brand-purple)" },
+                      { icon: Clock, label: "Established", value: "Teen-led since 2025", color: "text-blue-400" },
+                    ].map((info) => (
+                      <div key={info.label} className="flex items-start gap-4">
+                        <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/5 border border-white/10", info.color)}>
+                          <info.icon className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-white/50">{info.label}</p>
+                          <p className="text-base font-black text-white mt-0.5">{info.value}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="email" className="text-foreground dark:text-white">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@email.com"
-                      className={fieldClass}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="subject" className="text-foreground dark:text-white">Subject</Label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      type="text"
-                      placeholder="Reason for reaching out"
-                      className={fieldClass}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="message" className="text-foreground dark:text-white">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      placeholder="Tell us what you're thinking…"
-                      className={cn(fieldClass, "min-h-[120px] resize-none")}
-                      required
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full rounded-full bg-[var(--brand-pink)] py-6 text-base font-semibold text-white shadow-[var(--glow-strong)] disabled:opacity-60"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Sending…
-                      </>
-                    ) : (
-                      "Send message"
-                    )}
-                  </Button>
-                  {status && (
-                    <p
-                      className={cn(
-                        "text-sm text-center",
-                        status.type === "success" ? "text-emerald-600 dark:text-emerald-300" : "text-red-600 dark:text-red-300",
-                      )}
+                </div>
+
+                {/* Form Section */}
+                <div className="md:col-span-3 p-8 md:p-12 bg-black/20">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name" className="text-sm font-bold uppercase tracking-widest text-white/70">Name</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          placeholder="Your name"
+                          className="h-14 bg-white/5 border-white/10 rounded-2xl focus:border-(--brand-pink) focus:ring-(--brand-pink)/20 text-white placeholder:text-white/20"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-bold uppercase tracking-widest text-white/70">Email</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="you@email.com"
+                          className="h-14 bg-white/5 border-white/10 rounded-2xl focus:border-(--brand-pink) focus:ring-(--brand-pink)/20 text-white placeholder:text-white/20"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subject" className="text-sm font-bold uppercase tracking-widest text-white/70">Subject</Label>
+                      <Input
+                        id="subject"
+                        name="subject"
+                        placeholder="Reason for reaching out"
+                        className="h-14 bg-white/5 border-white/10 rounded-2xl focus:border-(--brand-pink) focus:ring-(--brand-pink)/20 text-white placeholder:text-white/20"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="message" className="text-sm font-bold uppercase tracking-widest text-white/70">Message</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        placeholder="Tell us what's on your mind..."
+                        className="bg-white/5 border-white/10 rounded-2xl focus:border-(--brand-pink) focus:ring-(--brand-pink)/20 text-white placeholder:text-white/20 min-h-[150px] resize-none"
+                        required
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="group w-full h-16 rounded-full bg-(--brand-pink) text-lg font-black text-white shadow-[0_0_30px_rgba(228,90,146,0.5)] transition-all hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(228,90,146,0.7)] disabled:opacity-50"
                     >
-                      {status.message}
-                    </p>
-                  )}
-                </form>
-              </ContactCard>
-            </Suspense>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
+                    </Button>
+
+                    {status && (
+                      <p className={cn(
+                        "text-sm font-bold text-center p-4 rounded-2xl",
+                        status.type === "success" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"
+                      )}>
+                        {status.message}
+                      </p>
+                    )}
+                  </form>
+                </div>
+              </div>
+            </GlassContainer>
 
             {/* Social Links Section */}
-            <div className="mt-12 text-center">
-              <p className="mb-6 text-lg font-semibold text-foreground dark:text-white">
-                Connect with us on social media
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <Link
-                  href="https://github.com/gobitsnbytes"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass-card inline-flex items-center gap-3 px-6 py-3 shadow-lg transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(228,90,146,0.3)]"
-                >
-                  <Github className="h-5 w-5 text-[var(--brand-pink)]" />
-                  <span className="font-medium text-foreground dark:text-white">GitHub</span>
-                </Link>
-                <Link
-                  href="https://www.linkedin.com/company/gobitsbytes"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass-card inline-flex items-center gap-3 px-6 py-3 shadow-lg transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(228,90,146,0.3)]"
-                >
-                  <Linkedin className="h-5 w-5 text-[var(--brand-pink)]" />
-                  <span className="font-medium text-foreground dark:text-white">LinkedIn</span>
-                </Link>
-                <Link
-                  href="https://www.instagram.com/bitsnbytes.lko"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass-card inline-flex items-center gap-3 px-6 py-3 shadow-lg transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(228,90,146,0.3)]"
-                >
-                  <Instagram className="h-5 w-5 text-[var(--brand-pink)]" />
-                  <span className="font-medium text-foreground dark:text-white">Instagram</span>
-                </Link>
+            <div className="mt-20">
+              <p className="text-sm font-black uppercase tracking-[0.3em] text-white/50 mb-8">Connect with us</p>
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                {[
+                  { icon: Github, label: "GitHub", href: "https://github.com/gobitsnbytes" },
+                  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/gobitsbytes" },
+                  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/bitsnbytes.lko" },
+                ].map((social) => (
+                  <Link
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group"
+                  >
+                    <GlassContainer className="px-8 py-4 flex items-center gap-3 transition-transform group-hover:scale-105" glowColor="none">
+                      <social.icon className="h-5 w-5 text-(--brand-pink) transition-transform group-hover:rotate-12" />
+                      <span className="font-black text-white uppercase tracking-widest text-xs">{social.label}</span>
+                    </GlassContainer>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

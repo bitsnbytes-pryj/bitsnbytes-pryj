@@ -5,8 +5,7 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 import { PageSection } from "@/components/page-section";
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { LiquidGlassBackdrop } from "@/components/ui/liquid-glass-effect";
+import { GlassContainer } from "@/components/ui/glass-container";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { LoadingInline } from "@/components/loading-wrapper";
 import {
@@ -81,42 +80,25 @@ export default function Impact() {
       <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
         <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="relative border-2 border-(--brand-pink)/30 rounded-[40px] p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-(--brand-pink)/50 rounded-[36px] py-16 px-6 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-(--brand-purple)/20" />
-              <div className="relative z-10 flex flex-col items-center gap-6 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full border border-(--brand-pink)/60 bg-black/40 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand-pink) opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-(--brand-pink)" />
-                  </span>
-                  Impact
+          <GlassContainer className="px-6 py-12 md:py-20 sm:px-10 lg:px-16 text-center">
+            <div className="flex flex-col items-center gap-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md shadow-inner">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand-pink) opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-(--brand-pink)" />
                 </span>
-                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-extrabold text-white tracking-tighter">
-                  Our impact hits beyond the venue walls
-                </h1>
-                <p className="max-w-2xl text-base sm:text-lg text-white/80 font-medium">
-                  From first-high-schooler hackathons to squads embedded inside
-                  local schools, we design experiences that get teens
-                  building—and ship the outcomes publicly.
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
-                  <LiquidButton
-                    size="xl"
-                    className="bg-(--brand-pink) text-white border-2 border-white/20 rounded-full shadow-[0_0_30px_rgba(228,90,146,0.5)] hover:shadow-[0_0_50px_rgba(228,90,146,0.7)]"
-                  >
-                    See showcase reel
-                  </LiquidButton>
-                  <LiquidButton
-                    size="xl"
-                    className="border-2 border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 rounded-full"
-                  >
-                    Book the team
-                  </LiquidButton>
-                </div>
-              </div>
+                Impact
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-extrabold text-white tracking-tighter drop-shadow-2xl">
+                Our impact hits <br className="hidden sm:block" /> beyond the venue walls
+              </h1>
+              <p className="max-w-2xl text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed">
+                From first-high-schooler hackathons to squads embedded inside
+                local schools, we design experiences that get teens
+                building—and ship the outcomes publicly.
+              </p>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </section>
 
@@ -127,39 +109,39 @@ export default function Impact() {
         >
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <div className="order-2 w-full justify-self-center lg:order-1">
-              <div className="glass-card relative h-[300px] sm:h-[400px] lg:h-[500px] w-full overflow-hidden shadow-2xl">
-                <LiquidGlassBackdrop radiusClassName="rounded-[inherit]" />
+              <GlassContainer className="h-[300px] sm:h-[400px] lg:h-[500px]" animated={false}>
                 <Suspense fallback={<LoadingInline />}>
                   <TeamGlobe />
                 </Suspense>
-              </div>
+              </GlassContainer>
             </div>
-            <div className="glass-card relative order-1 p-8 text-foreground shadow-2xl dark:text-white lg:order-2">
-              <LiquidGlassBackdrop radiusClassName="rounded-[inherit]" />
-              <div className="relative z-10 space-y-6">
-                {highlightStats.map((stat, index) => (
-                  <div
-                    key={stat.label}
-                    className="flex flex-col border-b border-white/30 pb-5 last:border-none last:pb-0 dark:border-white/10"
-                    style={{ animationDelay: `${index * 0.08}s` }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-4xl font-bold text-(--brand-pink)">
-                        {stat.value}
-                      </span>
-                      <span className="inline-flex items-center rounded-full border border-(--brand-pink)/30 bg-(--brand-pink)/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-(--brand-pink)">
-                        {stat.timeframe}
-                      </span>
+            <div className="order-1 lg:order-2">
+              <GlassContainer className="p-8 h-full" glowColor="pink">
+                <div className="space-y-6">
+                  {highlightStats.map((stat, index) => (
+                    <div
+                      key={stat.label}
+                      className="flex flex-col border-b border-white/10 pb-5 last:border-none last:pb-0"
+                      style={{ animationDelay: `${index * 0.08}s` }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-4xl font-black text-white">
+                          {stat.value}
+                        </span>
+                        <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-(--brand-pink)">
+                          {stat.timeframe}
+                        </span>
+                      </div>
+                      <p className="text-lg font-bold text-white mt-1">
+                        {stat.label}
+                      </p>
+                      <p className="text-sm text-white/60 font-medium">
+                        {stat.description}
+                      </p>
                     </div>
-                    <p className="text-lg font-semibold text-foreground dark:text-white">
-                      {stat.label}
-                    </p>
-                    <p className="text-sm text-muted-foreground dark:text-white/70">
-                      {stat.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </GlassContainer>
             </div>
           </div>
         </PageSection>
@@ -197,42 +179,46 @@ export default function Impact() {
             ].map((card, idx) => (
               <CardContainer
                 key={card.title}
-                className="inter-var w-full"
-                containerClassName="py-4"
+                className="inter-var w-full h-full"
+                containerClassName="py-0"
               >
-                <CardBody className="glass-card group/card relative flex h-full min-h-[420px] w-full flex-col border-2 border-(--brand-pink)/20 p-6 shadow-2xl transition-all duration-300 hover:border-(--brand-pink)/40 hover:shadow-[0_20px_60px_rgba(228,90,146,0.3)] dark:border-(--brand-pink)/30 dark:hover:border-(--brand-pink)/50">
+                <GlassContainer
+                  className="flex h-full min-h-[440px] flex-col p-6"
+                  containerClassName="h-full"
+                  glowColor={idx % 2 === 0 ? "pink" : "purple"}
+                >
                   <CardItem
                     translateZ="100"
-                    className="mb-4 w-full overflow-hidden rounded-2xl"
+                    className="mb-6 w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
                   >
                     <Image
                       src={card.image}
-                      height={1000}
-                      width={1000}
-                      className="h-56 w-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                      height={600}
+                      width={600}
+                      className="h-52 w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110"
                       alt={card.title}
                     />
                   </CardItem>
                   <CardItem
                     translateZ="50"
-                    className="font-display text-2xl font-bold text-(--brand-purple) dark:text-white"
+                    className="font-display text-2xl font-black text-white"
                   >
                     {card.title}
                   </CardItem>
                   <CardItem
                     as="p"
                     translateZ="60"
-                    className="mt-2 flex-1 text-base text-foreground/80 dark:text-white/70"
+                    className="mt-3 flex-1 text-base text-white/70 font-medium leading-relaxed"
                   >
                     {card.copy}
                   </CardItem>
-                  <CardItem translateZ="40" className="mt-4">
-                    <div className="inline-flex items-center gap-2 text-sm font-semibold text-(--brand-pink)">
+                  <CardItem translateZ="40" className="mt-6">
+                    <div className="inline-flex items-center gap-3 text-sm font-black text-(--brand-pink) uppercase tracking-widest">
                       <span>0{idx + 1}</span>
-                      <div className="h-px w-8 bg-(--brand-pink)" />
+                      <div className="h-px w-12 bg-gradient-to-r from-(--brand-pink) to-transparent" />
                     </div>
                   </CardItem>
-                </CardBody>
+                </GlassContainer>
               </CardContainer>
             ))}
           </div>

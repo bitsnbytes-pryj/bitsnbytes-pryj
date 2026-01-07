@@ -117,6 +117,15 @@ export default function TeamGlobe() {
         arcAlt: 0.22,
         color: "#FFACAC",
       },
+      {
+        order: 9,
+        startLat: 26.8467, // Lucknow
+        startLng: 80.9462,
+        endLat: 21.1702, // Surat
+        endLng: 72.8311,
+        arcAlt: 0.15,
+        color: "#E45A92",
+      },
     ],
     [],
   );

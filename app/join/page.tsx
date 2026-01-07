@@ -85,6 +85,8 @@ const faqs = [
   },
 ];
 
+import { GlassContainer } from "@/components/ui/glass-container";
+
 export default function Join() {
   return (
     <>
@@ -94,27 +96,24 @@ export default function Join() {
       <section className="relative min-h-[40vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
         <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-12 md:py-24">
-          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-2xl sm:rounded-[32px] md:rounded-[40px] p-1 sm:p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-xl sm:rounded-[28px] md:rounded-[36px] py-6 sm:py-8 px-4 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[var(--brand-purple)]/20" />
-              <div className="relative z-10 space-y-4 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full border border-[var(--brand-pink)]/60 bg-black/40 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--brand-pink)] opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--brand-pink)]" />
-                  </span>
-                  Applications Open
+          <GlassContainer className="px-6 py-12 md:py-20 sm:px-10 lg:px-16 text-center">
+            <div className="flex flex-col items-center gap-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md shadow-inner">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand-pink) opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-(--brand-pink)" />
                 </span>
-                <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-extrabold text-white">
-                  Join the crew
-                </h1>
-                <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-                  Tell us how you want to build with the Bits&Bytes club. We'll
-                  connect you with squads, mentors, and live projects.
-                </p>
-              </div>
+                Applications Open
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight font-black text-white tracking-tighter drop-shadow-2xl">
+                Join the crew
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
+                Tell us how you want to build with the Bits&Bytes club. We'll
+                connect you with squads, mentors, and live projects.
+              </p>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </section>
 
@@ -122,10 +121,10 @@ export default function Join() {
         {/* Main CTA Section */}
         <PageSection align="center">
           <div className="mx-auto w-full max-w-3xl space-y-6 sm:space-y-8">
-            <div className="glass-card relative isolate overflow-hidden p-5 sm:p-8 md:p-12 text-center shadow-xl">
-              <div className="space-y-4 sm:space-y-6">
-                <div className="inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <GlassContainer className="p-8 md:p-12 text-center" glowColor="both">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/60 font-bold uppercase tracking-widest">
+                  <Clock className="h-4 w-4 text-(--brand-pink)" />
                   <span>Takes less than 2 minutes</span>
                 </div>
 
@@ -136,17 +135,17 @@ export default function Join() {
                   data-tally-align-left="1"
                   data-tally-hide-title="1"
                   data-tally-overlay="1"
-                  className="group rounded-full bg-[var(--brand-pink)] px-8 sm:px-12 py-5 sm:py-7 text-base sm:text-lg font-semibold text-white shadow-[var(--glow-strong)] transition-all hover:scale-105 hover:shadow-[0_20px_80px_rgba(228,90,146,0.5)] w-full sm:w-auto"
+                  className="group rounded-full bg-(--brand-pink) px-12 py-8 text-lg md:text-xl font-black text-white shadow-[0_0_30px_rgba(228,90,146,0.5)] transition-all hover:scale-[1.03] hover:shadow-[0_0_60px_rgba(228,90,146,0.7)] w-full sm:w-auto"
                 >
                   Apply to Join
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-6 w-6 transition-transform group-hover:translate-x-1" />
                 </Button>
 
-                <p className="text-xs sm:text-sm text-muted-foreground">
+                <p className="text-sm text-white/50 font-medium">
                   We review applications weekly · You'll hear back within 7 days
                 </p>
               </div>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
@@ -157,27 +156,27 @@ export default function Join() {
           title="What you'll get as a member"
           description="Being part of Bits&Bytes means more than just a Discord invite. Here's what awaits you."
         >
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {benefits.map((benefit, index) => (
-              <div
+              <GlassContainer
                 key={benefit.title}
-                className="glass-card relative isolate overflow-hidden p-4 sm:p-6 text-left text-foreground shadow-xl hover:shadow-[var(--glow-strong)] dark:text-white transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="p-6 md:p-8"
+                glowColor={index % 2 === 0 ? "pink" : "purple"}
               >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-[var(--brand-pink)]/10 text-[var(--brand-pink)]">
-                    <benefit.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="flex h-12 w-12 md:h-14 md:w-14 shrink-0 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-(--brand-pink) shadow-inner">
+                    <benefit.icon className="h-6 w-6 md:h-7 md:w-7" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-display text-base sm:text-lg font-bold">
+                    <h3 className="font-display text-xl md:text-2xl font-black text-white">
                       {benefit.title}
                     </h3>
-                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+                    <p className="mt-2 text-base text-white/70 font-medium leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
                 </div>
-              </div>
+              </GlassContainer>
             ))}
           </div>
         </PageSection>
@@ -190,19 +189,19 @@ export default function Join() {
           description="We want to make sure Bits&Bytes is the right fit for you."
         >
           <div className="mx-auto max-w-2xl">
-            <div className="glass-card relative isolate overflow-hidden p-4 sm:p-6 md:p-8 shadow-xl">
-              <ul className="space-y-3 sm:space-y-4">
+            <GlassContainer className="p-8 md:p-10" glowColor="purple">
+              <ul className="space-y-4 md:space-y-6">
                 {expectations.map((expectation, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base text-foreground dark:text-white"
+                    className="flex items-start gap-4 text-base md:text-lg text-white font-medium"
                   >
-                    <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[var(--brand-pink)] mt-0.5" />
+                    <CheckCircle2 className="h-6 w-6 shrink-0 text-(--brand-pink) mt-0.5" />
                     <span>{expectation}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
@@ -213,19 +212,20 @@ export default function Join() {
           title="Common questions"
           description="Everything you need to know before applying."
         >
-          <div className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
+          <div className="mx-auto max-w-3xl space-y-4 md:space-y-6">
             {faqs.map((faq, index) => (
-              <div
+              <GlassContainer
                 key={index}
-                className="glass-card relative isolate overflow-hidden p-4 sm:p-6 text-left shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300"
+                className="p-6 md:p-8"
+                glowColor="none"
               >
-                <h3 className="font-display text-base sm:text-lg font-bold text-foreground dark:text-white">
+                <h3 className="font-display text-lg md:text-xl font-black text-white">
                   {faq.question}
                 </h3>
-                <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
+                <p className="mt-3 text-base text-white/60 font-medium leading-relaxed">
                   {faq.answer}
                 </p>
-              </div>
+              </GlassContainer>
             ))}
           </div>
         </PageSection>

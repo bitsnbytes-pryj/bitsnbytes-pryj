@@ -16,7 +16,7 @@ const WebGLShader = dynamic(
   },
 );
 import { Button } from "@/components/ui/button";
-import { LiquidGlassBackdrop } from "@/components/ui/liquid-glass-effect";
+import { GlassContainer } from "@/components/ui/glass-container";
 
 const stats = [
   { value: "200+", label: "Active members" },
@@ -28,119 +28,98 @@ export const HeroFuturistic = () => {
   return (
     <section className="relative overflow-hidden rounded-b-[2rem] sm:rounded-b-[3rem] md:rounded-b-[3.5rem] text-white w-full max-w-full">
       <WebGLShader />
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-6 sm:gap-8 md:gap-12 px-4 pb-8 pt-16 sm:px-6 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:flex-row lg:items-stretch lg:gap-16 box-border">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-6 sm:gap-8 md:gap-12 px-4 pb-8 pt-16 sm:px-6 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:flex-row lg:items-stretch lg:gap-16 box-border">
         {/* Left content card */}
-        <div className="flex-1 min-w-0">
-          <div className="relative isolate flex h-full flex-col gap-5 sm:gap-6 md:gap-8 rounded-2xl sm:rounded-3xl md:rounded-[32px] border border-white/30 bg-white/70 p-4 sm:p-6 md:p-8 text-foreground shadow-xl dark:border-white/10 dark:bg-white/10 dark:text-white overflow-hidden">
-            <LiquidGlassBackdrop radiusClassName="rounded-[inherit]" />
+        <div className="flex-[1.2] min-w-0">
+          <GlassContainer
+            className="p-6 sm:p-8 md:p-12"
+            containerClassName="h-full"
+          >
+            <div className="flex flex-col h-full gap-8 md:gap-10">
+              {/* Teen-led badge */}
+              <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.35em] text-white/80 backdrop-blur-md shadow-inner">
+                <Sparkles className="h-3 w-3 text-(--brand-pink)" />
+                TEEN-LED
+              </span>
 
-            {/* Teen-led badge */}
-            <span className="relative z-10 inline-flex w-fit items-center gap-1.5 sm:gap-2 rounded-full border border-white/30 px-3 sm:px-4 py-1 text-[0.6rem] sm:text-[0.65rem] font-semibold uppercase tracking-[0.3em] sm:tracking-[0.35em] text-foreground/70 dark:text-white/80">
-              <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-              TEEN-LED
-            </span>
+              {/* Main content */}
+              <div className="space-y-6">
+                <h1 className="font-display text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tighter drop-shadow-2xl">
+                  India&apos;s boldest <br className="hidden sm:block" /> builders club
+                </h1>
+                <p className="text-base text-white/80 sm:text-lg md:text-xl lg:text-2xl max-w-2xl leading-relaxed">
+                  We host premium hackathons, design/dev squads, and real-world
+                  launches—run entirely by students who want to ship things that
+                  matter.
+                </p>
+              </div>
 
-            {/* Main content */}
-            <div className="relative z-10 space-y-4 sm:space-y-5 md:space-y-6">
-              <h1 className="font-display text-xl font-bold leading-tight text-foreground dark:text-white sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
-                India&apos;s boldest builders club for ambitious teens
-              </h1>
-              <p className="text-sm text-foreground/80 dark:text-white/70 sm:text-base md:text-lg lg:text-xl max-w-prose">
-                We host premium hackathons, design/dev squads, and real-world
-                launches—run entirely by students who want to ship things that
-                matter.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="relative z-10 flex flex-col gap-2 sm:gap-3 sm:flex-row w-full">
-              <Button
-                asChild
-                className="h-11 sm:h-12 rounded-full bg-[var(--brand-pink)] text-sm sm:text-base font-semibold text-white shadow-[var(--glow-strong)] w-full sm:w-auto justify-center"
-              >
-                <Link href="/join">
-                  Join the crew
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-11 sm:h-12 rounded-full border-white/40 bg-white/10 text-sm sm:text-base text-foreground hover:bg-white/20 dark:text-white w-full sm:w-auto justify-center"
-              >
-                <Link href="/impact">See what we&apos;ve built</Link>
-              </Button>
-            </div>
-
-            {/* Stats */}
-            <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 rounded-2xl sm:rounded-3xl border border-white/30 bg-white/30 p-3 sm:p-5 md:p-6 text-foreground shadow-lg backdrop-blur-3xl dark:border-white/10 dark:bg-white/5 dark:text-white">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="space-y-0.5 sm:space-y-1 text-center sm:text-left"
+              {/* CTA Buttons */}
+              <div className="flex flex-col gap-4 sm:flex-row w-full mt-2">
+                <Button
+                  asChild
+                  className="h-14 px-8 rounded-full bg-(--brand-pink) text-base font-bold text-white shadow-[0_0_30px_rgba(228,90,146,0.5)] hover:shadow-[0_0_50px_rgba(228,90,146,0.7)] transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  <p className="text-lg sm:text-2xl md:text-3xl font-semibold text-foreground dark:text-white">
-                    {stat.value}
-                  </p>
-                  <p className="text-[8px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.3em] text-foreground/60 dark:text-white/60 leading-tight">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                  <Link href="/join">
+                    Join the crew
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-14 px-8 rounded-full border-white/20 bg-white/5 text-base font-semibold text-white backdrop-blur-md hover:bg-white/10 transition-all hover:scale-[1.02]"
+                >
+                  <Link href="/impact">See what we&apos;ve built</Link>
+                </Button>
+              </div>
 
-        {/* Right image card - hidden on mobile, shown on lg+ */}
-        <div className="relative flex-1 hidden lg:block">
-          <div className="relative isolate overflow-hidden rounded-[32px] border border-white/30 shadow-xl backdrop-blur-2xl dark:border-white/20 h-full">
-            <Image
-              src="/images/432a787b-bfde-4dd0-8c2a-cb994146a3b9-1-105-c.jpeg"
-              alt="Scrapyard Lucknow teens building together"
-              width={900}
-              height={1000}
-              className="h-full w-full object-cover min-h-[420px]"
-              priority
-            />
-            <div className="absolute inset-0 bg-[var(--brand-purple)]/30" />
-            <div className="absolute bottom-4 left-4 right-4 z-20 rounded-2xl border border-white/40 bg-white/80 px-4 py-3 sm:px-5 sm:py-4 shadow-2xl backdrop-blur-2xl dark:border-white/30 dark:bg-white/20">
-              <div>
-                <p className="text-[0.6rem] sm:text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-[var(--brand-purple)] dark:text-white">
-                  Archive highlight
-                </p>
-                <p className="font-display text-sm sm:text-base font-bold text-foreground dark:text-white">
-                  Scrapyard Lucknow · 2025
-                </p>
+              {/* Stats Grid */}
+              <div className="mt-auto grid grid-cols-3 gap-4 sm:gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="text-center sm:text-left">
+                    <p className="text-xl sm:text-3xl font-black text-white">
+                      {stat.value}
+                    </p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </GlassContainer>
         </div>
 
-        {/* Mobile-only image - smaller, inline */}
-        <div className="relative lg:hidden">
-          <div className="relative isolate overflow-hidden rounded-2xl sm:rounded-3xl border border-white/30 shadow-xl backdrop-blur-2xl dark:border-white/20">
-            <Image
-              src="/images/432a787b-bfde-4dd0-8c2a-cb994146a3b9-1-105-c.jpeg"
-              alt="Scrapyard Lucknow teens building together"
-              width={900}
-              height={500}
-              className="h-48 sm:h-56 md:h-64 w-full object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-[var(--brand-purple)]/30" />
-            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-20 rounded-xl sm:rounded-2xl border border-white/40 bg-white/80 px-3 py-2 sm:px-4 sm:py-3 shadow-2xl backdrop-blur-2xl dark:border-white/30 dark:bg-white/20">
-              <div>
-                <p className="text-[0.55rem] sm:text-[0.6rem] font-semibold uppercase tracking-[0.3em] text-[var(--brand-purple)] dark:text-white">
+        {/* Right image card - Archive highlight */}
+        <div className="relative flex-1 min-w-0">
+          <GlassContainer
+            className="h-full aspect-[4/5] lg:aspect-auto"
+            containerClassName="h-full"
+            glowColor="purple"
+          >
+            <div className="relative h-full w-full">
+              <Image
+                src="/images/432a787b-bfde-4dd0-8c2a-cb994146a3b9-1-105-c.jpeg"
+                alt="Scrapyard Lucknow teens building together"
+                fill
+                className="object-cover opacity-60 mix-blend-overlay"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+              <div className="absolute bottom-8 left-8 right-8 space-y-2">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[0.65rem] font-bold uppercase tracking-widest text-white/70">
                   Archive highlight
-                </p>
-                <p className="font-display text-xs sm:text-sm font-bold text-foreground dark:text-white">
+                </span>
+                <h3 className="font-display text-2xl font-black text-white">
                   Scrapyard Lucknow · 2025
-                </p>
+                </h3>
               </div>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </div>
     </section>

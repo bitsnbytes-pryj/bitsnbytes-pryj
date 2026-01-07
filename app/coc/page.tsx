@@ -15,6 +15,8 @@ import {
 
 import { PageSection } from "@/components/page-section";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { GlassContainer } from "@/components/ui/glass-container";
 
 const WebGLShader = dynamic(
   () =>
@@ -99,23 +101,20 @@ export default function CodeOfConduct() {
       <section className="relative min-h-[45vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
         <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-12 md:py-16">
-          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-2xl sm:rounded-[32px] md:rounded-[40px] p-1 sm:p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-xl sm:rounded-[28px] md:rounded-[36px] py-8 sm:py-10 md:py-12 px-4 sm:px-8 md:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[var(--brand-purple)]/20" />
-              <div className="relative z-10 space-y-4 sm:space-y-6 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full border border-[var(--brand-pink)]/60 bg-black/40 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md">
-                  <Shield className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                  Community Guidelines
-                </span>
-                <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight font-extrabold text-white tracking-tight">
-                  Code of Conduct
-                </h1>
-                <div className="inline-block bg-[var(--brand-pink)] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base md:text-lg font-bold shadow-[0_0_30px_rgba(228,90,146,0.5)]">
-                  TL;DR: Be nice. Be cool. Don't cause chaos.
-                </div>
+          <GlassContainer className="px-6 py-12 md:py-20 sm:px-10 lg:px-16 text-center">
+            <div className="flex flex-col items-center gap-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md shadow-inner">
+                <Shield className="h-3.5 w-3.5" />
+                Community Guidelines
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight font-black text-white tracking-tighter drop-shadow-2xl">
+                Code of Conduct
+              </h1>
+              <div className="inline-block bg-(--brand-pink) text-white px-8 py-4 rounded-full text-lg md:text-xl font-black shadow-[0_0_40px_rgba(228,90,146,0.6)] animate-bounce-subtle">
+                TL;DR: Be nice. Be cool. Don't cause chaos.
               </div>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </section>
 
@@ -128,14 +127,14 @@ export default function CodeOfConduct() {
           description="Bits&Bytes is home for builders, dreamers, designers, and that one person who always knows the shortcut keys."
         >
           <div className="mx-auto max-w-3xl">
-            <div className="glass-card relative isolate overflow-hidden p-5 sm:p-6 md:p-8 text-center shadow-xl">
-              <p className="text-sm sm:text-base md:text-lg text-foreground/90 dark:text-white/90 leading-relaxed">
+            <GlassContainer className="p-8 md:p-12 text-center" glowColor="both">
+              <p className="text-lg md:text-xl text-white font-medium leading-relaxed">
                 We want this place to feel friendly, safe, and welcoming for
                 everyone, no matter who they are or where they come from. This
                 document ensures that the vibe stays positive and everyone feels
                 secure, respected, and free to create the next big thing.
               </p>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
@@ -146,27 +145,27 @@ export default function CodeOfConduct() {
           title="The energy we expect"
           description="Here's the vibe we need from everyone who joins our world."
         >
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {values.map((value, index) => (
-              <div
+              <GlassContainer
                 key={value.title}
-                className="glass-card relative isolate overflow-hidden p-4 sm:p-6 text-left shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="p-6 md:p-8"
+                glowColor={index % 2 === 0 ? "pink" : "purple"}
               >
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-[var(--brand-pink)]/10 text-[var(--brand-pink)]">
-                    <value.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                <div className="flex items-start gap-4 md:gap-6">
+                  <div className="flex h-12 w-12 md:h-14 md:w-14 shrink-0 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-(--brand-pink) shadow-inner">
+                    <value.icon className="h-6 w-6 md:h-7 md:w-7" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-display text-base sm:text-lg font-bold text-foreground dark:text-white">
+                    <h3 className="font-display text-xl md:text-2xl font-black text-white">
                       {value.title}
                     </h3>
-                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+                    <p className="mt-2 text-base text-white/70 font-medium leading-relaxed">
                       {value.description}
                     </p>
                   </div>
                 </div>
-              </div>
+              </GlassContainer>
             ))}
           </div>
         </PageSection>
@@ -179,19 +178,19 @@ export default function CodeOfConduct() {
           description="If it has the Bits&Bytes name on it, this code covers it."
         >
           <div className="mx-auto max-w-2xl">
-            <div className="glass-card relative isolate overflow-hidden p-4 sm:p-6 md:p-8 shadow-xl">
-              <ul className="space-y-3 sm:space-y-4">
+            <GlassContainer className="p-8 md:p-10" glowColor="purple">
+              <ul className="space-y-4 md:space-y-6">
                 {appliesTo.map((item, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base text-foreground dark:text-white"
+                    className="flex items-start gap-4 text-base md:text-lg text-white font-medium"
                   >
-                    <span className="mt-1.5 h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0 rounded-full bg-[var(--brand-pink)]" />
+                    <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-(--brand-pink) shadow-[0_0_10px_var(--brand-pink)]" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
@@ -203,27 +202,27 @@ export default function CodeOfConduct() {
           description="Straightforward list of nope. Don't be harmful, creepy, or chaotic."
         >
           <div className="mx-auto max-w-2xl">
-            <div className="glass-card relative isolate overflow-hidden p-4 sm:p-6 md:p-8 shadow-xl border-2 border-red-500/20">
-              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-red-500/10">
-                  <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+            <GlassContainer className="p-8 md:p-10 border-red-500/20" glowColor="none">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20">
+                  <AlertTriangle className="h-5 w-5 text-red-500" />
                 </div>
-                <span className="text-sm sm:text-base font-semibold text-red-500">
+                <span className="text-lg font-black text-red-500 uppercase tracking-widest">
                   Zero Tolerance
                 </span>
               </div>
-              <ul className="space-y-2 sm:space-y-3">
+              <ul className="space-y-3 md:space-y-4">
                 {notAllowed.map((item, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base text-foreground/80 dark:text-white/80"
+                    className="flex items-start gap-3 text-base md:text-lg text-white/80 font-medium"
                   >
-                    <span className="text-red-500 shrink-0">✕</span>
+                    <span className="text-red-500 font-black shrink-0">✕</span>
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
@@ -234,38 +233,46 @@ export default function CodeOfConduct() {
           title="What happens if you break the rules"
           description="We follow a simple three-strike system to keep things fair."
         >
-          <div className="mx-auto max-w-3xl">
-            <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
+          <div className="mx-auto max-w-4xl">
+            <div className="grid gap-6 md:grid-cols-3">
               {strikes.map((strike, index) => (
-                <div
+                <GlassContainer
                   key={strike.number}
-                  className="glass-card relative isolate overflow-hidden p-4 sm:p-6 text-center shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300"
+                  className="p-6 md:p-8 text-center"
+                  glowColor={index === 0 ? "none" : index === 1 ? "purple" : "pink"}
                 >
                   <div
-                    className={`mx-auto mb-3 sm:mb-4 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full ${strike.color} text-white font-bold text-lg sm:text-xl`}
+                    className={cn(
+                      "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-white font-black text-2xl shadow-lg border-4 border-white/20",
+                      strike.color === "bg-yellow-500" ? "bg-yellow-500 shadow-yellow-500/20" :
+                        strike.color === "bg-orange-500" ? "bg-orange-500 shadow-orange-500/20" :
+                          "bg-red-500 shadow-red-500/20"
+                    )}
                   >
                     {strike.number}
                   </div>
-                  <h3 className="font-display text-base sm:text-lg font-bold text-foreground dark:text-white">
+                  <h3 className="font-display text-xl font-black text-white">
                     {strike.title}
                   </h3>
-                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
+                  <p className="mt-2 text-sm text-white/60 font-medium leading-relaxed">
                     {strike.description}
                   </p>
-                </div>
+                </GlassContainer>
               ))}
             </div>
 
-            <div className="mt-4 sm:mt-6 glass-card relative isolate overflow-hidden p-4 sm:p-6 shadow-xl">
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                <strong className="text-foreground dark:text-white">
-                  Important:
-                </strong>{" "}
-                For serious violations, the team may take immediate action
-                without warning. The Bits&Bytes staff has sole discretion in
-                determining what constitutes a violation. Decisions are made to
-                maintain a safe, welcoming community.
-              </p>
+            <div className="mt-8">
+              <GlassContainer className="p-6 text-center" glowColor="none">
+                <p className="text-sm md:text-base text-white/70 font-medium leading-relaxed">
+                  <strong className="text-white font-black uppercase tracking-tighter mr-2">
+                    Important:
+                  </strong>{" "}
+                  For serious violations, the team may take immediate action
+                  without warning. The Bits&Bytes staff has sole discretion in
+                  determining what constitutes a violation. Decisions are made to
+                  maintain a safe, welcoming community.
+                </p>
+              </GlassContainer>
             </div>
           </div>
         </PageSection>
@@ -278,68 +285,66 @@ export default function CodeOfConduct() {
           description="If something's wrong, don't ignore it. Tell us."
         >
           <div className="mx-auto max-w-2xl">
-            <div className="glass-card relative isolate overflow-hidden p-5 sm:p-6 md:p-8 shadow-xl">
-              <div className="space-y-4 sm:space-y-6">
-                <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-[var(--brand-pink)]/10 border border-[var(--brand-pink)]/20">
-                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--brand-pink)] text-white">
-                    <Mail className="h-6 w-6 sm:h-7 sm:w-7" />
+            <GlassContainer className="p-8 md:p-12 text-center" glowColor="pink">
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-3xl bg-white/5 border border-white/10 shadow-inner">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-(--brand-pink) text-white shadow-[0_0_20px_rgba(228,90,146,0.5)]">
+                    <Mail className="h-8 w-8" />
                   </div>
-                  <div className="text-center sm:text-left">
-                    <p className="text-sm text-muted-foreground">Email us at</p>
+                  <div className="text-center md:text-left">
+                    <p className="text-sm text-white/50 font-bold uppercase tracking-[0.2em] mb-1">Email us at</p>
                     <a
                       href="mailto:hello@gobitsnbytes.org"
-                      className="text-lg sm:text-xl font-bold text-[var(--brand-pink)] hover:underline"
+                      className="text-2xl md:text-3xl font-black text-white hover:text-(--brand-pink) transition-colors tracking-tighter"
                     >
                       hello@gobitsnbytes.org
                     </a>
                   </div>
                 </div>
 
-                <p className="text-sm sm:text-base text-muted-foreground text-center">
+                <p className="text-base md:text-lg text-white/70 font-medium leading-relaxed">
                   Or message any team member privately. Share context or
                   screenshots if possible. Your report stays{" "}
-                  <strong className="text-foreground dark:text-white">
+                  <strong className="text-white font-bold">
                     100% confidential
                   </strong>
                   . We'll handle things calmly and fairly.
                 </p>
               </div>
-            </div>
+            </GlassContainer>
           </div>
         </PageSection>
 
         {/* Final CTA */}
         <PageSection align="center">
-          <div className="glass-card relative isolate overflow-hidden p-6 sm:p-8 md:p-12 text-center shadow-xl bg-gradient-to-br from-[var(--brand-pink)]/20 to-[var(--brand-purple)]/20">
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-foreground dark:text-white leading-relaxed max-w-2xl mx-auto">
+          <GlassContainer className="p-10 md:p-20 text-center" glowColor="both">
+            <p className="text-xl md:text-3xl font-black text-white leading-tight max-w-3xl mx-auto tracking-tighter">
               "Bits&Bytes exists to be a positive, creative, exciting space.
-              <br className="hidden sm:block" />
-              <span className="text-[var(--brand-pink)]">
-                {" "}
+              <span className="block mt-2 text-(--brand-pink)">
                 Help us keep it that way.
               </span>
               "
             </p>
 
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
                 asChild
-                className="rounded-full bg-[var(--brand-pink)] px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold text-white shadow-[var(--glow-strong)] w-full sm:w-auto"
+                className="group rounded-full bg-(--brand-pink) px-10 py-7 text-lg font-black text-white shadow-[0_0_30px_rgba(228,90,146,0.5)] transition-all hover:scale-105 hover:shadow-[0_0_50px_rgba(228,90,146,0.7)] w-full sm:w-auto"
               >
                 <Link href="/join">
                   Join the Community
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
-                className="rounded-full border-white/40 bg-white/10 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base hover:bg-white/20 w-full sm:w-auto"
+                className="rounded-full border-white/20 bg-white/5 px-10 py-7 text-lg font-bold text-white backdrop-blur-md hover:bg-white/10 w-full sm:w-auto transition-all"
               >
                 <Link href="/contact">Contact the Team</Link>
               </Button>
             </div>
-          </div>
+          </GlassContainer>
         </PageSection>
       </main>
     </>

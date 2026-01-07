@@ -37,12 +37,15 @@ export function GlowingCard({
     return (
         <div
             className={cn(
-                "relative min-h-[14rem] list-none",
+                "relative min-h-[14rem] list-none h-full group",
                 className
             )}
             style={{ animationDelay: `${animationDelay}s` }}
         >
-            <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-border p-2 md:rounded-[1.5rem] md:p-3">
+            <div className="relative h-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-2 backdrop-blur-2xl transition-all duration-500 hover:border-white/20 hover:bg-white/10">
+                {/* Reflective top edge */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent z-20" />
+
                 <GlowingEffect
                     spread={spread}
                     glow={glow}
@@ -51,9 +54,19 @@ export function GlowingCard({
                     inactiveZone={inactiveZone}
                     borderWidth={borderWidth}
                 />
-                <div className="glass-card relative flex h-full flex-col justify-between gap-4 overflow-hidden border-[0.75px] p-5 shadow-sm dark:shadow-[0px_0px_27px_0px_rgba(45,45,45,0.3)] md:p-6">
-                    {children}
+
+                <div className="relative h-full overflow-hidden rounded-[2.25rem] border border-white/10 bg-black/40 p-6 md:p-8 flex flex-col justify-between gap-4">
+                    {/* Inner glass shine */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-50" />
+
+                    <div className="relative z-10 h-full">
+                        {children}
+                    </div>
                 </div>
+
+                {/* Ambient glows that sync with group hover */}
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-(--brand-pink)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-(--brand-purple)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             </div>
         </div>
     );

@@ -95,7 +95,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
           path: {
             type: "string",
             description: "The path to navigate to",
-            enum: ["/", "/about", "/impact", "/join", "/contact", "/coc", "home", "about", "impact", "join", "contact", "coc"],
+            enum: ["/", "/about", "/impact", "/join", "/contact", "/coc", "/events", "home", "about", "impact", "join", "contact", "coc", "events"],
           },
         },
         required: ["path"],
@@ -113,7 +113,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
         properties: {
           section: {
             type: "string",
-            enum: ["home", "about", "impact", "join", "contact", "coc"],
+            enum: ["home", "about", "impact", "join", "contact", "coc", "events"],
           },
         },
         required: ["section"],
@@ -203,6 +203,7 @@ function normalizePath(value?: string): string {
   if (input === "/join" || input === "join") return "/join"
   if (input === "/contact" || input === "contact") return "/contact"
   if (input === "/coc" || input === "coc") return "/coc"
+  if (input === "/events" || input === "events") return "/events"
   return "/"
 }
 

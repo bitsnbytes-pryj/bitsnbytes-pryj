@@ -3,389 +3,527 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 import { PageSection } from "@/components/page-section";
-import { Button } from "@/components/ui/button";
+import { GlassContainer } from "@/components/ui/glass-container";
 import {
-  ArrowRight,
+  GlowingCard,
+  GlowingCardTitle,
+  GlowingCardDescription,
+  GlowingCardNumber,
+} from "@/components/ui/glowing-card";
+import { Button } from "@/components/ui/button";
+import { Gallery4 } from "@/components/ui/gallery4";
+import {
+  ExternalLink,
+  Trophy,
+  Users,
   Calendar,
   MapPin,
-  Users,
   Clock,
-  ExternalLink,
+  Shield,
+  Database,
+  Landmark,
+  IndianRupee,
+  Building2,
+  Check,
+  ChevronRight,
+  Activity,
+  Eye,
 } from "lucide-react";
 
-// Lazy load WebGL shader
 const WebGLShader = dynamic(
-  () =>
-    import("@/components/ui/web-gl-shader").then((mod) => ({
-      default: mod.WebGLShader,
-    })),
-  {
-    loading: () => null,
-    ssr: false,
-  },
+  () => import("@/components/ui/web-gl-shader").then((m) => ({ default: m.WebGLShader })),
+  { loading: () => null, ssr: false },
 );
 
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time?: string;
-  location: string;
-  type: "hackathon" | "workshop" | "meetup" | "talk";
-  status: "upcoming" | "past";
-  attendees?: number;
-  image?: string;
-  link?: string;
-  highlights?: string[];
-}
+// ── Static data ──────────────────────────────────────────────────────────────
 
-const events: Event[] = [
+const stages = [
   {
-    id: "scrapyard-lucknow-2025",
-    title: "Scrapyard Lucknow 2025",
-    description:
-      "Our flagship hackathon returns! 48 hours of building, learning, and shipping. Open to all high school students across India.",
-    date: "March 2025",
-    time: "48 Hours",
-    location: "Lucknow, India",
-    type: "hackathon",
-    status: "upcoming",
-    link: "#",
+    title: "Submit Your Presentation",
+    period: "24 Jan – 13 Mar 2026",
+    copy: "Submit a presentation around the solution you have built. Best solutions get an exhibition space to display to investors, founders, policy makers, and industry leaders.",
+    start: new Date("2026-01-24T00:00:00"),
+    end: new Date("2026-03-13T23:59:59"),
   },
   {
-    id: "ai-workshop-feb",
-    title: "Intro to AI/ML for Teens",
-    description:
-      "Learn the fundamentals of machine learning and build your first AI model. No prior experience required.",
-    date: "February 15, 2025",
-    time: "2:00 PM IST",
-    location: "Online (Discord)",
-    type: "workshop",
-    status: "upcoming",
+    title: "Evaluation",
+    period: "1 Mar – 20 Mar 2026",
+    copy: "All registered teams showcase their solutions. Selected teams are invited to a dedicated exhibition booth at Bharat Mandapam at subsidized costs.",
+    start: new Date("2026-03-01T00:00:00"),
+    end: new Date("2026-03-20T23:59:59"),
   },
   {
-    id: "web-dev-bootcamp",
-    title: "Web Dev Bootcamp",
-    description:
-      "A 4-week intensive program covering HTML, CSS, JavaScript, and React. Build and deploy your portfolio site.",
-    date: "January 20 - February 17, 2025",
-    time: "Weekends",
-    location: "Online (Discord)",
-    type: "workshop",
-    status: "upcoming",
+    title: "The Grand Finale",
+    period: "28 – 29 Mar 2026",
+    copy: "Solutions presented to judges at Bharat Mandapam. On-the-spot evaluation by judges and ministries to declare winners across all domains.",
+    start: new Date("2026-03-28T00:00:00"),
+    end: new Date("2026-03-29T23:59:59"),
   },
+];
+
+const problemStatements: { domain: string; items: string[] }[] = [
   {
-    id: "scrapyard-lucknow-2025-archived",
-    title: "Scrapyard Lucknow 2025",
-    description:
-      "Our debut hackathon united 40+ coders, designers, filmmakers, and builders to tackle civic, education, and sustainability problems.",
-    date: "December 2025",
-    time: "24 Hours",
-    location: "Lucknow, India",
-    type: "hackathon",
-    status: "past",
-    attendees: 40,
-    image: "/images/hero-img.jpeg",
-    highlights: [
-      "40+ participants from 10 schools",
-      "12 projects submitted",
-      "Industry mentors from top startups",
-      "₹50,000 in prizes distributed",
+    domain: "Politics & Civic Tech",
+    items: [
+      "AI-powered Avatar Platform",
+      "AI-powered Inbound/Outbound Calling Agent",
+      "Hyper-Local Targeting Engine",
+      "Smart Political CRM (P-CRM)",
+      "Secure E-Voting System",
+      "AI Co-Pilot for Politicians",
+      "VR Townhall Platform",
+      "AI-powered Social Media Management System",
     ],
   },
   {
-    id: "git-github-workshop",
-    title: "Git & GitHub Masterclass",
-    description:
-      "Master version control and collaboration workflows. Learn branching, pull requests, and open-source contribution.",
-    date: "November 2024",
-    time: "3 Hours",
-    location: "Online (Discord)",
-    type: "workshop",
-    status: "past",
-    attendees: 25,
+    domain: "Data Mining and Processing",
+    items: [
+      "AI-powered Global Ontology Engine",
+      "AI-Driven Booth Management System",
+      "Party Worker Management System",
+      "AI-driven Sentiment Analysis Engine",
+    ],
   },
   {
-    id: "design-thinking-workshop",
-    title: "Design Thinking for Developers",
-    description:
-      "Learn how to approach problems like a designer. User research, prototyping, and iterating on feedback.",
-    date: "October 2024",
-    time: "2 Hours",
-    location: "Online (Discord)",
-    type: "workshop",
-    status: "past",
-    attendees: 18,
-  },
-  {
-    id: "first-meetup",
-    title: "Bits&Bytes Launch Meetup",
-    description:
-      "The official launch of Bits&Bytes India. We gathered to share our vision and build our founding community.",
-    date: "September 2024",
-    location: "Lucknow, India",
-    type: "meetup",
-    status: "past",
-    attendees: 30,
-    image: "/images/b653f79c-fcc9-49bb-a92a-4fc454659b3a-1-105-c.jpeg",
-    highlights: [
-      "30 founding members joined",
-      "Set up Discord community",
-      "Planned first hackathon",
-      "Formed initial leadership team",
+    domain: "Cyber Security",
+    items: [
+      "Threat detection & secure access systems",
+      "Encryption / phishing prevention / incident response",
+      "Open innovation strengthening digital trust",
     ],
   },
 ];
 
-const typeColors: Record<Event["type"], string> = {
-  hackathon: "bg-[var(--brand-pink)]",
-  workshop: "bg-[var(--brand-purple)]",
-  meetup: "bg-emerald-500",
-  talk: "bg-amber-500",
+const domainIcon: Record<string, React.ReactNode> = {
+  "Politics & Civic Tech": <Landmark className="h-3.5 w-3.5" />,
+  "Data Mining and Processing": <Database className="h-3.5 w-3.5" />,
+  "Cyber Security": <Shield className="h-3.5 w-3.5" />,
 };
 
-const typeLabels: Record<Event["type"], string> = {
-  hackathon: "Hackathon",
-  workshop: "Workshop",
-  meetup: "Meetup",
-  talk: "Tech Talk",
-};
+const prizeRows = [
+  { pos: "1st Prize", politics: "₹1,50,000", data: "₹1,50,000", cyber: "₹1,50,000" },
+  { pos: "2nd Prize", politics: "₹1,00,000", data: "₹1,00,000", cyber: "₹1,00,000" },
+  { pos: "3rd Prize", politics: "₹50,000", data: "₹50,000", cyber: "₹50,000" },
+  { pos: "Runner-up", politics: "₹35,000", data: "₹35,000", cyber: "₹35,000" },
+];
+
+const additionalOutcomes = [
+  { title: "Pitch to Power", copy: "Present your solution directly to government bodies and political parties." },
+  { title: "Gov Apprenticeship", copy: "Paid government apprenticeship with potential for a full-time opportunity." },
+  { title: "Cultural Night", copy: "Exclusive cultural programme hosted for all participants after the exhibition." },
+  { title: "Round 1 Certs", copy: "Participation certificates awarded for all teams completing Round 1." },
+  { title: "Open to All", copy: "No age, college, or background restrictions — eligibility is universal." },
+];
+
+const programSteps = [
+  "Register on Unstop",
+  "Top 300 teams receive Exhibition Booth Space",
+  "Live showcase at Bharat Mandapam",
+  "On-the-spot evaluation by judges",
+  "Winners announced — Top 3 per domain",
+];
+
+// ── Component ─────────────────────────────────────────────────────────────
 
 export default function Events() {
-  const upcomingEvents = events.filter((e) => e.status === "upcoming");
-  const pastEvents = events.filter((e) => e.status === "past");
+  const now = useMemo(() => new Date(), []);
+  const liveIndexes = useMemo(
+    () => new Set(stages.map((s, i) => (now >= s.start && now <= s.end ? i : -1)).filter((i) => i !== -1)),
+    [now],
+  );
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden text-white">
+      {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[72vh] flex items-center justify-center overflow-hidden text-white">
         <WebGLShader />
-        <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6 py-12 md:py-24">
-          <div className="relative border-2 border-[var(--brand-pink)]/30 rounded-[32px] md:rounded-[40px] p-1.5 md:p-2 backdrop-blur-sm bg-black/10">
-            <div className="relative border-2 border-[var(--brand-pink)]/50 rounded-[28px] md:rounded-[36px] py-8 px-4 sm:px-10 overflow-hidden bg-black/40 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[var(--brand-purple)]/20" />
-              <div className="relative z-10 space-y-4 text-center">
-                <p className="text-[10px] md:text-xs uppercase tracking-[0.35em] text-white/70">
-                  Events
-                </p>
-                <h1 className="font-display text-3xl sm:text-4xl md:text-5xl leading-tight font-extrabold text-white">
-                  Hackathons, workshops & more
-                </h1>
-                <p className="text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-                  From intensive hackathons to hands-on workshops, we create
-                  experiences that help teens build real skills and ship real
-                  projects.
-                </p>
-              </div>
+        <div className="relative z-10 w-full mx-auto max-w-5xl px-4 sm:px-6">
+          <GlassContainer className="px-6 py-12 md:py-20 sm:px-10 lg:px-16 text-center">
+            <div className="flex flex-col items-center gap-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs uppercase tracking-[0.35em] font-semibold text-white/90 backdrop-blur-md shadow-inner">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand-pink) opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-(--brand-pink)" />
+                </span>
+                Events
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-extrabold text-white tracking-tighter drop-shadow-2xl">
+                Where code meets <br className="hidden sm:block" /> every boundary
+              </h1>
+              <p className="max-w-2xl text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed">
+                Hackathons, summits, and workshops that turn teen builders into
+                tomorrow's founders and policymakers.
+              </p>
             </div>
-          </div>
+          </GlassContainer>
         </div>
       </section>
 
-      <main className="relative z-10 bg-transparent">
-        {/* Upcoming Events */}
+      <main className="bg-transparent">
+
+        {/* ── India Innovates 2026 — Featured Spotlight ─────────────────── */}
         <PageSection
-          align="center"
-          eyebrow="Coming Up"
-          title="Upcoming events"
-          description="Mark your calendar for these upcoming opportunities to learn and build."
+          eyebrow="Featured Event"
+          title="India Innovates 2026"
+          description="India's Biggest Tech Innovation Summit — Where Code Meets Constitution."
         >
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {upcomingEvents.map((event, index) => (
-              <div
-                key={event.id}
-                className="glass-card relative isolate overflow-hidden p-6 text-left shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300 group"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Event type badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${typeColors[event.type]}`}
-                  >
-                    {typeLabels[event.type]}
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-emerald-500">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Upcoming
-                  </span>
-                </div>
+          <GlassContainer glowColor="pink" animated={false} className="overflow-hidden">
 
-                <h3 className="font-display text-xl font-bold text-foreground dark:text-white">
-                  {event.title}
-                </h3>
-
-                <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                  {event.description}
-                </p>
-
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-foreground/80 dark:text-white/80">
-                    <Calendar className="h-4 w-4 text-[var(--brand-pink)]" />
-                    <span>{event.date}</span>
-                    {event.time && (
-                      <>
-                        <span className="text-muted-foreground">·</span>
-                        <Clock className="h-4 w-4 text-[var(--brand-pink)]" />
-                        <span>{event.time}</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-foreground/80 dark:text-white/80">
-                    <MapPin className="h-4 w-4 text-[var(--brand-pink)]" />
-                    <span>{event.location}</span>
-                  </div>
-                </div>
-
-                {event.link && (
-                  <div className="mt-4">
-                    <Button
-                      asChild
-                      size="sm"
-                      className="w-full rounded-full bg-[var(--brand-pink)] text-white"
-                    >
-                      <Link href={event.link}>
-                        Register Now
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {upcomingEvents.length === 0 && (
-            <div className="glass-card p-8 text-center">
-              <p className="text-muted-foreground">
-                No upcoming events at the moment. Check back soon or follow us
-                on social media for announcements!
-              </p>
+            {/* ── Banner image header ── */}
+            <div className="relative w-full overflow-hidden rounded-t-[2.25rem] bg-white/5">
+              <Image
+                src="/images/banner.jpeg"
+                alt="India Innovates 2026 — Bharat Mandapam, New Delhi"
+                width={1920}
+                height={640}
+                className="w-full h-auto object-cover"
+                priority
+              />
             </div>
-          )}
+
+            {/* ── Details grid ── */}
+            <div className="p-6 sm:p-8 md:p-10">
+              {/* Badges row */}
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white bg-(--brand-pink)">
+                  Conference / Innovation Summit
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-emerald-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Registration Open
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs text-white/50">
+                  <Image src="/images/mcd.jpeg" alt="MCD Logo" width={16} height={16} className="rounded-full object-cover" />
+                  Municipal Corporation of Delhi
+                </span>
+              </div>
+
+              {/* Stats + details two-column */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                {/* Left — key stats */}
+                <div className="space-y-0 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
+                  {[
+                    { icon: <Trophy className="h-4 w-4 text-(--brand-pink)" />, label: "Prize Pool", value: "₹10,00,000" },
+                    { icon: <Users className="h-4 w-4 text-(--brand-pink)" />, label: "Team Size", value: "3 – 5 Members" },
+                    { icon: <IndianRupee className="h-4 w-4 text-(--brand-pink)" />, label: "Registration", value: "₹200" },
+                    { icon: <Calendar className="h-4 w-4 text-(--brand-pink)" />, label: "Reg. Deadline", value: "5 Mar 2026, 10:59 PM IST" },
+                    { icon: <Activity className="h-4 w-4 text-(--brand-pink)" />, label: "Registered", value: "2,881+ teams" },
+                    { icon: <Eye className="h-4 w-4 text-(--brand-pink)" />, label: "Impressions", value: "13,08,296+" },
+                    { icon: <Clock className="h-4 w-4 text-(--brand-pink)" />, label: "Timings", value: "9 AM – 7 PM, both days" },
+                  ].map((s) => (
+                    <div key={s.label} className="flex items-center justify-between px-5 py-3.5">
+                      <div className="flex items-center gap-2.5">
+                        {s.icon}
+                        <span className="text-sm text-white/60 font-medium">{s.label}</span>
+                      </div>
+                      <span className="text-sm font-black text-white text-right">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right — domains, quick info, CTA */}
+                <div className="flex flex-col gap-5">
+                  {/* Domains */}
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest font-semibold text-white/40 mb-2.5">Challenge Domains</p>
+                    <div className="flex flex-wrap gap-2">
+                      {["Politics & Civic Tech", "Data Mining and Processing", "Cyber Security"].map((d) => (
+                        <span key={d} className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/80">
+                          {domainIcon[d]}{d}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Additional outcomes quick list */}
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest font-semibold text-white/40 mb-2.5">Win Beyond Cash</p>
+                    <ul className="space-y-1.5">
+                      {[
+                        "Pitch directly to government & political parties",
+                        "Paid government apprenticeship opportunity",
+                        "Cultural Night for all participants",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-xs text-white/65">
+                          <Check className="h-3.5 w-3.5 shrink-0 mt-0.5 text-(--brand-pink)" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Rules quick note */}
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/50 leading-relaxed space-y-1">
+                    <p className="font-semibold text-white/70 text-[11px] uppercase tracking-wider mb-1">Key Rules</p>
+                    <p>• Projects must be original & built for this event</p>
+                    <p>• Plagiarism = instant disqualification</p>
+                    <p>• Open-source tools & datasets allowed</p>
+                    <p>• Jury decisions are final</p>
+                  </div>
+
+                  {/* CTA */}
+                  <Button
+                    asChild
+                    className="w-full rounded-2xl bg-(--brand-pink) py-5 text-sm font-bold text-white shadow-[0_0_24px_rgba(228,90,146,0.35)] hover:opacity-90 mt-auto"
+                  >
+                    <Link
+                      href="https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Register on Unstop
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </GlassContainer>
         </PageSection>
 
-        {/* Past Events */}
+        {/* ── Past Events Gallery ─────────────────────────────────────────────── */}
+        <PageSection
+          align="left"
+          className="pb-0"
+        >
+          <Gallery4
+            title="In Pictures"
+            description=""
+            items={[
+              {
+                id: "img-1",
+                title: "Opening Ceremony",
+                description: "The energy was palpable as we kickstarted the hackathon.",
+                href: "#",
+                image: "/event_pictures/697362a9af5f9_2b7a6686.webp",
+              },
+              {
+                id: "img-2",
+                title: "Deep Coding",
+                description: "Teams engaged in intense coding sessions.",
+                href: "#",
+                image: "/event_pictures/697362a9bfbb7_2b7a6474.webp",
+              },
+              {
+                id: "img-3",
+                title: "Mentorship",
+                description: "Industry experts guiding the builders.",
+                href: "#",
+                image: "/event_pictures/697362a9ed0a0_2b7a6465.webp",
+              },
+              {
+                id: "img-4",
+                title: "Collaboration",
+                description: "Hackers teaming up to build something great.",
+                href: "#",
+                image: "/event_pictures/697362aa203ce_2b7a6472.webp",
+              },
+              {
+                id: "img-5",
+                title: "Project Showcases",
+                description: "Presenting the final prototypes to the judges.",
+                href: "#",
+                image: "/event_pictures/697362aa29673_2b7a6578__1_.webp",
+              },
+              {
+                id: "img-6",
+                title: "Judging Details",
+                description: "Going through the projects thoroughly.",
+                href: "#",
+                image: "/event_pictures/697362aa2c388_2b7a6482.webp",
+              },
+              {
+                id: "img-7",
+                title: "Networking",
+                description: "Building connections that last beyond the event.",
+                href: "#",
+                image: "/event_pictures/697362aa317f1_2b7a6406.webp",
+              },
+              {
+                id: "img-8",
+                title: "Winners Announcement",
+                description: "Celebrating the hard work and innovation.",
+                href: "#",
+                image: "/event_pictures/697362aa3a417_2b7a6874.webp",
+              },
+            ]}
+          />
+        </PageSection>
+
+        {/* ── How It Works ──────────────────────────────────────────────── */}
         <PageSection
           align="center"
-          eyebrow="Archive"
-          title="Past events"
-          description="A look back at the events that shaped our community."
+          eyebrow="Program Structure"
+          title="How it works"
+          description="Five steps from registration to the winners' announcement."
         >
-          <div className="space-y-8">
-            {pastEvents.map((event) => (
-              <div
-                key={event.id}
-                className="glass-card relative isolate overflow-hidden shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300"
-              >
-                <div className="flex flex-col lg:flex-row">
-                  {/* Image */}
-                  {event.image && (
-                    <div className="relative w-full lg:w-1/3 h-48 lg:h-auto">
-                      <Image
-                        src={event.image}
-                        alt={event.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/20 lg:bg-gradient-to-l" />
-                    </div>
+          <GlassContainer glowColor="both" animated={false} className="p-6 sm:p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+              {programSteps.map((step, idx) => (
+                <div key={step} className="relative flex flex-col items-center text-center gap-3">
+                  {/* connector line (desktop only) */}
+                  {idx < programSteps.length - 1 && (
+                    <div className="hidden sm:block absolute top-5 left-[58%] right-0 h-px bg-gradient-to-r from-white/20 to-transparent pointer-events-none" />
                   )}
+                  <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--brand-pink)/40 bg-(--brand-pink)/10 text-sm font-black text-(--brand-pink)">
+                    {idx + 1}
+                  </div>
+                  <p className="text-xs sm:text-[11px] text-white/70 font-medium leading-snug">{step}</p>
+                </div>
+              ))}
+            </div>
+          </GlassContainer>
+        </PageSection>
 
-                  {/* Content */}
-                  <div className={`flex-1 p-6 ${!event.image ? "lg:p-8" : ""}`}>
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span
-                        className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${typeColors[event.type]}`}
-                      >
-                        {typeLabels[event.type]}
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {event.date}
-                      </span>
-                      {event.attendees && (
-                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                          <Users className="h-3 w-3" />
-                          {event.attendees} attendees
+        {/* ── Event Stages timeline ─────────────────────────────────────── */}
+        <PageSection
+          align="center"
+          eyebrow="Timeline"
+          title="Three stages to the finale"
+          description="From submitting your idea to standing on the floor at Bharat Mandapam."
+        >
+          <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 lg:gap-4">
+            {stages.map((stage, idx) => (
+              <li key={stage.title} className={["md:[grid-area:1/1/2/5]", "md:[grid-area:1/5/2/9]", "md:[grid-area:1/9/2/13]"][idx]}>
+                <GlowingCard animationDelay={idx * 0.1}>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <GlowingCardNumber index={idx + 1} />
+                      {liveIndexes.has(idx) && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          </span>
+                          Live
                         </span>
                       )}
                     </div>
-
-                    <h3 className="font-display text-2xl font-bold text-foreground dark:text-white">
-                      {event.title}
-                    </h3>
-
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {event.description}
-                    </p>
-
-                    {event.highlights && event.highlights.length > 0 && (
-                      <div className="mt-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[var(--brand-pink)] mb-2">
-                          Highlights
-                        </p>
-                        <ul className="grid gap-2 sm:grid-cols-2">
-                          {event.highlights.map((highlight, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start gap-2 text-sm text-foreground/80 dark:text-white/80"
-                            >
-                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-pink)]" />
-                              {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4" />
-                      <span>{event.location}</span>
-                    </div>
+                    <GlowingCardTitle className="mt-3">{stage.title}</GlowingCardTitle>
+                    <p className="text-xs font-semibold text-(--brand-pink)">{stage.period}</p>
+                    <GlowingCardDescription>{stage.copy}</GlowingCardDescription>
                   </div>
-                </div>
-              </div>
+                </GlowingCard>
+              </li>
             ))}
-          </div>
+          </ul>
         </PageSection>
 
-        {/* CTA */}
-        <PageSection align="center">
-          <div className="glass-card p-8 md:p-12 text-center">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground dark:text-white">
-              Want to host an event with us?
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-              We partner with schools, companies, and organizations to bring
-              tech education to more teens. Let's create something amazing
-              together.
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-[var(--brand-pink)] px-8 py-6 text-base font-semibold text-white shadow-[var(--glow-strong)]"
-              >
-                <Link href="/contact">
-                  Partner with us
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border-white/40 bg-white/10 px-8 py-6 text-base hover:bg-white/20"
-              >
-                <Link href="/join">
-                  Join the club
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
+        {/* ── Problem Statements ────────────────────────────────────────── */}
+        <PageSection
+          align="center"
+          eyebrow="Problem Statements"
+          title="What are you building?"
+          description="Pick a domain, pick a problem. Every statement is a real challenge waiting for a real solution."
+        >
+          <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 lg:gap-4">
+            {problemStatements.map(({ domain, items }, idx) => (
+              <li key={domain} className={["md:[grid-area:1/1/2/5]", "md:[grid-area:1/5/2/9]", "md:[grid-area:1/9/2/13]"][idx]}>
+                <GlowingCard animationDelay={idx * 0.1}>
+                  <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                      <span className="text-(--brand-pink)">{domainIcon[domain]}</span>
+                      <span className="text-xs font-bold text-white">{domain}</span>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {items.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-sm text-white/65">
+                          <ChevronRight className="h-3.5 w-3.5 shrink-0 mt-0.5 text-(--brand-pink)" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </GlowingCard>
+              </li>
+            ))}
+          </ul>
         </PageSection>
-      </main>
+
+        {/* ── Prize Pool ────────────────────────────────────────────────── */}
+        <PageSection
+          align="center"
+          eyebrow="Prizes"
+          title="₹10,00,000 prize pool"
+          description="Top solutions across every domain take home cash prizes — plus a certificate for every participant."
+        >
+          <GlassContainer className="overflow-x-auto" glowColor="pink" animated={false}>
+            <div className="p-2">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/50">Position</th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/50">
+                      <span className="inline-flex items-center gap-1.5"><Landmark className="h-3.5 w-3.5 text-(--brand-pink)" />Politics &amp; Civic Tech</span>
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/50">
+                      <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-(--brand-pink)" />Data Mining</span>
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white/50">
+                      <span className="inline-flex items-center gap-1.5"><Shield className="h-3.5 w-3.5 text-(--brand-pink)" />Cyber Security</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {prizeRows.map((row, i) => (
+                    <tr key={row.pos} className={`border-b border-white/5 transition-colors hover:bg-white/5 ${i === 0 ? "bg-(--brand-pink)/5" : ""}`}>
+                      <td className="px-5 py-4 font-semibold text-white">
+                        {i === 0 && <Trophy className="inline h-3.5 w-3.5 mr-1.5 text-amber-400" />}
+                        {row.pos}
+                      </td>
+                      <td className="px-5 py-4 text-white/85">{row.politics} <span className="text-[10px] text-white/40">+ Cert</span></td>
+                      <td className="px-5 py-4 text-white/85">{row.data}    <span className="text-[10px] text-white/40">+ Cert</span></td>
+                      <td className="px-5 py-4 text-white/85">{row.cyber}   <span className="text-[10px] text-white/40">+ Cert</span></td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan={4} className="px-5 py-3 text-xs text-white/40 italic">
+                      All registered participants receive a Participation Certificate.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </GlassContainer>
+        </PageSection>
+
+        {/* ── Additional Outcomes ──────────────────────────────────────── */}
+        <PageSection
+          align="center"
+          eyebrow="Beyond the Prize"
+          title="What you actually walk away with"
+          description="Cash is just the start. India Innovates 2026 opens doors no other hackathon can."
+        >
+          <ul className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+            {additionalOutcomes.map(({ title, copy }, idx) => (
+              <li
+                key={title}
+                className={
+                  idx === 0 || idx === 1 || idx === 2
+                    ? "sm:col-span-2 lg:col-span-2"
+                    : idx === 3
+                      ? "sm:col-span-2 lg:col-span-2 lg:col-start-2"
+                      : "sm:col-span-2 sm:col-start-2 lg:col-span-2 lg:col-start-4"
+                }
+              >
+                <GlowingCard animationDelay={idx * 0.08}>
+                  <div className="space-y-3">
+                    <GlowingCardNumber index={idx + 1} />
+                    <GlowingCardTitle className="mt-3">{title}</GlowingCardTitle>
+                    <GlowingCardDescription>{copy}</GlowingCardDescription>
+                  </div>
+                </GlowingCard>
+              </li>
+            ))}
+          </ul>
+        </PageSection>
+
+      </main >
+
+
     </>
   );
 }

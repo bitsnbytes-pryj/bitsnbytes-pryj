@@ -101,14 +101,19 @@ const Gallery4 = ({
   }, [carouselApi]);
 
   return (
-    <section className="py-24 md:py-32">
-      <div className="container mx-auto">
+    <section className="py-24 md:py-32 overflow-hidden">
+      <div className="container mx-auto px-4 md:px-8">
         <div className="mb-8 flex items-end justify-between md:mb-14 lg:mb-16">
           <div className="flex flex-col gap-4">
-            <h2 className="text-3xl font-medium md:text-4xl lg:text-5xl text-[#3e1e68]">
-              {title}
-            </h2>
-            <p className="max-w-lg text-muted-foreground">{description}</p>
+            {title && (
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-1.5 rounded-full bg-indigo-600" />
+                <h2 className="text-3xl font-medium md:text-4xl lg:text-5xl text-white tracking-tight">
+                  {title}
+                </h2>
+              </div>
+            )}
+            {description && <p className="max-w-lg text-muted-foreground">{description}</p>}
           </div>
           <div className="hidden shrink-0 gap-2 md:flex">
             <Button
@@ -116,7 +121,7 @@ const Gallery4 = ({
               variant="ghost"
               onClick={() => carouselApi?.scrollPrev()}
               disabled={!canScrollPrev}
-              className="disabled:pointer-events-auto"
+              className="disabled:pointer-events-auto text-white"
             >
               <ArrowLeft className="size-5" />
             </Button>
@@ -125,7 +130,7 @@ const Gallery4 = ({
               variant="ghost"
               onClick={() => carouselApi?.scrollNext()}
               disabled={!canScrollNext}
-              className="disabled:pointer-events-auto"
+              className="disabled:pointer-events-auto text-white"
             >
               <ArrowRight className="size-5" />
             </Button>
@@ -137,6 +142,7 @@ const Gallery4 = ({
         <Carousel
           setApi={setCarouselApi}
           opts={{
+            loop: true,
             breakpoints: {
               "(max-width: 768px)": {
                 dragFree: true,
@@ -157,19 +163,6 @@ const Gallery4 = ({
                       alt={item.title}
                       className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 h-full bg-[linear-gradient(hsl(var(--primary)/0),hsl(var(--primary)/0.4),hsl(var(--primary)/0.8)_100%)] mix-blend-multiply" />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-primary-foreground md:p-8">
-                      <div className="mb-2 pt-4 text-xl font-semibold md:mb-3">
-                        {item.title}
-                      </div>
-                      <div className="mb-8 line-clamp-2 md:mb-12 lg:mb-9 text-sm">
-                        {item.description}
-                      </div>
-                      <div className="flex items-center text-sm font-medium">
-                        Read more{" "}
-                        <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
                   </div>
                 </a>
               </CarouselItem>
@@ -181,9 +174,8 @@ const Gallery4 = ({
           {items.map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                currentSlide === index ? "bg-primary" : "bg-primary/20"
-              }`}
+              className={`h-2 w-2 rounded-full transition-colors ${currentSlide === index ? "bg-primary" : "bg-primary/20"
+                }`}
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
             />

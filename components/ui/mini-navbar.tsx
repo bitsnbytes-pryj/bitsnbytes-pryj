@@ -12,6 +12,7 @@ import logo from "@public/logo.svg";
 const NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/events", label: "Events" },
     { href: "/impact", label: "Impact" },
     { href: "/contact", label: "Contact" },
 ];

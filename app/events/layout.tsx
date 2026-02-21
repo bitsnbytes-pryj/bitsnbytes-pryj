@@ -1,23 +1,26 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Events - Hackathons, Workshops & Tech Meetups for Students",
+  title: "Events - India Innovates 2026 & More | Bits&Bytes",
   description:
-    "Join Bits&Bytes hackathons, coding workshops & tech events in India. From 48-hour hackathons to hands-on AI/ML workshops. Open to all high school students. Free events!",
+    "Bits&Bytes is the Executive Partner for India Innovates 2026 at Bharat Mandapam, New Delhi — ₹10,05,000 prize pool. Plus hackathons, coding workshops & tech events open to all students across India.",
   keywords: [
+    "India Innovates 2026",
+    "Bharat Mandapam hackathon",
     "teen hackathons india",
+    "student innovation summit India",
     "coding workshops for students",
     "tech events lucknow",
     "high school hackathon india",
-    "free coding events",
     "student tech meetups",
+    "bits and bytes executive partner",
   ],
   alternates: {
     canonical: "https://gobitsnbytes.org/events",
   },
   openGraph: {
-    title: "Events - Hackathons & Workshops | Bits&Bytes",
-    description: "Join our hackathons, coding workshops & tech events. Free for all high school students in India.",
+    title: "India Innovates 2026 & Events | Bits&Bytes",
+    description: "Bits&Bytes is the Executive Partner for India Innovates 2026 at Bharat Mandapam — ₹10,05,000 prize pool. Register now on Unstop.",
     url: "https://gobitsnbytes.org/events",
     type: "website",
   },
@@ -35,12 +38,48 @@ const eventsJsonLd = {
       position: 1,
       item: {
         "@type": "Event",
-        name: "Scrapyard Lucknow 2025",
-        description: "Our flagship hackathon - 48 hours of building, learning, and shipping. Open to all high school students across India.",
-        startDate: "2025-03-01",
-        endDate: "2025-03-02",
+        name: "India Innovates 2026",
+        description:
+          "India's Biggest Tech Innovation Summit — Where Code Meets Constitution. Bits&Bytes is the Executive Partner. ₹10,05,000 prize pool across Politics & Civic Tech, Data Mining, and Cyber Security domains.",
+        startDate: "2026-03-28",
+        endDate: "2026-03-29",
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
+        url: "https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920",
+        location: {
+          "@type": "Place",
+          name: "Bharat Mandapam",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "New Delhi",
+            addressRegion: "Delhi",
+            addressCountry: "IN",
+          },
+        },
+        organizer: {
+          "@type": "Organization",
+          name: "Municipal Corporation of Delhi",
+        },
+        offers: {
+          "@type": "Offer",
+          price: "200",
+          priceCurrency: "INR",
+          availability: "https://schema.org/InStock",
+          validThrough: "2026-03-05",
+          url: "https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920",
+        },
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      item: {
+        "@type": "Event",
+        name: "Scrapyard Lucknow 2025",
+        description: "Our debut hackathon united 40+ coders, designers, filmmakers, and builders.",
+        startDate: "2025-12-01",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventPostponed",
         location: {
           "@type": "Place",
           name: "Lucknow",
@@ -55,16 +94,6 @@ const eventsJsonLd = {
           "@type": "Organization",
           name: "Bits&Bytes",
           url: "https://gobitsnbytes.org",
-        },
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-        },
-        audience: {
-          "@type": "Audience",
-          audienceType: "High School Students",
         },
       },
     },

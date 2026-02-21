@@ -18,10 +18,10 @@ const MAX_CHARS = 2000
 const MAX_HISTORY = 8
 const STORAGE_KEY = "bb-floating-assistant-state-v1"
 const QUICK_PROMPTS = [
+  "Tell me about India Innovates 2026.",
   "What is Bits&Bytes?",
   "Show me the impact stats.",
   "How can I join the club?",
-  "Tell me about the core team.",
   "Take me to the contact page.",
 ]
 
@@ -171,6 +171,84 @@ const FloatingAiAssistant: React.FC = () => {
     }, 0)
   }
 
+  /**
+   * Robust text highlighter.
+   * 1. Walks all text nodes in <main> (falls back to <body>) looking for the snippet.
+   * 2. Splits the matching text node and wraps the matching part in a <mark>.
+   * 3. Scrolls the mark into view and removes it after 5 s.
+   * Handles multi-word phrases and is case-insensitive.
+   */
+  const performHighlight = (snippet: string) => {
+    if (!snippet || typeof document === "undefined") return
+    const query = snippet.trim()
+    if (!query) return
+
+    const root = document.querySelector("main") ?? document.body
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null)
+
+    const HIGHLIGHT_CLASS =
+      "bb-ai-highlight"
+    const HIGHLIGHT_STYLE =
+      "background:rgba(228,90,146,0.35);outline:2px solid rgba(228,90,146,0.8);border-radius:4px;padding:0 2px;transition:background 0.4s,outline 0.4s;"
+
+    // Clean up any existing highlights first
+    document.querySelectorAll(".bb-ai-highlight").forEach((el) => {
+      const parent = el.parentNode
+      if (!parent) return
+      while (el.firstChild) parent.insertBefore(el.firstChild, el)
+      parent.removeChild(el)
+    })
+
+    let highlightedEl: HTMLElement | null = null
+    let node: Node | null
+
+    while ((node = walker.nextNode())) {
+      const text = node.nodeValue ?? ""
+      const idx = text.toLowerCase().indexOf(query.toLowerCase())
+      if (idx === -1) continue
+
+      // Skip nodes inside the chat overlay itself
+      const parent = node.parentElement
+      if (!parent) continue
+      if (chatRef.current?.contains(parent)) continue
+
+      // Split the text node: [before][match][after]
+      const before = text.slice(0, idx)
+      const match = text.slice(idx, idx + query.length)
+      const after = text.slice(idx + query.length)
+
+      const mark = document.createElement("mark")
+      mark.className = HIGHLIGHT_CLASS
+      mark.setAttribute("style", HIGHLIGHT_STYLE)
+      mark.textContent = match
+
+      const fragment = document.createDocumentFragment()
+      if (before) fragment.appendChild(document.createTextNode(before))
+      fragment.appendChild(mark)
+      if (after) fragment.appendChild(document.createTextNode(after))
+
+      parent.replaceChild(fragment, node)
+      highlightedEl = mark
+      break // highlight the first match only
+    }
+
+    if (highlightedEl) {
+      highlightedEl.scrollIntoView({ behavior: "smooth", block: "center" })
+      // Fade out after 5 s then unwrap
+      setTimeout(() => {
+        if (!highlightedEl) return
+        highlightedEl.style.setProperty("background", "transparent", "important")
+        highlightedEl.style.setProperty("outline", "none", "important")
+        setTimeout(() => {
+          if (!highlightedEl?.parentNode) return
+          const p = highlightedEl.parentNode
+          while (highlightedEl.firstChild) p.insertBefore(highlightedEl.firstChild, highlightedEl)
+          p.removeChild(highlightedEl)
+        }, 500)
+      }, 5000)
+    }
+  }
+
   const handleSend = async () => {
     const trimmed = message.trim()
     if (!trimmed || isLoading) return
@@ -267,51 +345,8 @@ const FloatingAiAssistant: React.FC = () => {
             } else if (actionData?.type === "highlight" && typeof actionData.textSnippet === "string") {
               highlightSnippet = actionData.textSnippet
               setTimeout(() => {
-                const text = actionData.textSnippet as string
-                if ((window as any).find && (window as any).find(text)) {
-                  const selection = window.getSelection()
-                  if (selection && selection.rangeCount > 0) {
-                    const range = selection.getRangeAt(0)
-                    const span = document.createElement("span")
-                    span.className = "bg-[#e45a92]/40 rounded px-1 ring-2 ring-[#e45a92] transition-all animate-pulse"
-                    try {
-                      range.surroundContents(span)
-                      span.scrollIntoView({ behavior: "smooth", block: "center" })
-                      setTimeout(() => {
-                        span.className = ""
-                        const parent = span.parentNode
-                        while (span.firstChild) {
-                          parent?.insertBefore(span.firstChild, span)
-                        }
-                        parent?.removeChild(span)
-                      }, 5000)
-                    } catch {
-                      // Ignore surround errors
-                    }
-                    selection.removeAllRanges()
-                  }
-                } else {
-                  const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null)
-                  let node
-                  while ((node = treeWalker.nextNode())) {
-                    if (node.nodeValue?.toLowerCase().includes(text.toLowerCase())) {
-                      const element = node.parentElement
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth", block: "center" })
-                        const origColor = element.style.backgroundColor
-                        const origTransition = element.style.transition
-                        element.style.transition = "background-color 0.5s"
-                        element.style.backgroundColor = "rgba(228, 90, 146, 0.4)"
-                        setTimeout(() => {
-                          element.style.backgroundColor = origColor
-                          setTimeout(() => element.style.transition = origTransition, 500)
-                        }, 3000)
-                        break
-                      }
-                    }
-                  }
-                }
-              }, 100)
+                performHighlight(actionData.textSnippet as string)
+              }, 120)
             }
           }
         }

@@ -60,14 +60,6 @@ const eventsJsonLd = {
           "@type": "Organization",
           name: "Municipal Corporation of Delhi",
         },
-        offers: {
-          "@type": "Offer",
-          price: "200",
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          validThrough: "2026-03-05",
-          url: "https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920",
-        },
       },
     },
     {

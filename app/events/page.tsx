@@ -24,7 +24,6 @@ import {
   Shield,
   Database,
   Landmark,
-  IndianRupee,
   Building2,
   Check,
   ChevronRight,
@@ -248,7 +247,6 @@ export default function Events() {
                   {[
                     { icon: <Trophy className="h-4 w-4 text-(--brand-pink)" />, label: "Prize Pool", value: "₹10,05,000" },
                     { icon: <Users className="h-4 w-4 text-(--brand-pink)" />, label: "Team Size", value: "3 – 6 Members" },
-                    { icon: <IndianRupee className="h-4 w-4 text-(--brand-pink)" />, label: "Registration", value: "₹200" },
                     { icon: <Calendar className="h-4 w-4 text-(--brand-pink)" />, label: "Reg. Deadline", value: "5 Mar 2026, 10:59 PM IST" },
                     { icon: <Activity className="h-4 w-4 text-(--brand-pink)" />, label: "Registered", value: "8,704+ teams" },
                     { icon: <Eye className="h-4 w-4 text-(--brand-pink)" />, label: "Impressions", value: "13,08,296+" },

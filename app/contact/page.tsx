@@ -107,11 +107,11 @@ export default function Contact() {
             <GlassContainer className="p-0 overflow-hidden" glowColor="both">
               <div className="grid md:grid-cols-5 h-full">
                 {/* Info Sidebar */}
-                <div className="md:col-span-2 bg-white/5 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10">
+                <div className="md:col-span-2 bg-white/5 p-5 sm:p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10">
                   <h3 className="font-display text-2xl font-black text-white mb-6">Get in Touch</h3>
                   <div className="space-y-8">
                     {[
-                      { icon: Mail, label: "Email", value: "contact@indiainnovates.org", href: "mailto:contact@indiainnovates.org", color: "text-(--brand-pink)" },
+                      { icon: Mail, label: "Email", value: "hello@gobitsnbytes.org", href: "mailto:hello@gobitsnbytes.org", color: "text-(--brand-pink)" },
                       { icon: MapPin, label: "Location", value: "Lucknow, India", color: "text-(--brand-purple)" },
                       { icon: Clock, label: "Established", value: "Teen-led since 2025", color: "text-blue-400" },
                     ].map((info) => (
@@ -133,7 +133,7 @@ export default function Contact() {
                 </div>
 
                 {/* Form Section */}
-                <div className="md:col-span-3 p-8 md:p-12 bg-black/20">
+                <div className="md:col-span-3 p-5 sm:p-8 md:p-12 bg-black/20">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -195,10 +195,14 @@ export default function Contact() {
                     </Button>
 
                     {status && (
-                      <p className={cn(
-                        "text-sm font-bold text-center p-4 rounded-2xl",
-                        status.type === "success" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"
-                      )}>
+                      <p
+                        role="alert"
+                        aria-live="polite"
+                        className={cn(
+                          "text-sm font-bold text-center p-4 rounded-2xl",
+                          status.type === "success" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"
+                        )}
+                      >
                         {status.message}
                       </p>
                     )}

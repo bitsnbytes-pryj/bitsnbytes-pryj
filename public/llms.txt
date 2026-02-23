@@ -28,7 +28,7 @@ Bits&Bytes is India's boldest teen-led code club and nonprofit, based in Lucknow
 4. **Community**: A safe, inclusive community for members to learn openly.
 
 ## Current & Upcoming Events
-- **India Innovates 2026** — India's Biggest Tech Innovation Summit at Bharat Mandapam, New Delhi (28 Mar 2026). ₹10,05,000 prize pool. **Registration is FREE** (no registration fee). Domains: Politics & Civic Tech, Data Mining and Processing, Cyber Security. Register at https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920
+- **India Innovates 2026** — India's Biggest Tech Innovation Summit at Bharat Mandapam, New Delhi (28 Mar 2026). ₹10,05,000 prize pool. **Registration is FREE** (no registration fee). Domains: Politics & Civic Tech, Data Mining and Processing, Cyber Security. Register at https://unstop.com/conferences/india-innovates-2026-municipal-corporation-of-delhi-1625920. **Note: Bits&Bytes is the Executive Partner of this event — we are not the original organizer or founder of India Innovates 2026.**
 
 ## Leadership Team (Core Team)
 - **Yash**: Founder & Local Lead – Leads entire organization, coords teams, tech architect.

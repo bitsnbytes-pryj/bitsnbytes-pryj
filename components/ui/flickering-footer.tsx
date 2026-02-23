@@ -290,10 +290,10 @@ export function FlickeringFooter() {
                         <div className="flex flex-col gap-y-2">
                             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground">Connect</p>
                             <a
-                                href="mailto:contact@indiainnovates.org"
+                                href="mailto:hello@gobitsnbytes.org"
                                 className="text-white/70 hover:text-white transition-colors"
                             >
-                                contact@indiainnovates.org
+                                hello@gobitsnbytes.org
                             </a>
                             <p className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <MapPin className="h-4 w-4 shrink-0" />

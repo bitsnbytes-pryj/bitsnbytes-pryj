@@ -29,7 +29,7 @@ const QUICK_PROMPTS = [
 type StreamPayload =
   | { type: "meta"; model: string }
   | { type: "token"; content: string }
-  | { type: "done"; action?: { type: string; path?: string; textSnippet?: string } | null }
+  | { type: "done"; action?: { type: string; path?: string; textSnippet?: string; formData?: any } | null }
   | { type: "error"; message?: string }
 
 type StoredAssistantState = {
@@ -348,6 +348,21 @@ const FloatingAiAssistant: React.FC = () => {
               setTimeout(() => {
                 performHighlight(actionData.textSnippet as string)
               }, 120)
+            } else if (actionData?.type === "submit_form" && actionData.formData) {
+              // Execute Web3Forms directly from the client side securely
+              try {
+                await fetch("https://api.web3forms.com/submit", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", Accept: "application/json" },
+                  body: JSON.stringify({
+                    access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+                    from_name: "Bits&Bytes Assistant",
+                    ...actionData.formData
+                  }),
+                })
+              } catch (e) {
+                console.error("Assistant failed to proxy form submission", e)
+              }
             }
           }
         }

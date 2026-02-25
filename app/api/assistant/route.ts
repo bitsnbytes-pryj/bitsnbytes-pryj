@@ -22,7 +22,7 @@ type ClientMessage = {
   content: string
 }
 
-type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string }
+type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string } | { type: "submit_form"; formData: any }
 
 const SITE_CONTEXT = `
 You are the official AI assistant for Bits&Bytes, a teen-led code club based in Lucknow.
@@ -237,14 +237,6 @@ function normalizePath(value?: string): string {
 }
 
 async function handleSubmitContactTool(args: any) {
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY
-  if (!accessKey) {
-    return {
-      success: false,
-      message: "WEB3FORMS_ACCESS_KEY is not configured on the server.",
-    }
-  }
-
   const name = (args?.name ?? "").toString().trim()
   const email = (args?.email ?? "").toString().trim()
   const subject = (args?.subject ?? "").toString().trim()
@@ -257,36 +249,16 @@ async function handleSubmitContactTool(args: any) {
     }
   }
 
-  const payload = {
-    access_key: accessKey,
-    name,
-    email,
-    subject: subject || "New contact from Bits&Bytes assistant",
-    message,
-  }
-
-  const response = await fetch(WEB3FORMS_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payload),
-  })
-
-  const result = await response.json()
-
-  if (!result?.success) {
-    console.error("Web3Forms error from tool:", result)
-    return {
-      success: false,
-      message: "Failed to submit the contact form through Web3Forms.",
-    }
-  }
-
+  // Passing back only the necessary data to the client so it can run the fetch client-side securely
   return {
     success: true,
-    message: "Contact form submitted successfully via Web3Forms.",
+    message: "Valid details received! I am preparing the form submission from your browser right now.",
+    formData: {
+      name,
+      email,
+      subject: subject || "New contact from Bits&Bytes assistant",
+      message,
+    }
   }
 }
 
@@ -394,6 +366,9 @@ export async function POST(req: NextRequest) {
 
         if (toolName === "submit_contact_form") {
           toolResult = await handleSubmitContactTool(toolArgs)
+          if (toolResult.success && toolResult.formData) {
+            actionToClient = { type: "submit_form" as const, formData: toolResult.formData }
+          }
         } else if (toolName === "suggest_navigation") {
           const path = normalizePath(toolArgs?.path)
           toolResult = { success: true, path }

@@ -27,6 +27,7 @@ const nextConfig = {
     NEXT_PUBLIC_GIT_COMMIT_DATE: gitInfo.commitDate,
     NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
     NEXT_PUBLIC_REPO_URL: "https://github.com/gobitsnbytes/bitsnbytes",
+    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: process.env.WEB3FORMS_ACCESS_KEY,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -91,7 +92,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://tally.so https://hcaptcha.com https://*.hcaptcha.com; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src 'self' blob: data: https:; font-src 'self' data: https://r2cdn.perplexity.ai; connect-src 'self' https://vitals.vercel-insights.com https://hcaptcha.com https://*.hcaptcha.com; frame-src 'self' https://tally.so https://hcaptcha.com https://*.hcaptcha.com;"
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://tally.so https://hcaptcha.com https://*.hcaptcha.com; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src 'self' blob: data: https:; font-src 'self' data: https://r2cdn.perplexity.ai; connect-src 'self' https://vitals.vercel-insights.com https://hcaptcha.com https://*.hcaptcha.com https://api.web3forms.com; frame-src 'self' https://tally.so https://hcaptcha.com https://*.hcaptcha.com;"
           }
         ]
       }

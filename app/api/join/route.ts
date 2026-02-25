@@ -58,12 +58,22 @@ ${message}
       body: JSON.stringify(payload),
     })
 
-    const result = await response.json()
+    const textResult = await response.text()
+    let result
+    try {
+      result = JSON.parse(textResult)
+    } catch {
+      console.error("Web3Forms HTML Error (join):", textResult)
+      return NextResponse.json(
+        { error: "Failed to submit join form. Unexpected response from provider." },
+        { status: 502 },
+      )
+    }
 
-    if (!result?.success) {
+    if (!response.ok || !result?.success) {
       console.error("Web3Forms join error:", result)
       return NextResponse.json(
-        { error: "Failed to submit join form." },
+        { error: result?.message || "Failed to submit join form." },
         { status: 502 },
       )
     }

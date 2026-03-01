@@ -57,6 +57,12 @@ const highlightStats = [
     description: "Community built for teens",
     timeframe: "Always will be",
   },
+  {
+    value: "16,000+",
+    label: "Registrations",
+    description: "For India Innovates 2026",
+    timeframe: "Hackathon Impact ↑",
+  },
 ];
 
 const culturePillars = [

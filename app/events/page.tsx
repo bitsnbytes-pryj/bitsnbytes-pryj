@@ -196,8 +196,8 @@ export default function Events() {
                 Where code meets <br className="hidden sm:block" /> every boundary
               </h1>
               <p className="max-w-2xl text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed">
-                Hackathons, summits, and workshops that turn teen builders into
-                tomorrow's founders and policymakers.
+                Join 16,000+ innovators at hackathons, summits, and workshops that
+                turn teen builders into tomorrow&apos;s founders and policymakers.
               </p>
             </div>
           </GlassContainer>
@@ -237,6 +237,10 @@ export default function Events() {
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Registration Open
                 </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/80 backdrop-blur-md">
+                  <Users className="h-3 w-3 text-(--brand-pink)" />
+                  16,000+ Registered
+                </span>
                 <span className="inline-flex items-center gap-1.5 text-xs text-white/50">
                   <Image src="/images/mcd.jpeg" alt="MCD Logo" width={16} height={16} className="rounded-full object-cover" />
                   Municipal Corporation of Delhi
@@ -252,7 +256,7 @@ export default function Events() {
                     { icon: <Trophy className="h-4 w-4 text-(--brand-pink)" />, label: "Prize Pool", value: "₹10,05,000" },
                     { icon: <Users className="h-4 w-4 text-(--brand-pink)" />, label: "Team Size", value: "3 – 6 Members" },
                     { icon: <Calendar className="h-4 w-4 text-(--brand-pink)" />, label: "Reg. Deadline", value: "5 Mar 2026, 10:59 PM IST" },
-                    { icon: <Activity className="h-4 w-4 text-(--brand-pink)" />, label: "Registered", value: "8,704+ teams" },
+                    { icon: <Activity className="h-4 w-4 text-(--brand-pink)" />, label: "Registrations", value: "16,000+" },
                     { icon: <Eye className="h-4 w-4 text-(--brand-pink)" />, label: "Impressions", value: "13,08,296+" },
                     { icon: <Clock className="h-4 w-4 text-(--brand-pink)" />, label: "Timings", value: "9 AM – 7 PM" },
                   ].map((s) => (

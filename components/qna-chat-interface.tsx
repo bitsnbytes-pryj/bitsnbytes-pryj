@@ -407,7 +407,7 @@ export function QnAChatInterface() {
                                                 )
                                             },
                                             code: ({ className, children, ...props }) => {
-                                                const match = /language-(\w+)/.exec(className || "")
+                                                const match = /language-([\w-]+)/.exec(className || "")
                                                 const isChart = match && match[1] === "chart"
                                                 const isDiscordWidget = match && match[1] === "discord-widget"
 

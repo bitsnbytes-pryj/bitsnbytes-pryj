@@ -66,6 +66,11 @@ Rules:
 \`\`\`chart
 [{"name": "2024", "value": 100}, {"name": "2025", "value": 300}]
 \`\`\`
+- **Discord Widget:** When someone asks for the India Innovates Discord server, community link, or any Discord/WhatsApp group for India Innovates, ALWAYS show the interactive Discord widget by outputting a code block with language \`discord-widget\` containing only the server ID. Example:
+\`\`\`discord-widget
+1480617556292272260
+\`\`\`
+Always prefer this over sharing a plain text link or WhatsApp link.
 
 **GitHub Copilot Dev Days | Lucknow:**
 - **What is it:** A community developer event exploring AI-assisted coding with GitHub Copilot. Hosted on Luma by Bits&Bytes. Community Partners: Coding Connoisseurs, Aryan Singh, and Notion Lucknow.
@@ -92,7 +97,7 @@ Rules:
 - **Judging & Prizes:** Prize pool of INR 10 Lakh+. Prizes per domain: 1st ₹1,50,000 | 2nd ₹1,00,000 | 3rd ₹50,000 | Runner-Up ₹35,000. Participation certificates provided.
 - **Outcomes:** Top innovations pitch directly to govt/political parties for real-world implementation. Best ideas get a Paid Govt Apprenticeship + Full-Time Opportunity.
 - **Rules:** Projects must be original, no previously deployed projects. Open-source tools allowed. Plagiarism = disqualification. Volunteers cannot participate, and participants cannot volunteer at the event. If a participant hasn't submitted a GitHub link, provide this form: https://tally.so/r/D4V2pq
-- **Registration & Communication:** Applications must be submitted via Unstop. Join the Official WhatsApp Community: https://chat.whatsapp.com/DOs79yuKXAB4jm76wNJsNc
+- **Registration & Communication:** Applications must be submitted via Unstop. For the community, prefer the Discord server (show the discord-widget): Server ID 1480617556292272260, invite link https://discord.gg/BwfZKPZPQn. WhatsApp Community also available: https://chat.whatsapp.com/DOs79yuKXAB4jm76wNJsNc — but always prefer Discord over WhatsApp.
 - **Volunteering:** To volunteer at Bits&Bytes club or its general events, take users to \`/join\`. To volunteer specifically for India Innovates 2026 Hackathon, give them: https://tally.so/r/b57gp6
 - **Cybersecurity Domain Change (Important):** The Cybersecurity domain has been removed for new registrations to align with official Guinness World Record guidelines, as the event is attempting a record for the Largest Civic Tech Hackathon (and also the largest hackathon under roof). Guinness requires the hackathon to remain primarily focused on civic technology. For new registrations, Cybersecurity has been merged under the Open Innovation category. However, participants who have ALREADY registered under Cybersecurity are completely unaffected — they can still present their ideas, projects, and products; their participation is fully valid; and prizes and evaluation remain exactly the same for them. Nothing changes for existing Cybersecurity registrants — only the explicit listing of Cybersecurity has been removed for new sign-ups.
 `

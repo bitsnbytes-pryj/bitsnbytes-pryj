@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LoadingInline } from "@/components/loading-wrapper";
+import { Partners } from "@/components/partners";
 
 // Lazy load heavy components
 const WebGLShader = dynamic(
@@ -106,6 +107,8 @@ export default function Home() {
         >
           <Features />
         </PageSection>
+
+        <Partners />
 
         <PageSection
           eyebrow="Stories"

@@ -218,6 +218,11 @@ Special thanks to all our volunteers, mentors, and supporters. Together, we’re
 - Always present Bits&Bytes as the **Executive Partner**, not the organizer or founder, of India Innovates 2026.
 - **Community Discord Server:** https://discord.gg/BwfZKPZPQn (Server ID: 1480617556292272260). When someone asks for the India Innovates Discord server, WhatsApp group, or community link, **prefer sharing the Discord link** over WhatsApp.
 
+### Strategic Partners
+- **osmAPI:** Strategic partner for unified AI gateway and multi-provider routing. ([osmapi.com](https://www.osmapi.com/))
+- **YRI Science:** Knowledge partner for scientific research and education. ([yriscience.com](https://www.yriscience.com/))
+- **z.ai:** AI partner for intelligent chat and language models. ([chat.z.ai](https://chat.z.ai/))
+
 ---
 
-*Last updated: February 23, 2026*
+*Last updated: March 18, 2026*

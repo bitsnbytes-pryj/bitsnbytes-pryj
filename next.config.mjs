@@ -31,6 +31,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ["sharp", "onnxruntime-node"],
   images: {
     // Enable image optimization for Vercel
     domains: [],

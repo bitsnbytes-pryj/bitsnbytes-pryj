@@ -30,15 +30,17 @@ const heroEvents = [
     image: "/images/copilot-dev-day-small.png",
     alt: "GitHub Copilot Dev Days | Lucknow",
     badge: "Upcoming Event",
+    status: "upcoming",
     title: "GitHub Copilot Dev Days",
     subtitle: "19 Apr 2026 · Lucknow",
     href: "/events",
   },
   {
-    image: "/event_pictures/697362aa317f1_2b7a6406.webp",
-    alt: "India Innovates 2026 - Upcoming tech summit",
-    badge: "Upcoming Event",
-    title: "India Innovates 2026",
+    image: "/event_pictures/HEe923uagAATqvy.jpg",
+    alt: "India Innovates 2026 archive",
+    badge: "Archived Event",
+    status: "archived",
+    title: "India Innovates 2026 Archive",
     subtitle: "28 Mar 2026 · New Delhi",
     href: "/events",
   },
@@ -151,8 +153,18 @@ export const HeroFuturistic = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20 z-20" />
 
               <div className="absolute bottom-8 left-8 right-8 space-y-2 z-30">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[0.65rem] font-bold uppercase tracking-widest text-emerald-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest ${heroEvents[activeSlide].status === "upcoming"
+                    ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
+                    : "bg-white/10 border border-white/20 text-white/80"
+                    }`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${heroEvents[activeSlide].status === "upcoming"
+                      ? "bg-emerald-500 animate-pulse"
+                      : "bg-white/70"
+                      }`}
+                  />
                   {heroEvents[activeSlide].badge}
                 </span>
                 <div>

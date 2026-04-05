@@ -323,8 +323,17 @@ export function QnAChatInterface() {
 
             const contentType = res.headers.get("content-type") ?? ""
             if (!res.ok || !contentType.includes("text/event-stream") || !res.body) {
-                const data = await res.json().catch(() => ({}))
-                throw new Error((data as { error?: string }).error ?? "Failed to reach assistant")
+                const raw = await res.text().catch(() => "")
+                if (raw.includes("Vercel Security Checkpoint")) {
+                    throw new Error("Chat request blocked by Vercel Security Checkpoint. Please try again, or ask the site admin to disable Bot Protection for /api/assistant.")
+                }
+                let parsedError = ""
+                try {
+                    parsedError = (JSON.parse(raw) as { error?: string })?.error ?? ""
+                } catch {
+                    parsedError = ""
+                }
+                throw new Error(parsedError || "Failed to reach assistant")
             }
 
             const reader = res.body.getReader()
@@ -402,7 +411,8 @@ export function QnAChatInterface() {
                 return
             }
             console.error(err)
-            setError("Something went wrong while contacting the assistant.")
+            const errMsg = err instanceof Error ? err.message : "Something went wrong while contacting the assistant."
+            setError(errMsg)
             updateMessageContent(assistantMessageId, (prev) => prev || "Sorry, I couldn't answer that right now.")
         } finally {
             streamControllerRef.current = null

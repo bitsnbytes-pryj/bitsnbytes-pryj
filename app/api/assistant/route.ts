@@ -733,9 +733,9 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  if (!process.env.OSM_API_KEY) {
+  if (!process.env.HACKCLUB_PROXY_API_KEY) {
     return NextResponse.json(
-      { error: "OSM_API_KEY is not configured on the server." },
+      { error: "HACKCLUB_PROXY_API_KEY is not configured on the server." },
       { status: 500 }
     )
   }

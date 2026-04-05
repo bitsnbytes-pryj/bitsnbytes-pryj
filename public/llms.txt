@@ -40,7 +40,7 @@ Bits&Bytes is India's boldest teen-led code club and nonprofit, based in Lucknow
 - **Srishti**: Operations & Communications Head – Internal ops, team communications.
 
 ## Technology Stack
-- **Frontend**: Next.js 14+, React, TypeScript, Tailwind CSS, Framer Motion, Three.js / WebGL
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS, Framer Motion, Three.js / WebGL
 - **Backend**: Node.js, Python, PostgreSQL, cloud infrastructure
 - **Tools**: GitHub, Discord, Vercel, Notion
 

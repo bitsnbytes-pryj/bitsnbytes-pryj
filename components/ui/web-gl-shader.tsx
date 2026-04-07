@@ -231,22 +231,70 @@ export function WebGLShader() {
         uniform vec2 resolution;
         uniform float time;
 
+        // Simplex-ish noise for water caustics
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(
+            mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+            mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+            f.y
+          );
+        }
+
         void main() {
+          vec2 uv = gl_FragCoord.xy / resolution;
           vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
-          float gx = p.x;
 
-          vec3 deepPurple = vec3(0.24, 0.12, 0.41);
-          vec3 vibrantPink = vec3(0.89, 0.35, 0.57);
-          vec3 softCoral = vec3(1.0, 0.68, 0.68);
+          // Sangam palette: Ganga (teal), Yamuna (deep navy), Saraswati (amber glow)
+          vec3 deepNavy = vec3(0.039, 0.145, 0.251);   // #0a2540
+          vec3 riverTeal = vec3(0.051, 0.58, 0.533);   // #0d9488
+          vec3 amberGlow = vec3(0.851, 0.467, 0.024);  // #d97706
 
-          // The "line" effect comes from this 1.0/abs() logic
-          float wave = 0.015 / abs(p.y + sin(gx + time * 0.8) * 0.4);
-          wave = clamp(wave, 0.0, 1.0);
+          // Two rivers flowing from opposite corners, meeting in center
+          float river1 = sin(p.x * 2.0 + p.y * 1.5 + time * 0.6) * 0.5;
+          float river2 = sin(-p.x * 1.8 + p.y * 2.0 + time * 0.5 + 1.57) * 0.5;
 
-          vec3 color = mix(deepPurple, vibrantPink, wave * 0.5);
-          color = mix(color, softCoral, wave * 0.2 * sin(time * 0.5));
+          // Confluence point - where rivers meet (center-ish, drifting)
+          vec2 confluence = vec2(sin(time * 0.15) * 0.3, cos(time * 0.12) * 0.2);
+          float distToConfluence = length(p - confluence);
 
-          gl_FragColor = vec4(color, wave * 0.8);
+          // Water caustics effect using layered noise
+          float caustic1 = noise(p * 3.0 + time * 0.3);
+          float caustic2 = noise(p * 5.0 - time * 0.2);
+          float caustics = (caustic1 + caustic2 * 0.5) * 0.3;
+
+          // River line effects (the glowing streams)
+          float line1 = 0.012 / abs(p.y + river1 + sin(p.x * 3.0 + time) * 0.15);
+          float line2 = 0.012 / abs(p.y - 0.3 + river2 + cos(p.x * 2.5 + time * 0.8) * 0.12);
+          line1 = clamp(line1, 0.0, 1.0);
+          line2 = clamp(line2, 0.0, 1.0);
+
+          // Merge intensity at confluence
+          float mergeGlow = smoothstep(1.2, 0.0, distToConfluence) * 0.4;
+
+          // Compose the rivers
+          vec3 color = deepNavy;
+          color = mix(color, riverTeal, line1 * 0.7 + caustics * 0.3);
+          color = mix(color, riverTeal * 1.2, line2 * 0.6);
+
+          // Amber glow at confluence (Saraswati, the mythical third river)
+          color = mix(color, amberGlow, mergeGlow * (0.5 + caustics));
+
+          // Subtle shimmer
+          float shimmer = sin(time * 2.0 + p.x * 10.0) * 0.02 + 0.02;
+          color += shimmer * riverTeal * (line1 + line2);
+
+          // Alpha based on river visibility
+          float alpha = max(line1, line2) * 0.85 + mergeGlow * 0.5 + caustics * 0.15;
+          alpha = clamp(alpha, 0.0, 0.9);
+
+          gl_FragColor = vec4(color, alpha);
         }
       `;
 
@@ -465,7 +513,7 @@ export function WebGLShader() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(135deg, #3E1E68 0%, #E45A92 50%, #FFACAC 100%)",
+            "linear-gradient(135deg, #0a2540 0%, #0d9488 50%, #d97706 100%)",
           opacity: 0.6,
         }}
       />
@@ -491,8 +539,8 @@ export function WebGLShader() {
             <div
               className="pointer-events-auto w-full sm:w-80 max-h-[70vh] overflow-y-auto rounded-2xl border border-white/10 dark:border-white/[0.06] shadow-2xl"
               style={{
-                background: "linear-gradient(135deg, rgba(15, 5, 28, 0.92) 0%, rgba(62, 30, 104, 0.85) 100%)",
-                boxShadow: "0 25px 70px rgba(1, 0, 8, 0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
+                background: "linear-gradient(135deg, rgba(2, 6, 23, 0.92) 0%, rgba(13, 148, 136, 0.25) 100%)",
+                boxShadow: "0 25px 70px rgba(2, 6, 23, 0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
               }}
@@ -501,11 +549,11 @@ export function WebGLShader() {
               <div
                 className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-white/[0.06] rounded-t-2xl"
                 style={{
-                  background: "linear-gradient(135deg, rgba(15, 5, 28, 0.97) 0%, rgba(62, 30, 104, 0.92) 100%)",
+                  background: "linear-gradient(135deg, rgba(2, 6, 23, 0.97) 0%, rgba(13, 148, 136, 0.3) 100%)",
                   backdropFilter: "blur(20px)",
                 }}
               >
-                <span className="text-xs font-semibold tracking-widest uppercase text-[#FFACAC]">
+                <span className="text-xs font-semibold tracking-widest uppercase text-amber-400">
                   Stats for Nerds
                 </span>
                 <button
@@ -520,7 +568,7 @@ export function WebGLShader() {
 
                 {/* Performance */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Performance</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">Performance</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Current FPS</span><span className="text-white font-medium tabular-nums">{stats.fps} <span className="text-white/30">({stats.frameTimeMs}ms)</span></span></div>
                     <div className="flex justify-between gap-4"><span>Peak / Min FPS</span><span className="text-white font-medium tabular-nums">{stats.peakFps} / {stats.minFps}</span></div>
@@ -532,7 +580,7 @@ export function WebGLShader() {
 
                 {/* Health */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Health</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">Health</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Degraded Mode</span><span className={stats.degraded ? "text-red-400 font-bold" : "text-emerald-400 font-medium"}>{stats.degraded ? "CRITICAL" : "OK"}</span></div>
                     <div className="flex justify-between gap-4"><span>Degradation Events</span><span className={`font-medium ${stats.degradationEvents > 0 ? "text-amber-400" : "text-white"}`}>{stats.degradationEvents}</span></div>
@@ -542,7 +590,7 @@ export function WebGLShader() {
 
                 {/* Rendering */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Rendering</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">Rendering</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Native DPR</span><span className="text-white font-medium tabular-nums">{stats.nativeDpr.toFixed(2)}x</span></div>
                     <div className="flex justify-between gap-4"><span>DPR Multiplier</span><span className="text-white font-medium tabular-nums">{stats.dprMultiplier}x</span></div>
@@ -559,7 +607,7 @@ export function WebGLShader() {
 
                 {/* Hardware */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Hardware</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">Hardware</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>CPU Threads</span><span className="text-white font-medium tabular-nums">{stats.concurrency}</span></div>
                     <div className="flex justify-between gap-4"><span>Device RAM</span><span className="text-white font-medium">~{stats.memory} GB</span></div>
@@ -580,7 +628,7 @@ export function WebGLShader() {
 
                 {/* WebGL Context */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">WebGL Context</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">WebGL Context</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Version</span><span className="text-white font-medium">{stats.webglVersion}</span></div>
                     <div className="flex justify-between gap-4"><span>Max Texture</span><span className="text-white font-medium tabular-nums">{stats.maxTextureSize.toLocaleString()}px</span></div>
@@ -592,7 +640,7 @@ export function WebGLShader() {
 
                 {/* Network */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Network</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">Network</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Effective Type</span><span className="text-white font-medium">{stats.connectionType}</span></div>
                     <div className="flex justify-between gap-4"><span>Downlink</span><span className="text-white font-medium tabular-nums">{stats.downlinkMbps}</span></div>
@@ -602,7 +650,7 @@ export function WebGLShader() {
 
                 {/* Build & Source */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">{"Build & Source"}</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-400 mb-1.5">{"Build & Source"}</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Branch</span><span className="text-white font-medium">{process.env.NEXT_PUBLIC_GIT_BRANCH || "unknown"}</span></div>
                     <div className="flex justify-between gap-4 items-center">
@@ -611,7 +659,7 @@ export function WebGLShader() {
                         href={`${process.env.NEXT_PUBLIC_REPO_URL || "#"}/commit/${process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || ""}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#FFACAC] hover:text-white underline underline-offset-2 decoration-[#FFACAC]/40 hover:decoration-white/60 transition-colors font-medium"
+                        className="text-amber-400 hover:text-white underline underline-offset-2 decoration-amber-400/40 hover:decoration-white/60 transition-colors font-medium"
                       >
                         {process.env.NEXT_PUBLIC_GIT_COMMIT_SHORT || "unknown"}
                       </a>
@@ -628,7 +676,7 @@ export function WebGLShader() {
                         href={process.env.NEXT_PUBLIC_REPO_URL || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#FFACAC] hover:text-white underline underline-offset-2 decoration-[#FFACAC]/40 hover:decoration-white/60 transition-colors font-medium"
+                        className="text-amber-400 hover:text-white underline underline-offset-2 decoration-amber-400/40 hover:decoration-white/60 transition-colors font-medium"
                       >
                         {"GitHub ↗"}
                       </a>
@@ -641,9 +689,9 @@ export function WebGLShader() {
 
           <button
             onClick={() => setShowStats(!showStats)}
-            className="pointer-events-auto p-2 sm:p-2.5 rounded-full border border-white/[0.08] hover:border-[#E45A92]/30 transition-all text-white/20 hover:text-[#FFACAC] z-50"
+            className="pointer-events-auto p-2 sm:p-2.5 rounded-full border border-white/[0.08] hover:border-teal-500/30 transition-all text-white/20 hover:text-amber-400 z-50"
             style={{
-              background: "linear-gradient(135deg, rgba(15, 5, 28, 0.5) 0%, rgba(62, 30, 104, 0.3) 100%)",
+              background: "linear-gradient(135deg, rgba(2, 6, 23, 0.5) 0%, rgba(13, 148, 136, 0.2) 100%)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
             }}

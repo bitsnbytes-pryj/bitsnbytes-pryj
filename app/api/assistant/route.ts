@@ -4,15 +4,12 @@ import { findExperts, recommendRoles } from "@/lib/team-data"
 import { generateEmbedding, searchSiteContent } from "@/lib/rag"
 import { detectFrustration } from "@/lib/sentiment"
 const openai = new OpenAI({
-  apiKey: process.env.HACKCLUB_PROXY_API_KEY,
-  baseURL: "https://ai.hackclub.com/proxy/v1",
-  defaultHeaders: {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-  }
+  apiKey: process.env.NVIDIA_NIM_API_KEY,
+  baseURL: "https://integrate.api.nvidia.com/v1",
 })
 
-const PRIMARY_MODEL = "google/gemini-3-flash-preview"
-const FALLBACK_MODEL = "google/gemini-2.5-flash"
+const PRIMARY_MODEL = "moonshotai/kimi-k2-instruct-0905"
+const FALLBACK_MODEL = "nvidia/llama-3.1-nemotron-70b-instruct"
 
 const SSE_HEADERS = {
   "Content-Type": "text/event-stream",
@@ -26,7 +23,7 @@ type ClientMessage = {
   content: string
 }
 
-type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string } | { type: "generate_image"; prompt: string; modelChoice: string; aspectRatio: string }
+type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string }
 
 type SemanticCacheEntry = {
   key: string
@@ -112,7 +109,7 @@ const intentPrototypes: Record<IntentBypassResult["intent"], string> = {
 const intentPrototypeEmbeddings = new Map<string, number[]>()
 
 const SITE_CONTEXT = `
-You are the official AI assistant for Bits&Bytes.
+You are the official AI assistant for Bits&Bytes Prayagraj - the teen-led code club at the confluence of ideas.
 
 You must follow these operating rules:
 1. Your only source of factual truth is tool output and current page content. Do not rely on memory for facts.
@@ -121,15 +118,15 @@ You must follow these operating rules:
 4. For navigation requests, call suggest_navigation.
 5. When the answer references text visible on the current page, call highlight_text with the exact snippet.
 6. For contact submissions, call submit_contact_form only after collecting required fields: name, email, message.
-7. If the user asks for an image or mockup, call generate_image. Never output raw tool JSON.
-8. Respond in English by default. Only use Hindi or Hinglish if the user explicitly asks for it (for example: "reply in Hindi"), and keep technical terms (hackathon, submission, GitHub, etc.) in English.
-9. If someone mentions sponsorship, partnership, or funding, guide them through sponsor inquiry step by step, then call submit_sponsor_inquiry.
-10. If a user asks if they're eligible for a hackathon, collect: (1) are you a student? (2) school/college name (3) grade or year. Then check eligibility rules via search_site_content and give a definitive yes/no with next steps.
+7. Respond in English by default. Only use Hindi or Hinglish if the user explicitly asks for it (for example: "reply in Hindi"), and keep technical terms (hackathon, submission, GitHub, etc.) in English.
+8. If someone mentions sponsorship, partnership, or funding, guide them through sponsor inquiry step by step, then call submit_sponsor_inquiry.
+9. If a user asks if they're eligible for a hackathon, collect: (1) are you a student? (2) school/college name (3) grade or year. Then check eligibility rules via search_site_content and give a definitive yes/no with next steps.
 
 Response style:
 - Be concise, direct, and helpful.
 - If tools do not return enough information, clearly say you could not verify the answer.
 - The knowledge base is primarily in English. Preserve facts from tool output, and do not localize language unless explicitly requested by the user.
+- Bits&Bytes Prayagraj is located in Prayagraj (formerly Allahabad), Uttar Pradesh, India - the sacred confluence (Sangam) of three rivers.
 
 Safety:
 - Refuse requests unrelated to Bits&Bytes, technology, coding, education, or local community support.
@@ -268,34 +265,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
       },
     },
   },
-  {
-    type: "function",
-    function: {
-      name: "generate_image",
-      description:
-        "Generate an image for the user (e.g. for mockups, banners, ideas). Use this when user asks for an image, graphic, or UI. This tool returns a markdown string with the image.",
-      parameters: {
-        type: "object",
-        properties: {
-          prompt: {
-            type: "string",
-            description: "A highly detailed prompt for the image generation model.",
-          },
-          model_choice: {
-            type: "string",
-            description: "Either 'stable-diffusion-3' (for art/steampunk/quality) or 'gemini-3.1' (for simple, extremely fast mockups).",
-            enum: ["stable-diffusion-3", "gemini-3.1"]
-          },
-          aspect_ratio: {
-            type: "string",
-            description: "Aspect ratio, e.g. '16:9', '1:1', or '9:16'.",
-            enum: ["1:1", "16:9", "9:16"]
-          }
-        },
-        required: ["prompt", "model_choice", "aspect_ratio"],
-      },
-    },
-  },
+
   {
     type: "function",
     function: {
@@ -559,23 +529,6 @@ async function handleSubmitContactTool(args: any) {
       success: false,
       message: "Something went wrong while submitting the contact form.",
     }
-  }
-}
-
-async function handleImageGenTool(args: any) {
-  const prompt = (args?.prompt ?? "").toString().trim()
-  const modelChoice = args?.model_choice === "gemini-3.1" ? "gemini-3.1" : "stable-diffusion-3"
-  const aspectRatio = args?.aspect_ratio ?? "16:9"
-
-  if (!prompt) {
-    return { action: null, result: { success: false, message: "A prompt is required." } }
-  }
-
-  // Instead of waiting 10s here, we instruct the UI to show an aesthetic animation
-  // and trigger the separate API route to actually generate the image.
-  return {
-    action: { type: "generate_image", prompt, modelChoice, aspectRatio },
-    result: { success: true, message: "Image generation triggered. Tell the user it's being generated right now in the chat interface." }
   }
 }
 

@@ -34,8 +34,8 @@ const jetBrainsMono = JetBrains_Mono({
 // SEO-optimized viewport configuration
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#3E1E68" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#0a2540" },
+    { media: "(prefers-color-scheme: dark)", color: "#020617" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -45,19 +45,19 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://gobitsnbytes.org"),
   title: {
-    default: "Bits&Bytes - India's Teen-Led Code Club | Hackathons & Tech Community",
-    template: "%s | Bits&Bytes",
+    default: "Bits&Bytes Prayagraj - Teen-Led Code Club | Where Code Meets Confluence",
+    template: "%s | Bits&Bytes Prayagraj",
   },
   description:
-    "Join India's boldest teen-led code club. Build real projects, attend hackathons, workshops, and grow as a developer. 200+ active members, 15+ shipped projects. Free to join!",
+    "Join Prayagraj's boldest teen-led code club at the confluence of ideas. Build real projects, attend hackathons, workshops, and grow as a developer. 200+ active members, 15+ shipped projects. Free to join!",
   keywords: [
-    "Bits and Bytes",
-    "bits&bytes",
-    "teen code club india",
-    "india hackathons for students",
-    "student developers india",
-    "coding club lucknow",
-    "tech events india",
+    "Bits and Bytes Prayagraj",
+    "bits&bytes prayagraj",
+    "teen code club prayagraj",
+    "coding club prayagraj",
+    "hackathons prayagraj",
+    "student developers prayagraj",
+    "tech events prayagraj",
     "learn coding for teens",
     "teen programmers community",
     "hackathons in india 2025",
@@ -65,12 +65,12 @@ export const metadata: Metadata = {
     "high school coding club",
     "teen tech community",
     "youth coding programs india",
-    "student hackathon india",
-    "free coding club india",
+    "student hackathon prayagraj",
+    "free coding club prayagraj",
   ],
-  authors: [{ name: "Bits&Bytes Team", url: "https://gobitsnbytes.org/about" }],
-  creator: "Bits&Bytes",
-  publisher: "Bits&Bytes",
+  authors: [{ name: "Bits&Bytes Prayagraj Team", url: "https://gobitsnbytes.org/about" }],
+  creator: "Bits&Bytes Prayagraj",
+  publisher: "Bits&Bytes Prayagraj",
   formatDetection: {
     email: true,
     address: true,
@@ -99,28 +99,28 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     url: "https://gobitsnbytes.org",
-    siteName: "Bits&Bytes",
-    title: "Bits&Bytes - India's Teen-Led Code Club | Hackathons & Tech Community",
+    siteName: "Bits&Bytes Prayagraj",
+    title: "Bits&Bytes Prayagraj - Teen-Led Code Club | Where Code Meets Confluence",
     description:
-      "Join India's boldest teen-led code club. Build real projects, attend hackathons, and grow as a developer. 200+ active members building the future.",
+      "Join Prayagraj's boldest teen-led code club at the confluence of ideas. Build real projects, attend hackathons, and grow as a developer. 200+ active members building the future.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Bits&Bytes - India's Teen-Led Code Club",
+        alt: "Bits&Bytes Prayagraj - Where Code Meets Confluence",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bits&Bytes - India's Teen-Led Code Club",
+    title: "Bits&Bytes Prayagraj - Where Code Meets Confluence",
     description:
-      "Join India's boldest teen-led code club. Build real projects, attend hackathons, and grow as a developer.",
+      "Join Prayagraj's boldest teen-led code club at the confluence of ideas. Build real projects, attend hackathons, and grow as a developer.",
     images: ["/og-image.png"],
-    creator: "@bitsnbytes_lko",
-    site: "@bitsnbytes_lko",
+    creator: "@bitsnbytes_pryj",
+    site: "@bitsnbytes_pryj",
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || "google-site-verification-code",
@@ -128,7 +128,7 @@ export const metadata: Metadata = {
   category: "education",
   classification: "Nonprofit Teen Code Club",
   other: {
-    "msapplication-TileColor": "#3E1E68",
+    "msapplication-TileColor": "#0a2540",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
   },
@@ -154,8 +154,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     "@id": "https://gobitsnbytes.org/#organization",
-    name: "Bits&Bytes",
-    alternateName: ["Bits and Bytes", "BitsNBytes", "Bits & Bytes"],
+    name: "Bits&Bytes Prayagraj",
+    alternateName: ["Bits and Bytes Prayagraj", "BitsNBytes Prayagraj", "Bits & Bytes Prayagraj"],
     url: "https://gobitsnbytes.org",
     logo: {
       "@type": "ImageObject",
@@ -165,11 +165,11 @@ export default function RootLayout({
     },
     image: "https://gobitsnbytes.org/og-image.png",
     description:
-      "India's boldest teen-led code club. We run hackathons, workshops, and build real projects. Join 200+ student developers building the future.",
+      "Prayagraj's boldest teen-led code club at the confluence of ideas. We run hackathons, workshops, and build real projects. Join 200+ student developers building the future.",
     foundingDate: "2024",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Lucknow",
+      addressLocality: "Prayagraj",
       addressRegion: "Uttar Pradesh",
       addressCountry: "IN",
     },
@@ -179,8 +179,8 @@ export default function RootLayout({
     },
     sameAs: [
       "https://www.linkedin.com/company/gobitsbytes",
-      "https://github.com/gobitsnbytes",
-      "https://twitter.com/bitsnbytes_lko",
+      "https://github.com/bitsnbytes-pryj",
+      "https://twitter.com/bitsnbytes_pryj",
       "https://www.instagram.com/gobitsnbytes",
     ],
     contactPoint: {
@@ -209,8 +209,8 @@ export default function RootLayout({
     "@type": "WebSite",
     "@id": "https://gobitsnbytes.org/#website",
     url: "https://gobitsnbytes.org",
-    name: "Bits&Bytes",
-    description: "India's teen-led code club for hackathons, workshops, and building real projects",
+    name: "Bits&Bytes Prayagraj",
+    description: "Prayagraj's teen-led code club at the confluence of ideas - hackathons, workshops, and building real projects",
     publisher: {
       "@id": "https://gobitsnbytes.org/#organization",
     },
@@ -249,25 +249,25 @@ export default function RootLayout({
       {
         "@type": "WebPage",
         name: "About Us",
-        description: "Learn about Bits&Bytes - India's teen-led code club",
+        description: "Learn about Bits&Bytes Prayagraj - where code meets confluence",
         url: "https://gobitsnbytes.org/about",
       },
       {
         "@type": "WebPage",
         name: "Projects",
-        description: "Explore 15+ projects built by teen developers",
+        description: "Explore 15+ projects built by Prayagraj teen developers",
         url: "https://gobitsnbytes.org/projects",
       },
       {
         "@type": "WebPage",
         name: "Events",
-        description: "Hackathons, workshops, and tech events for students",
+        description: "Hackathons, workshops, and tech events in Prayagraj",
         url: "https://gobitsnbytes.org/events",
       },
       {
         "@type": "WebPage",
         name: "Join Us",
-        description: "Join India's boldest teen code club - free membership",
+        description: "Join Prayagraj's boldest teen code club - free membership",
         url: "https://gobitsnbytes.org/join",
       },
       {
@@ -279,13 +279,13 @@ export default function RootLayout({
       {
         "@type": "WebPage",
         name: "Contact",
-        description: "Get in touch with Bits&Bytes team",
+        description: "Get in touch with Bits&Bytes Prayagraj team",
         url: "https://gobitsnbytes.org/contact",
       },
       {
         "@type": "WebPage",
         name: "FAQ",
-        description: "Frequently asked questions about Bits&Bytes",
+        description: "Frequently asked questions about Bits&Bytes Prayagraj",
         url: "https://gobitsnbytes.org/faq",
       },
     ],

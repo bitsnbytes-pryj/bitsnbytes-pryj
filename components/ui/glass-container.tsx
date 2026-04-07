@@ -5,7 +5,7 @@ interface GlassContainerProps {
     children: React.ReactNode;
     className?: string;
     containerClassName?: string;
-    glowColor?: "pink" | "purple" | "both" | "none";
+    glowColor?: "pink" | "purple" | "both" | "none" | "teal" | "navy" | "amber";
     animated?: boolean;
 }
 
@@ -40,12 +40,22 @@ export function GlassContainer({
                 </div>
             </div>
 
-            {/* Ambient glows */}
-            {(glowColor === "pink" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-(--brand-pink)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            {/* Ambient glows - Sangam palette */}
+            {(glowColor === "teal" || glowColor === "both") && (
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-teal-500/15 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
-            {(glowColor === "purple" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-(--brand-purple)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            {(glowColor === "navy" || glowColor === "both") && (
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-[#0a2540]/20 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {glowColor === "amber" && (
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-amber-500/15 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {/* Legacy support */}
+            {glowColor === "pink" && (
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-teal-500/15 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {glowColor === "purple" && (
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-[#0a2540]/20 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
         </div>
     );

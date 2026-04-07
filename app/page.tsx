@@ -71,15 +71,15 @@ export default function Home() {
 
         <PageSection
           eyebrow="Impact"
-          title="Club-powered learning with real outcomes"
-          description="We're a teen-led code club where workshops, hackathons, and build nights lead directly to shipped projects and new opportunities."
+          title="Where ideas converge into reality"
+          description="At the confluence of creativity and code, we're a teen-led community where workshops, hackathons, and build nights lead directly to shipped projects and new opportunities."
         >
           <div className="grid gap-6 md:grid-cols-3">
             {stats.map((stat) => (
               <GlassContainer
                 key={stat.label}
                 className="p-8"
-                glowColor={stat.label === "Projects shipped" ? "pink" : "purple"}
+                glowColor={stat.label === "Projects shipped" ? "teal" : "navy"}
               >
                 <div className="space-y-4">
                   <p className="text-5xl font-black text-white tracking-tighter">

@@ -12,7 +12,7 @@ const WebGLShader = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-purple)]/20 to-[var(--brand-pink)]/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-navy)]/20 to-[var(--brand-teal)]/20" />
     ),
   },
 );
@@ -29,21 +29,21 @@ const heroEvents = [
   {
     image: "/images/github-copilot-hero-desktop.png",
     imageMobile: "/images/github-copilot-hero-mobile.png",
-    alt: "GitHub Copilot Dev Days | Lucknow",
+    alt: "GitHub Copilot Dev Days | Prayagraj",
     badge: "Upcoming Event",
     status: "upcoming",
     title: "GitHub Copilot Dev Days",
-    subtitle: "19 Apr 2026 · Lucknow",
+    subtitle: "19 Apr 2026 · Prayagraj",
     href: "/events",
   },
   {
     image: "/event_pictures/HEe923uagAATqvy.jpg",
     imageMobile: "/event_pictures/HEe923uagAATqvy.jpg",
-    alt: "India Innovates 2026 archive",
-    badge: "Archived Event",
-    status: "archived",
-    title: "India Innovates 2026 Archive",
-    subtitle: "28 Mar 2026 · New Delhi",
+    alt: "Confluence Hack 2026",
+    badge: "Flagship Event",
+    status: "upcoming",
+    title: "Confluence Hack 2026",
+    subtitle: "Coming Soon · Prayagraj",
     href: "/events",
   },
 ];
@@ -78,19 +78,19 @@ export const HeroFuturistic = () => {
             <div className="flex flex-col h-full gap-6 sm:gap-8 md:gap-10">
               {/* Teen-led badge */}
               <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 sm:px-4 sm:py-1.5 text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-[0.25em] sm:tracking-[0.35em] text-white/80 backdrop-blur-md shadow-inner">
-                <Sparkles className="h-3 w-3 text-(--brand-pink)" />
-                TEEN-LED
+                <Sparkles className="h-3 w-3 text-teal-400" />
+                TEEN-LED · PRAYAGRAJ
               </span>
 
               {/* Main content */}
               <div className="space-y-6">
                 <h1 id="home-hero-title" className="font-display text-2xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl tracking-tighter drop-shadow-2xl">
-                  India&apos;s boldest <br className="hidden sm:block" />builders club
+                  Where code meets <br className="hidden sm:block" /><span className="text-teal-400">confluence</span>
                 </h1>
                 <p className="text-sm text-white/80 sm:text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed">
-                  We host premium hackathons, design/dev squads, and real-world
-                  launches—run entirely by students who want to ship things that
-                  matter.
+                  At the sacred meeting point of ideas, we host premium hackathons, 
+                  design/dev squads, and real-world launches—run entirely by students 
+                  who want to ship things that matter.
                 </p>
               </div>
 
@@ -98,10 +98,10 @@ export const HeroFuturistic = () => {
               <div className="flex flex-col gap-4 sm:flex-row w-full mt-2">
                 <Button
                   asChild
-                  className="w-full sm:flex-1 h-12 sm:h-14 px-6 sm:px-8 rounded-full bg-(--brand-pink) text-sm sm:text-base font-bold text-white shadow-[0_0_30px_rgba(228,90,146,0.5)] hover:shadow-[0_0_50px_rgba(228,90,146,0.7)] transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+                  className="w-full sm:flex-1 h-12 sm:h-14 px-6 sm:px-8 rounded-full bg-teal-600 text-sm sm:text-base font-bold text-white shadow-[0_0_30px_rgba(13,148,136,0.5)] hover:shadow-[0_0_50px_rgba(13,148,136,0.7)] hover:bg-teal-500 transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
                 >
                   <Link href="/join" className="flex items-center justify-center gap-2">
-                    Join the crew
+                    Join the confluence
                     <ArrowRight className="h-5 w-5 shrink-0" />
                   </Link>
                 </Button>
@@ -198,7 +198,7 @@ export const HeroFuturistic = () => {
                       key={idx}
                       type="button"
                       onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveSlide(idx); }}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeSlide ? "w-6 bg-(--brand-pink)" : "w-1.5 bg-white/30 hover:bg-white/50"}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeSlide ? "w-6 bg-teal-400" : "w-1.5 bg-white/30 hover:bg-white/50"}`}
                       aria-label={`Go to slide ${idx + 1}`}
                       aria-current={idx === activeSlide}
                     />

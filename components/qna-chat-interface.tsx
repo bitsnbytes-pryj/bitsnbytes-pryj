@@ -1,13 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect, useCallback } from "react"
-import type { ChangeEvent } from "react"
-import { useRouter } from "next/navigation"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { useState, useRef, useEffect, useCallback } from "react";
+import type { ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { motion } from "framer-motion";
 
-import { Bot, Trash, MapPin } from "lucide-react"
+import { Bot, Trash, MapPin } from "lucide-react";
+
+import { messageSlide } from "@/lib/motion";
 
 interface ChatMessage {
     id: number
@@ -69,17 +72,17 @@ function CountdownCard({ payload }: { payload: CountdownPayload }) {
 
     const remaining = formatRemaining(target - now)
     return (
-        <div className="my-3 rounded-xl border border-zinc-700/70 bg-zinc-950/90 p-3">
-            <p className="text-[11px] uppercase tracking-widest text-zinc-400">Event Countdown</p>
+        <div className="my-3 rounded-xl border border-teal-700/30 bg-teal-950/30 p-3 backdrop-blur-sm">
+            <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Event Countdown</p>
             <h4 className="mt-1 text-sm font-semibold text-white">{payload.event}</h4>
             {remaining.done ? (
-                <p className="mt-2 text-xs text-emerald-400">This event has started.</p>
+                <p className="mt-2 text-xs text-amber-400">This event has started.</p>
             ) : (
                 <div className="mt-3 grid grid-cols-4 gap-2 text-center">
                     {[{ label: "DD", value: remaining.dd }, { label: "HH", value: remaining.hh }, { label: "MM", value: remaining.mm }, { label: "SS", value: remaining.ss }].map((item) => (
-                        <div key={item.label} className="rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-2 py-2">
+                        <div key={item.label} className="rounded-lg border border-teal-700/30 bg-teal-950/50 px-2 py-2">
                             <div className="text-sm font-bold text-white">{item.value}</div>
-                            <div className="text-[10px] text-zinc-400">{item.label}</div>
+                            <div className="text-[10px] text-teal-300/60">{item.label}</div>
                         </div>
                     ))}
                 </div>
@@ -99,19 +102,19 @@ function TeamMemberCard({ payload }: { payload: MemberCardPayload }) {
                 )}
                 <div>
                     <p className="text-sm font-semibold text-white">{payload.name}</p>
-                    <span className="inline-flex mt-1 rounded-full border border-zinc-700/60 bg-zinc-900/80 px-2 py-0.5 text-[10px] uppercase tracking-wide text-zinc-300">
+                    <span className="inline-flex mt-1 rounded-full border border-teal-700/60 bg-teal-950/50 px-2 py-0.5 text-[10px] uppercase tracking-wide text-teal-200">
                         {payload.role}
                     </span>
                 </div>
             </div>
             <div className="mt-3 flex items-center gap-2">
                 {payload.socials?.github && (
-                    <a href={payload.socials.github} target="_blank" rel="noreferrer" className="text-xs rounded-lg border border-zinc-700/70 px-2 py-1 text-zinc-200 hover:border-zinc-500">
+                    <a href={payload.socials.github} target="_blank" rel="noreferrer" className="text-xs rounded-lg border border-zinc-700/70 px-2 py-1 text-zinc-200 hover:border-teal-500">
                         GitHub
                     </a>
                 )}
                 {payload.socials?.linkedin && (
-                    <a href={payload.socials.linkedin} target="_blank" rel="noreferrer" className="text-xs rounded-lg border border-zinc-700/70 px-2 py-1 text-zinc-200 hover:border-zinc-500">
+                    <a href={payload.socials.linkedin} target="_blank" rel="noreferrer" className="text-xs rounded-lg border border-zinc-700/70 px-2 py-1 text-zinc-200 hover:border-teal-500">
                         LinkedIn
                     </a>
                 )}
@@ -138,7 +141,7 @@ function ProjectCards({ ideas }: { ideas: ProjectIdea[] }) {
                         <p className="mt-2 text-[11px] text-zinc-400">Stack: {idea.tech_stack.join(" • ")}</p>
                     )}
                     {idea.why_it_fits_theme && (
-                        <p className="mt-2 text-[11px] text-emerald-300">Theme fit: {idea.why_it_fits_theme}</p>
+                        <p className="mt-2 text-[11px] text-amber-300">Theme fit: {idea.why_it_fits_theme}</p>
                     )}
                 </div>
             ))}
@@ -279,10 +282,10 @@ export function QnAChatInterface() {
         if (!trimmed || isLoading) return
 
         const payloadMessages = [
-            ...messages.map((m) => ({
+            ...messages.map((m) => (({
                 role: m.role,
                 content: m.content,
-            })),
+            }))),
             {
                 role: "user" as const,
                 content: trimmed,
@@ -429,11 +432,11 @@ export function QnAChatInterface() {
         >
             <div className="flex flex-wrap items-center justify-between gap-3 px-6 pt-5 pb-4 border-b border-zinc-800/80 bg-zinc-900/50 shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-[var(--brand-pink)] shadow-lg shadow-[#e45a92]/40">
+                    <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-teal-600 shadow-lg shadow-teal-600/40">
                         <Bot className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex flex-col">
-                        <h1 className="text-lg font-bold text-zinc-100 flex items-center gap-2">Bits&Bytes Assistant <span className="flex h-2 w-2 relative"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span></h1>
+                        <h1 className="text-lg font-bold text-zinc-100 flex items-center gap-2">Bits&Bytes Assistant <span className="flex h-2 w-2 relative"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span></span></h1>
                         <span className="text-xs text-zinc-400">
                             Official Code Club QnA Bot
                         </span>
@@ -452,7 +455,7 @@ export function QnAChatInterface() {
                             setMessage("")
                             window.localStorage.removeItem(STORAGE_KEY)
                         }}
-                        className={`flex h-9 items-center justify-center gap-2 rounded-xl bg-zinc-800/60 px-3 text-xs font-medium border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e45a92] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 ${messages.length === 0 ? "opacity-0 invisible" : "text-zinc-400 hover:bg-zinc-800 hover:text-red-400 border-transparent hover:border-red-900/50"}`}
+                        className={`flex h-9 items-center justify-center gap-2 rounded-xl bg-zinc-800/60 px-3 text-xs font-medium border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 ${messages.length === 0 ? "opacity-0 invisible" : "text-zinc-400 hover:bg-zinc-800 hover:text-red-400 border-transparent hover:border-red-900/50"}`}
                         aria-label="Clear chat session"
                         title="Clear chat session"
                         disabled={messages.length === 0}
@@ -480,26 +483,32 @@ export function QnAChatInterface() {
                                     key={prompt}
                                     type="button"
                                     onClick={() => handleQuickPrompt(prompt)}
-                                    className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm text-zinc-300 text-left transition hover:border-[#e45a92]/60 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e45a92] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 group flex items-start gap-3"
+                                    className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm text-zinc-300 text-left transition hover:border-teal-600/60 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 group flex items-start gap-3"
                                 >
-                                    <span className="text-[#e45a92] opacity-70 group-hover:opacity-100 mt-0.5">↳</span>
+                                    <span className="text-teal-500 opacity-70 group-hover:opacity-100 mt-0.5">↳</span>
                                     <span>{prompt}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
                 )}
-                <div className="space-y-6 flex flex-col pb-4">
+                <div className="space-y-4 flex flex-col pb-4">
                     {messages.map((m) => (
-                        <div key={m.id} className={`flex w-full ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                        <motion.div 
+                            key={m.id} 
+                            className={`flex w-full ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                            initial="hidden"
+                            animate="visible"
+                            variants={messageSlide}
+                        >
                             {m.role === "assistant" && (
                                 <div className="hidden sm:flex self-end mr-3 mb-1 w-8 h-8 rounded-full bg-zinc-800 items-center justify-center border border-zinc-700/50 flex-shrink-0">
-                                    <Bot className="w-4 h-4 text-[#e45a92]" />
+                                    <Bot className="w-4 h-4 text-teal-500" />
                                 </div>
                             )}
                             <div
                                 className={`w-fit max-w-[90%] sm:max-w-[85%] md:max-w-[75%] rounded-2xl px-5 py-3.5 text-[0.95rem] leading-relaxed shadow-sm break-words ${m.role === "user"
-                                    ? "bg-[#e45a92] text-white rounded-br-sm"
+                                    ? "bg-teal-600 text-white rounded-br-sm"
                                     : "border border-zinc-700/60 bg-zinc-900/90 text-zinc-100 rounded-bl-sm prose prose-invert prose-p:my-2 prose-headings:my-3 prose-ul:my-2 prose-li:my-1 max-w-none"
                                     }`}
                             >
@@ -515,7 +524,7 @@ export function QnAChatInterface() {
                                               if (text.includes("%%GENERATE_LOADER%%")) {
                                                 return (
                                                   <div className="relative overflow-hidden rounded-xl bg-zinc-800/80 w-full aspect-video border border-zinc-700/50 flex items-center justify-center p-4 my-2">
-                                                    <div className="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-[#e45a92]/20 to-transparent animate-[scan_2s_ease-in-out_infinite]" style={{ animationName: "scan" }} />
+                                                    <div className="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-teal-600/20 to-transparent animate-[scan_2s_ease-in-out_infinite]" style={{ animationName: "scan" }} />
                                                     <style>{`
                                                       @keyframes scan {
                                                         0% { transform: translateX(-100%); }
@@ -524,11 +533,11 @@ export function QnAChatInterface() {
                                                     `}</style>
                                                     <div className="flex flex-col items-center gap-3 relative z-10">
                                                       <div className="flex gap-1.5 justify-center">
-                                                        <div className="h-2 w-2 rounded-full bg-[var(--brand-pink)] animate-bounce" style={{ animationDelay: '0ms' }} />
-                                                        <div className="h-2 w-2 rounded-full bg-[var(--brand-pink)] animate-bounce" style={{ animationDelay: '150ms' }} />
-                                                        <div className="h-2 w-2 rounded-full bg-[var(--brand-pink)] animate-bounce" style={{ animationDelay: '300ms' }} />
+                                                        <div className="h-2 w-2 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '0ms' }} />
+                                                        <div className="h-2 w-2 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '150ms' }} />
+                                                        <div className="h-2 w-2 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '300ms' }} />
                                                       </div>
-                                                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--brand-pink)] animate-pulse shadow-black drop-shadow-md">Synthesizing Pixels</span>
+                                                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-teal-600 animate-pulse shadow-black drop-shadow-md">Synthesizing Pixels</span>
                                                     </div>
                                                   </div>
                                                 )
@@ -543,7 +552,7 @@ export function QnAChatInterface() {
                                                     return (
                                                         <a
                                                             href={href}
-                                                            className="inline-flex my-2 w-full sm:w-auto items-center justify-center rounded-xl bg-[var(--brand-pink)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#e45a92]/30 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#e45a92]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+                                                            className="inline-flex my-2 w-full sm:w-auto items-center justify-center rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-teal-600/30 transition-all hover:scale-105 hover:shadow-xl hover:shadow-teal-600/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             {...props}
@@ -561,7 +570,7 @@ export function QnAChatInterface() {
                                                                 const promptText = Array.isArray(children) ? children.join("") : String(children)
                                                                 handleQuickPrompt(promptText)
                                                             }}
-                                                            className="block w-full mt-3 text-left rounded-xl border border-zinc-700/80 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-200 transition-all hover:border-[#e45a92] hover:bg-zinc-800 hover:text-white"
+                                                            className="block w-full mt-3 text-left rounded-xl border border-zinc-700/80 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-200 transition-all hover:border-teal-600 hover:bg-zinc-800 hover:text-white"
                                                         >
                                                             ↳ {children}
                                                         </button>
@@ -569,7 +578,7 @@ export function QnAChatInterface() {
                                                 }
                                                 if (href?.startsWith("#")) {
                                                     return (
-                                                        <a href={href} className="text-[#e45a92] font-medium hover:underline underline-offset-4" {...props}>
+                                                        <a href={href} className="text-teal-500 font-medium hover:underline underline-offset-4" {...props}>
                                                             {children}
                                                         </a>
                                                     )
@@ -581,11 +590,11 @@ export function QnAChatInterface() {
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             aria-label="Open venue on Google Maps"
-                                                            className="mt-4 mb-2 flex flex-col gap-2 rounded-2xl border border-zinc-700/50 bg-zinc-900/50 p-4 transition-all hover:bg-zinc-800/80 hover:border-emerald-500/50 group no-underline"
+                                                            className="mt-4 mb-2 flex flex-col gap-2 rounded-2xl border border-zinc-700/50 bg-zinc-900/50 p-4 transition-all hover:bg-zinc-800/80 hover:border-teal-500/50 group no-underline"
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors">
-                                                                    <MapPin className="h-5 w-5 text-emerald-400" />
+                                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-500/10 group-hover:bg-teal-500/20 transition-colors">
+                                                                    <MapPin className="h-5 w-5 text-teal-400" />
                                                                 </div>
                                                                 <div>
                                                                     <h4 className="font-semibold text-zinc-100 m-0">View Venue on Map</h4>
@@ -596,7 +605,7 @@ export function QnAChatInterface() {
                                                     )
                                                 }
                                                 return (
-                                                    <a href={href} className="text-emerald-400 hover:text-emerald-300 font-medium hover:underline underline-offset-4" target="_blank" rel="noreferrer" {...props}>
+                                                    <a href={href} className="text-teal-500 hover:text-teal-400 font-medium hover:underline underline-offset-4" target="_blank" rel="noreferrer" {...props}>
                                                         {children}
                                                     </a>
                                                 )
@@ -643,9 +652,9 @@ export function QnAChatInterface() {
                                                                             <Tooltip
                                                                                 cursor={{ fill: "#27272a", opacity: 0.4 }}
                                                                                 contentStyle={{ backgroundColor: "#18181b", border: "1px solid #3f3f46", borderRadius: "8px", color: "#f4f4f5" }}
-                                                                                itemStyle={{ color: "#e45a92" }}
+                                                                                itemStyle={{ color: "#0d9488" }}
                                                                             />
-                                                                            <Bar dataKey="value" fill="#e45a92" radius={[6, 6, 0, 0]} maxBarSize={50} />
+                                                                            <Bar dataKey="value" fill="#0d9488" radius={[6, 6, 0, 0]} maxBarSize={50} />
                                                                         </BarChart>
                                                                     </ResponsiveContainer>
                                                                 </div>
@@ -716,22 +725,27 @@ export function QnAChatInterface() {
                                     </ReactMarkdown>
                                 )}
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                     <div ref={messagesEndRef} />
                     {isLoading && (
-                        <div className="flex justify-start">
+                        <motion.div 
+                            className="flex justify-start"
+                            initial="hidden"
+                            animate="visible"
+                            variants={messageSlide}
+                        >
                             <div className="hidden sm:flex self-end mr-3 mb-1 w-8 h-8 rounded-full bg-zinc-800 items-center justify-center border border-zinc-700/50 flex-shrink-0">
-                                <Bot className="w-4 h-4 text-[#e45a92]" />
+                                <Bot className="w-4 h-4 text-teal-500" />
                             </div>
                             <div className="rounded-2xl border border-zinc-700/60 bg-zinc-900/90 rounded-bl-sm px-6 py-4 flex items-center gap-2 text-sm text-zinc-400">
                                 <span className="flex items-center gap-1">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-[#e45a92] animate-bounce" style={{ animationDelay: "0ms" }} />
-                                    <span className="h-1.5 w-1.5 rounded-full bg-[#e45a92] animate-bounce" style={{ animationDelay: "150ms" }} />
-                                    <span className="h-1.5 w-1.5 rounded-full bg-[#e45a92] animate-bounce" style={{ animationDelay: "300ms" }} />
+                                    <span className="h-1.5 w-1.5 rounded-full bg-teal-500 animate-bounce" style={{ animationDelay: "0ms" }} />
+                                    <span className="h-1.5 w-1.5 rounded-full bg-teal-500 animate-bounce" style={{ animationDelay: "150ms" }} />
+                                    <span className="h-1.5 w-1.5 rounded-full bg-teal-500 animate-bounce" style={{ animationDelay: "300ms" }} />
                                 </span>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
                     {error && <div className="p-3 mx-auto w-full max-w-sm text-center rounded-xl bg-red-950/50 border border-red-900/50 text-sm text-red-400">{error}</div>}
                 </div>
@@ -748,4 +762,3 @@ export function QnAChatInterface() {
         </div>
     )
 }
-

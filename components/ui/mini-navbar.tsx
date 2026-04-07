@@ -13,8 +13,8 @@ const NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/events", label: "Events" },
+    { href: "/projects", label: "Projects" },
     { href: "/impact", label: "Impact" },
-    { href: "/qna", label: "QnA" },
 ];
 
 const AnimatedNavLink = ({
@@ -84,7 +84,7 @@ export function MiniNavbar() {
 
     const loginButtonElement = (
         <Link
-            href="https://github.com/gobitsnbytes"
+            href="https://github.com/bitsnbytes-pryj"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold border border-white/10 bg-white/5 text-white/70 rounded-full hover:border-white/30 hover:text-white transition-all duration-200 w-full md:w-auto"
@@ -99,14 +99,14 @@ export function MiniNavbar() {
             <div
                 className="absolute inset-0 -m-2 rounded-full
                      hidden md:block
-                     bg-[var(--brand-pink)]
+                     bg-[#0d9488]
                      opacity-20 filter blur-lg pointer-events-none
                      transition-all duration-300 ease-out
                      group-hover:opacity-40 group-hover:blur-xl group-hover:-m-3"
             ></div>
             <Link
                 href="/join"
-                className="relative z-10 flex items-center justify-center gap-1.5 px-5 py-2 text-xs font-black text-white bg-[var(--brand-pink)] rounded-full hover:brightness-110 active:scale-95 transition-all duration-200 w-full md:w-auto"
+                className="relative z-10 flex items-center justify-center gap-1.5 px-5 py-2 text-xs font-black text-white bg-[#0d9488] rounded-full hover:bg-[#0f766e] active:scale-95 transition-all duration-200 w-full md:w-auto"
             >
                 Join Now
                 <ArrowUpRight className="w-3.5 h-3.5" />
@@ -132,10 +132,10 @@ export function MiniNavbar() {
         >
             <div className="flex items-center justify-between w-full gap-x-6 md:gap-x-10">
                 <Link href="/" className="flex items-center">
-                    <div className="relative h-8 w-8 flex items-center justify-center rounded-lg bg-white overflow-hidden p-1.5">
+                    <div className="relative h-8 w-8 flex items-center justify-center rounded-lg bg-[#0d9488] overflow-hidden p-1.5">
                         <Image
                             src={logo}
-                            alt="Bits&Bytes logo"
+                            alt="Bits&Bytes Prayagraj logo"
                             width={20}
                             height={20}
                             className="object-contain invert"
@@ -182,7 +182,7 @@ export function MiniNavbar() {
                                     onClick={() => setIsOpen(false)}
                                     className={cn(
                                         "text-lg font-bold transition-colors w-full text-center py-2",
-                                        pathname === link.href ? "text-[var(--brand-pink)]" : "text-white/70 hover:text-white"
+                                        pathname === link.href ? "text-[#0d9488]" : "text-white/70 hover:text-white"
                                     )}
                                 >
                                     {link.label}

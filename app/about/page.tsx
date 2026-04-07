@@ -28,29 +28,29 @@ const WebGLShader = dynamic(
 );
 
 const aboutContent = {
-  title: "About Bits&Bytes",
+  title: "About Bits&Bytes Prayagraj",
   description:
-    "We are a teen-led code club dedicated to empowering high-agency individuals to ship production-grade technology through real-world product launches.",
+    "We are Prayagraj's teen-led tech community, empowering ambitious builders at the Sangam to ship production-grade technology through premium hackathons, design squads, and real-world product launches.",
   sections: [
     {
-      title: "The Origin Story",
+      title: "Building at the Sangam",
       description:
-        "Originally hosting Daydream Lucknow under Hack Club, we faced a last-minute venue withdrawal. We decided to go fully independent to bypass rigid formats and deliver actual value to builders.",
+        "Rooted in Prayagraj's historic convergence point, we bring together young minds from across the city to collaborate, learn, and create technology that matters.",
     },
     {
       title: "High Agency Only",
       description:
-        "We move away from 'beginner-friendly' formats that treat participants like they need hand-holding. We build for exceptionally talented individuals who want to ship real products.",
+        "We move away from 'beginner-friendly' formats that treat participants like they need hand-holding. We build for exceptionally talented Prayagraj students who want to ship real products.",
     },
     {
       title: "Ship Real Products",
       description:
-        "Workshops and hack nights must convert into tangible outcomes. We focus on premium hackathons, dev squads, and real-world launches that are fully student-led.",
+        "Workshops and hack nights must convert into tangible outcomes. We focus on premium hackathons, dev squads, and real-world launches that are fully student-led and Prayagraj-powered.",
     },
     {
       title: "Production Grade",
       description:
-        "We prioritize performance and stability. Our technical infrastructure is built with professional standards, removing barriers for the next generation of builders.",
+        "We prioritize performance and stability. Our technical infrastructure is built with professional standards, removing barriers for the next generation of Prayagraj builders.",
     },
   ],
 };
@@ -244,7 +244,7 @@ export default function About() {
           align="center"
           eyebrow="Team"
           title="Meet the Agents"
-          description="A tight crew of designers, engineers, club leads, and storytellers powering India-wide teen-led tech movements."
+          description="A tight crew of designers, engineers, and club leads powering Prayagraj's teen-led tech movement."
         >
           <Suspense fallback={<LoadingInline />}>
             <TeamCaseStudy coreTeam={coreTeam} volunteers={volunteers} />

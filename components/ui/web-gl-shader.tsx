@@ -149,7 +149,7 @@ export function WebGLShader() {
     }
 
     // --- Auto-upgrade color gamut ---
-    // Attempt to render in the widest gamut the display supports
+    // Attempt to render in widest gamut display supports
     let renderingGamut = "sRGB";
     if (webglVersion === "WebGL 2.0") {
       const gl2 = gl as WebGL2RenderingContext;
@@ -234,31 +234,50 @@ export function WebGLShader() {
         void main() {
           vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
           float gx = p.x;
+          float gy = p.y;
 
-          vec3 deepPurple = vec3(0.24, 0.12, 0.41);
-          vec3 vibrantPink = vec3(0.89, 0.35, 0.57);
-          vec3 softCoral = vec3(1.0, 0.68, 0.68);
+          // Sangam-inspired colors: deep water blue, teal, saffron
+          vec3 deepBlue = vec3(0.04, 0.09, 0.16);
+          vec3 waterBlue = vec3(0.10, 0.23, 0.36);
+          vec3 teal = vec3(0.05, 0.58, 0.53);
+          vec3 cyan = vec3(0.13, 0.83, 0.93);
+          vec3 saffron = vec3(0.96, 0.62, 0.04);
+          vec3 amber = vec3(0.98, 0.75, 0.14);
 
-          // The "line" effect comes from this 1.0/abs() logic
-          float wave = 0.015 / abs(p.y + sin(gx + time * 0.8) * 0.4);
-          wave = clamp(wave, 0.0, 1.0);
+          // Create flowing river confluence effect
+          float river1 = 0.012 / abs(gy + sin(gx * 0.8 + time * 0.6) * 0.3);
+          float river2 = 0.012 / abs(gy + cos(gx * 0.6 - time * 0.5) * 0.35);
+          float river3 = 0.008 / abs(gx + sin(gy * 0.7 + time * 0.4) * 0.25);
+          
+          // Combine rivers at confluence
+          float waves = (river1 + river2 + river3) / 3.0;
+          waves = clamp(waves, 0.0, 1.0);
 
-          vec3 color = mix(deepPurple, vibrantPink, wave * 0.5);
-          color = mix(color, softCoral, wave * 0.2 * sin(time * 0.5));
+          // Create depth with layered colors
+          vec3 baseColor = mix(deepBlue, waterBlue, waves * 0.4);
+          baseColor = mix(baseColor, teal, waves * 0.3 * (0.5 + 0.5 * sin(time * 0.3)));
+          baseColor = mix(baseColor, cyan, waves * 0.15 * sin(time * 0.7 + gx));
+          
+          // Add saffron/amber highlights for "confluence" sparkle
+          float sparkle = sin(time * 1.2 + gx * 2.0 + gy * 2.0) * 0.5 + 0.5;
+          baseColor = mix(baseColor, saffron, waves * 0.08 * sparkle);
+          baseColor = mix(baseColor, amber, waves * 0.05 * sparkle * sparkle);
 
-          gl_FragColor = vec4(color, wave * 0.8);
+          // Add subtle ripple effect
+          float ripple = sin(gx * 10.0 + time * 0.8) * sin(gy * 10.0 + time * 0.6);
+          baseColor += vec3(0.02, 0.05, 0.04) * waves * ripple * 0.3;
+
+          gl_FragColor = vec4(baseColor, waves * 0.7);
         }
       `;
 
     // Compile shaders
-    const compileShader = (
-      source: string,
-      type: number,
-    ): WebGLShader | null => {
+    const compileShader = (source: string, type: number): WebGLShader | null => {
       const shader = gl.createShader(type);
       if (!shader) return null;
 
       gl.shaderSource(shader, source);
+
       gl.compileShader(shader);
 
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -321,7 +340,7 @@ export function WebGLShader() {
 
     // Stats update helper
     const updateStats = (w: number, h: number, lw: number, lh: number, isDegraded = false) => {
-      setStats(s => ({
+      setStats((s) => ({
         ...s,
         canvasWidth: w,
         canvasHeight: h,
@@ -405,7 +424,7 @@ export function WebGLShader() {
         const actualFps = framesRenderedRef.current;
         if (actualFps > peakFpsRef.current) peakFpsRef.current = actualFps;
         if (actualFps < minFpsRef.current && actualFps > 0) minFpsRef.current = actualFps;
-        setStats(s => ({
+        setStats((s) => ({
           ...s,
           fps: actualFps,
           peakFps: peakFpsRef.current,
@@ -465,7 +484,7 @@ export function WebGLShader() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(135deg, #3E1E68 0%, #E45A92 50%, #FFACAC 100%)",
+            "linear-gradient(135deg, #0A1628 0%, #0d9488 50%, #f59e0b 100%)",
           opacity: 0.6,
         }}
       />
@@ -491,7 +510,7 @@ export function WebGLShader() {
             <div
               className="pointer-events-auto w-full sm:w-80 max-h-[70vh] overflow-y-auto rounded-2xl border border-white/10 dark:border-white/[0.06] shadow-2xl"
               style={{
-                background: "linear-gradient(135deg, rgba(15, 5, 28, 0.92) 0%, rgba(62, 30, 104, 0.85) 100%)",
+                background: "linear-gradient(135deg, rgba(15, 5, 28, 0.92) 0%, rgba(10, 22, 40, 0.85) 100%)",
                 boxShadow: "0 25px 70px rgba(1, 0, 8, 0.6), inset 0 1px 0 rgba(255,255,255,0.06)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
@@ -501,11 +520,11 @@ export function WebGLShader() {
               <div
                 className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-white/[0.06] rounded-t-2xl"
                 style={{
-                  background: "linear-gradient(135deg, rgba(15, 5, 28, 0.97) 0%, rgba(62, 30, 104, 0.92) 100%)",
+                  background: "linear-gradient(135deg, rgba(15, 5, 28, 0.97) 0%, rgba(10, 22, 40, 0.92) 100%)",
                   backdropFilter: "blur(20px)",
                 }}
               >
-                <span className="text-xs font-semibold tracking-widest uppercase text-[#FFACAC]">
+                <span className="text-xs font-semibold tracking-widest uppercase text-[#0d9488]">
                   Stats for Nerds
                 </span>
                 <button
@@ -520,7 +539,7 @@ export function WebGLShader() {
 
                 {/* Performance */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Performance</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">Performance</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Current FPS</span><span className="text-white font-medium tabular-nums">{stats.fps} <span className="text-white/30">({stats.frameTimeMs}ms)</span></span></div>
                     <div className="flex justify-between gap-4"><span>Peak / Min FPS</span><span className="text-white font-medium tabular-nums">{stats.peakFps} / {stats.minFps}</span></div>
@@ -532,7 +551,7 @@ export function WebGLShader() {
 
                 {/* Health */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Health</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">Health</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Degraded Mode</span><span className={stats.degraded ? "text-red-400 font-bold" : "text-emerald-400 font-medium"}>{stats.degraded ? "CRITICAL" : "OK"}</span></div>
                     <div className="flex justify-between gap-4"><span>Degradation Events</span><span className={`font-medium ${stats.degradationEvents > 0 ? "text-amber-400" : "text-white"}`}>{stats.degradationEvents}</span></div>
@@ -542,7 +561,7 @@ export function WebGLShader() {
 
                 {/* Rendering */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Rendering</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">Rendering</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Native DPR</span><span className="text-white font-medium tabular-nums">{stats.nativeDpr.toFixed(2)}x</span></div>
                     <div className="flex justify-between gap-4"><span>DPR Multiplier</span><span className="text-white font-medium tabular-nums">{stats.dprMultiplier}x</span></div>
@@ -559,7 +578,7 @@ export function WebGLShader() {
 
                 {/* Hardware */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Hardware</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">Hardware</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>CPU Threads</span><span className="text-white font-medium tabular-nums">{stats.concurrency}</span></div>
                     <div className="flex justify-between gap-4"><span>Device RAM</span><span className="text-white font-medium">~{stats.memory} GB</span></div>
@@ -580,7 +599,7 @@ export function WebGLShader() {
 
                 {/* WebGL Context */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">WebGL Context</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">WebGL Context</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Version</span><span className="text-white font-medium">{stats.webglVersion}</span></div>
                     <div className="flex justify-between gap-4"><span>Max Texture</span><span className="text-white font-medium tabular-nums">{stats.maxTextureSize.toLocaleString()}px</span></div>
@@ -592,7 +611,7 @@ export function WebGLShader() {
 
                 {/* Network */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">Network</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">Network</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Effective Type</span><span className="text-white font-medium">{stats.connectionType}</span></div>
                     <div className="flex justify-between gap-4"><span>Downlink</span><span className="text-white font-medium tabular-nums">{stats.downlinkMbps}</span></div>
@@ -602,7 +621,7 @@ export function WebGLShader() {
 
                 {/* Build & Source */}
                 <section>
-                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#E45A92] mb-1.5">{"Build & Source"}</h4>
+                  <h4 className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0d9488] mb-1.5">{"Build & Source"}</h4>
                   <div className="space-y-0.5 text-white/70">
                     <div className="flex justify-between gap-4"><span>Branch</span><span className="text-white font-medium">{process.env.NEXT_PUBLIC_GIT_BRANCH || "unknown"}</span></div>
                     <div className="flex justify-between gap-4 items-center">
@@ -611,7 +630,7 @@ export function WebGLShader() {
                         href={`${process.env.NEXT_PUBLIC_REPO_URL || "#"}/commit/${process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || ""}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#FFACAC] hover:text-white underline underline-offset-2 decoration-[#FFACAC]/40 hover:decoration-white/60 transition-colors font-medium"
+                        className="text-[#f59e0b] hover:text-white underline underline-offset-2 decoration-[#f59e0b]/40 hover:decoration-white/60 transition-colors font-medium"
                       >
                         {process.env.NEXT_PUBLIC_GIT_COMMIT_SHORT || "unknown"}
                       </a>
@@ -628,7 +647,7 @@ export function WebGLShader() {
                         href={process.env.NEXT_PUBLIC_REPO_URL || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#FFACAC] hover:text-white underline underline-offset-2 decoration-[#FFACAC]/40 hover:decoration-white/60 transition-colors font-medium"
+                        className="text-[#f59e0b] hover:text-white underline underline-offset-2 decoration-[#f59e0b]/40 hover:decoration-white/60 transition-colors font-medium"
                       >
                         {"GitHub ↗"}
                       </a>
@@ -641,9 +660,9 @@ export function WebGLShader() {
 
           <button
             onClick={() => setShowStats(!showStats)}
-            className="pointer-events-auto p-2 sm:p-2.5 rounded-full border border-white/[0.08] hover:border-[#E45A92]/30 transition-all text-white/20 hover:text-[#FFACAC] z-50"
+            className="pointer-events-auto p-2 sm:p-2.5 rounded-full border border-white/[0.08] hover:border-[#0d9488]/30 transition-all text-white/20 hover:text-[#f59e0b] z-50"
             style={{
-              background: "linear-gradient(135deg, rgba(15, 5, 28, 0.5) 0%, rgba(62, 30, 104, 0.3) 100%)",
+              background: "linear-gradient(135deg, rgba(15, 5, 28, 0.5) 0%, rgba(10, 22, 40, 0.3) 100%)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
             }}

@@ -49,18 +49,13 @@ const Testimonial = dynamic(
   },
 );
 
-// GlassIcons removed in favor of Features bento grid
+import { GlassContainer } from "@/components/ui/glass-container";
 
 const stats = [
-  { value: "200+", label: "Active members", detail: "across India" },
-  { value: "15+", label: "Projects shipped", detail: "from apps to AI" },
-  { value: "10+", label: "Partner schools", detail: "and growing" },
+  { value: "100+", label: "Builders", detail: "across Prayagraj" },
+  { value: "25+", label: "Projects shipped", detail: "from apps to AI" },
+  { value: "12+", label: "Events hosted", detail: "at the Sangam" },
 ];
-
-
-// Focus Areas are now handled within the Features component
-
-import { GlassContainer } from "@/components/ui/glass-container";
 
 export default function Home() {
   return (
@@ -70,16 +65,16 @@ export default function Home() {
         <HeroFuturistic />
 
         <PageSection
-          eyebrow="Impact"
-          title="Club-powered learning with real outcomes"
-          description="We're a teen-led code club where workshops, hackathons, and build nights lead directly to shipped projects and new opportunities."
+          eyebrow="Our Impact"
+          title="Building at the Sangam"
+          description="Bits&Bytes Prayagraj is where young minds converge to build, learn, and ship real technology—from AI prototypes to community platforms."
         >
           <div className="grid gap-6 md:grid-cols-3">
             {stats.map((stat) => (
               <GlassContainer
                 key={stat.label}
                 className="p-8"
-                glowColor={stat.label === "Projects shipped" ? "pink" : "purple"}
+                glowColor={stat.label === "Projects shipped" ? "teal" : stat.label === "Events hosted" ? "amber" : "cyan"}
               >
                 <div className="space-y-4">
                   <p className="text-5xl font-black text-white tracking-tighter">
@@ -101,8 +96,8 @@ export default function Home() {
 
         <PageSection
           eyebrow="What We Do"
-          title="Our Focus Areas"
-          description="Explore the different ways we help teens build, learn, and grow in tech"
+          title="How We Build"
+          description="Prayagraj's space for ambitious teenagers to ship meaningful tech through premium hackathons, design squads, and real-world product launches."
           align="center"
         >
           <Features />
@@ -111,8 +106,8 @@ export default function Home() {
         <Partners />
 
         <PageSection
-          eyebrow="Stories"
-          title="Voices from the crew"
+          eyebrow="Community"
+          title="Voices from Prayagraj"
           align="center"
         >
           <Suspense fallback={<LoadingInline />}>

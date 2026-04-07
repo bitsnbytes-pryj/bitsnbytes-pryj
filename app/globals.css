@@ -4,54 +4,66 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    --brand-purple: #3e1e68;
-    --brand-plum: #5d2f77;
-    --brand-pink: #e45a92;
-    --brand-coral: #ffacac;
-    --brand-midnight: #0f051c;
-    --brand-ink: #160b23;
+    /* Prayagraj/Sangam-inspired color palette */
+    --brand-deep-blue: #0a1628;
+    --brand-water-blue: #1a3a5c;
+    --brand-teal: #0d9488;
+    --brand-cyan: #22d3ee;
+    --brand-saffron: #f59e0b;
+    --brand-amber: #fbbf24;
+    --brand-sandstone: #fef3c7;
+    --brand-cream: #f5f0e6;
+    --brand-midnight: #0f172a;
+    --brand-navy: #1e293b;
 
-    --background: #fefbff;
-    --foreground: #140627;
+    /* Primary brand color - deep water blue */
+    --brand-purple: var(--brand-deep-blue);
+    --brand-plum: var(--brand-water-blue);
+    --brand-pink: var(--brand-teal);
+    --brand-coral: var(--brand-saffron);
+    --brand-ink: var(--brand-midnight);
+
+    --background: var(--brand-cream);
+    --foreground: var(--brand-midnight);
     --card: #ffffff;
-    --card-foreground: #120524;
+    --card-foreground: var(--brand-navy);
     --popover: #ffffff;
-    --popover-foreground: #120524;
-    --muted: rgba(20, 6, 39, 0.06);
-    --muted-foreground: rgba(20, 6, 39, 0.75);
-    --border: rgba(62, 30, 104, 0.15);
-    --input: rgba(20, 6, 39, 0.08);
+    --popover-foreground: var(--brand-navy);
+    --muted: rgba(15, 23, 42, 0.06);
+    --muted-foreground: rgba(15, 23, 42, 0.75);
+    --border: rgba(26, 58, 92, 0.15);
+    --input: rgba(15, 23, 42, 0.08);
 
-    --primary: var(--brand-purple);
+    --primary: var(--brand-deep-blue);
     --primary-foreground: #ffffff;
-    --secondary: rgba(93, 47, 119, 0.1);
-    --secondary-foreground: var(--brand-plum);
-    --accent: var(--brand-pink);
+    --secondary: rgba(26, 58, 92, 0.1);
+    --secondary-foreground: var(--brand-water-blue);
+    --accent: var(--brand-cyan);
     --accent-foreground: #ffffff;
     --destructive: #f04438;
     --destructive-foreground: #ffffff;
 
-    --ring: rgba(228, 90, 146, 0.4);
+    --ring: rgba(13, 148, 136, 0.4);
     --radius: 18px;
 
-    --glow-strong: 0 15px 50px rgba(228, 90, 146, 0.25);
-    --glow-soft: 0 8px 30px rgba(62, 30, 104, 0.12);
-    --shadow-card: 0 15px 45px rgba(17, 8, 31, 0.05);
+    --glow-strong: 0 15px 50px rgba(13, 148, 136, 0.25);
+    --glow-soft: 0 8px 30px rgba(26, 58, 92, 0.12);
+    --shadow-card: 0 15px 45px rgba(15, 23, 42, 0.05);
 
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
+    --chart-1: oklch(0.55 0.18 220);
+    --chart-2: oklch(0.6 0.14 180);
+    --chart-3: oklch(0.45 0.08 260);
+    --chart-4: oklch(0.85 0.12 45);
+    --chart-5: oklch(0.78 0.15 30);
 
-    --sidebar: #fff8ff;
-    --sidebar-foreground: #140627;
-    --sidebar-primary: var(--brand-purple);
+    --sidebar: #f5f0e6;
+    --sidebar-foreground: var(--brand-midnight);
+    --sidebar-primary: var(--brand-deep-blue);
     --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: rgba(228, 90, 146, 0.08);
-    --sidebar-accent-foreground: var(--brand-purple);
-    --sidebar-border: rgba(20, 6, 39, 0.08);
-    --sidebar-ring: rgba(228, 90, 146, 0.4);
+    --sidebar-accent: rgba(13, 148, 136, 0.08);
+    --sidebar-accent-foreground: var(--brand-deep-blue);
+    --sidebar-border: rgba(15, 23, 42, 0.08);
+    --sidebar-ring: rgba(13, 148, 136, 0.4);
 }
 
 .dark {
@@ -136,13 +148,15 @@
         box-sizing: border-box;
     }
 
-    html,
-    body {
+    html {
         @apply overflow-x-hidden;
         max-width: 100vw;
+        scroll-behavior: smooth;
     }
 
     body {
+        @apply overflow-x-hidden;
+        max-width: 100vw;
         @apply bg-background text-foreground antialiased;
         font-feature-settings: "ss01", "cv01", "cv11";
     }

@@ -1,6 +1,11 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+import { fadeInUp } from "@/lib/motion";
 
 type PageSectionProps = {
   children: ReactNode;
@@ -11,6 +16,7 @@ type PageSectionProps = {
   align?: "left" | "center";
   as?: "section" | "div";
   bleed?: boolean;
+  animate?: boolean;
 };
 
 export function PageSection({
@@ -22,17 +28,27 @@ export function PageSection({
   align = "left",
   as: Component = "section",
   bleed = false,
+  animate = true,
 }: PageSectionProps) {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  
   const headingAlignment =
     align === "center" ? "items-center text-center" : "text-left";
 
+  const MotionComponent = motion(Component as any);
+
   return (
-    <Component
+    <MotionComponent
+      ref={ref}
       className={cn(
         "section-shell py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-x-hidden",
         bleed && "max-w-none px-0 sm:px-6",
         className,
       )}
+      initial={animate ? "hidden" : undefined}
+      animate={animate && isInView ? "visible" : undefined}
+      variants={fadeInUp}
     >
       {(eyebrow || title || description) && (
         <div
@@ -59,7 +75,7 @@ export function PageSection({
         </div>
       )}
       {children}
-    </Component>
+    </MotionComponent>
   );
 }
 

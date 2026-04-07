@@ -1,18 +1,35 @@
 import { NextRequest, NextResponse } from "next/server"
-import OpenAI, { APIError } from "openai"
 import { findExperts, recommendRoles } from "@/lib/team-data"
 import { generateEmbedding, searchSiteContent } from "@/lib/rag"
 import { detectFrustration } from "@/lib/sentiment"
-const openai = new OpenAI({
-  apiKey: process.env.HACKCLUB_PROXY_API_KEY,
-  baseURL: "https://ai.hackclub.com/proxy/v1",
-  defaultHeaders: {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-  }
-})
 
-const PRIMARY_MODEL = "google/gemini-3-flash-preview"
-const FALLBACK_MODEL = "google/gemini-2.5-flash"
+let openai: any = null
+
+async function getOpenAI() {
+  if (!process.env.NVIDIA_NIM_API_KEY && !process.env.HACKCLUB_PROXY_API_KEY) {
+    return null
+  }
+  
+  if (openai) return openai
+  
+  try {
+    const { OpenAI } = await import("openai")
+    openai = new OpenAI({
+      apiKey: process.env.NVIDIA_NIM_API_KEY || process.env.HACKCLUB_PROXY_API_KEY,
+      baseURL: "https://integrate.api.nvidia.com/v1",
+      defaultHeaders: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      }
+    })
+    return openai
+  } catch (error) {
+    console.error("Failed to initialize OpenAI:", error)
+    return null
+  }
+}
+
+const PRIMARY_MODEL = "meta/llama-3.1-405b-instruct"
+const FALLBACK_MODEL = "meta/llama-3.1-8b-instruct"
 
 const SSE_HEADERS = {
   "Content-Type": "text/event-stream",
@@ -20,13 +37,12 @@ const SSE_HEADERS = {
   Connection: "keep-alive",
 }
 
-
 type ClientMessage = {
   role: "user" | "assistant"
   content: string
 }
 
-type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string } | { type: "generate_image"; prompt: string; modelChoice: string; aspectRatio: string }
+type AssistantAction = { type: "navigate"; path: string } | { type: "highlight"; textSnippet: string }
 
 type SemanticCacheEntry = {
   key: string
@@ -104,27 +120,25 @@ for (const phrases of Object.values(intentKeywords)) {
 }
 
 const intentPrototypes: Record<IntentBypassResult["intent"], string> = {
-  whatsapp_link: "I want the WhatsApp community invite link",
+  whatsapp_link: "I want to WhatsApp community invite link",
   website_navigation: "Please navigate me to a specific page on the website",
   contact_form: "Help me open the contact form to message the team",
 }
 
 const intentPrototypeEmbeddings = new Map<string, number[]>()
 
-const SITE_CONTEXT = `
-You are the official AI assistant for Bits&Bytes.
+const SITE_CONTEXT = `You are the official AI assistant for Bits&Bytes Prayagraj.
 
 You must follow these operating rules:
 1. Your only source of factual truth is tool output and current page content. Do not rely on memory for facts.
 2. For any factual question about events, founders, team, rules, dates, contact info, history, or club details, call search_site_content first.
 3. For team/person matching, call find_team_expert and/or recommend_role. Do not guess.
 4. For navigation requests, call suggest_navigation.
-5. When the answer references text visible on the current page, call highlight_text with the exact snippet.
+5. When your answer references text visible on the current page, call highlight_text with the exact snippet.
 6. For contact submissions, call submit_contact_form only after collecting required fields: name, email, message.
-7. If the user asks for an image or mockup, call generate_image. Never output raw tool JSON.
-8. Respond in English by default. Only use Hindi or Hinglish if the user explicitly asks for it (for example: "reply in Hindi"), and keep technical terms (hackathon, submission, GitHub, etc.) in English.
-9. If someone mentions sponsorship, partnership, or funding, guide them through sponsor inquiry step by step, then call submit_sponsor_inquiry.
-10. If a user asks if they're eligible for a hackathon, collect: (1) are you a student? (2) school/college name (3) grade or year. Then check eligibility rules via search_site_content and give a definitive yes/no with next steps.
+7. Respond in English by default. Only use Hindi or Hinglish if the user explicitly asks for it (for example: "reply in Hindi"), and keep technical terms (hackathon, submission, GitHub, etc.) in English.
+8. If someone mentions sponsorship, partnership, or funding, guide them through the sponsor inquiry step by step, then call submit_sponsor_inquiry.
+9. If a user asks if they're eligible for a hackathon, collect: (1) are you a student? (2) school/college name (3) grade or year. Then check eligibility rules via search_site_content and give a definitive yes/no with next steps.
 
 Response style:
 - Be concise, direct, and helpful.
@@ -132,26 +146,32 @@ Response style:
 - The knowledge base is primarily in English. Preserve facts from tool output, and do not localize language unless explicitly requested by the user.
 
 Safety:
-- Refuse requests unrelated to Bits&Bytes, technology, coding, education, or local community support.
+- Refuse requests unrelated to Bits&Bytes Prayagraj, technology, coding, education, or local community support.
 - Do not provide private personal details not present in tool output.
 
 **UI Components you can use:**
-- **Buttons / CTAs:** \`[Label](/path "cta")\`
-- **Follow-up actions:** \`[Question](# "follow-up")\`
-- **Charts:** Markdown code block with language \`chart\` containing JSON.
-- **Countdown Card:** Markdown code block with language \`countdown\` containing JSON: {"event":"...","date":"ISO_DATE"}
-- **Team Member Card:** Markdown code block with language \`member_card\` containing JSON: {"name":"...","role":"...","photo":"...","socials":{"github":"...","linkedin":"..."}}
-- **Project Idea Card:** Markdown code block with language \`project_card\` containing JSON array of ideas.
+- **Buttons / CTAs:** [Label](/path "cta")
+- **Follow-up actions:** [Question](# "follow-up")
+- **Charts:** Markdown code block with language chart containing JSON.
+- **Countdown Card:** Markdown code block with language countdown containing JSON: {"event":"...","date":"ISO_DATE"}
+- **Team Member Card:** Markdown code block with language member_card containing JSON: {"name":"...","role":"...","photo":"...","socials":{"github":"...","linkedin":"..."}}
+- **Project Idea Card:** Markdown code block with language project_card containing JSON array of ideas.
 - **Community Link:** Use this WhatsApp invite when users ask to join the community: https://chat.whatsapp.com/DvAIRLgEEBxISR8bsb9kVg
-`
 
-const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
+Bits&Bytes Prayagraj Context:
+- Location: Prayagraj (formerly Allahabad), Uttar Pradesh, India
+- This is a teen-led tech community at the sacred Sangam confluence
+- Focus: Building real projects, hackathons, workshops, and growing as developers
+- Community values: High agency, shipping real products, collaborative learning
+- Identity: Premium student tech community rooted in Prayagraj's cultural and tech scene`
+
+const tools: any[] = [
   {
     type: "function",
     function: {
       name: "submit_contact_form",
       description:
-        "Submit the Bits&Bytes contact form on behalf of the visitor once you have their name, email, a subject, and a clear message.",
+        "Submit the Bits&Bytes Prayagraj contact form on behalf of the visitor once you have their name, email, a subject, and a clear message.",
       parameters: {
         type: "object",
         properties: {
@@ -159,7 +179,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
           email: { type: "string", description: "The visitor's email address" },
           subject: {
             type: "string",
-            description: "Short subject line summarising why they are reaching out",
+            description: "Short subject line summarizing why they are reaching out",
           },
           message: {
             type: "string",
@@ -175,7 +195,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
     function: {
       name: "suggest_navigation",
       description:
-        "Suggest navigating the visitor to a specific page of the Bits&Bytes site. Use when they ask to go somewhere (e.g. join, contact, impact).",
+        "Suggest navigating the visitor to a specific page of the Bits&Bytes Prayagraj site. Use when they ask to go somewhere (e.g. join, contact, impact).",
       parameters: {
         type: "object",
         properties: {
@@ -194,13 +214,13 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
     function: {
       name: "search_site_content",
       description:
-        "Search the Bits&Bytes website knowledge base. USE THIS OFTEN when asked about dates, events, rules, the club, or specific facts. It searches semantically across all pages.",
+        "Search the Bits&Bytes Prayagraj website knowledge base. USE THIS OFTEN when asked about dates, events, rules, the club, or specific facts. It searches semantically across all pages.",
       parameters: {
         type: "object",
         properties: {
           query: {
             type: "string",
-            description: "The search query, e.g., 'who are the founders', 'when is Copilot Dev Days', 'what are the rules'",
+            description: "The search query, e.g., 'who are the founders', 'when is the next hackathon', 'what are the rules'",
           },
         },
         required: ["query"],
@@ -243,13 +263,12 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
       },
     },
   },
-
   {
     type: "function",
     function: {
       name: "recommend_role",
       description:
-        "Recommend a role or team within Bits&Bytes based on the user's skills and interests.",
+        "Recommend a role or team within Bits&Bytes Prayagraj based on the user's skills and interests.",
       parameters: {
         type: "object",
         properties: {
@@ -265,34 +284,6 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
           },
         },
         required: ["skills", "interests"],
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "generate_image",
-      description:
-        "Generate an image for the user (e.g. for mockups, banners, ideas). Use this when user asks for an image, graphic, or UI. This tool returns a markdown string with the image.",
-      parameters: {
-        type: "object",
-        properties: {
-          prompt: {
-            type: "string",
-            description: "A highly detailed prompt for the image generation model.",
-          },
-          model_choice: {
-            type: "string",
-            description: "Either 'stable-diffusion-3' (for art/steampunk/quality) or 'gemini-3.1' (for simple, extremely fast mockups).",
-            enum: ["stable-diffusion-3", "gemini-3.1"]
-          },
-          aspect_ratio: {
-            type: "string",
-            description: "Aspect ratio, e.g. '16:9', '1:1', or '9:16'.",
-            enum: ["1:1", "16:9", "9:16"]
-          }
-        },
-        required: ["prompt", "model_choice", "aspect_ratio"],
       },
     },
   },
@@ -400,7 +391,6 @@ function containsSessionSpecificWord(input: string): boolean {
 }
 
 async function embedMiniLM(text: string): Promise<number[]> {
-  // Use the existing embedding backend to avoid native ONNX runtime dependency in production.
   return generateEmbedding(text)
 }
 
@@ -423,7 +413,7 @@ async function classifyIntentBypass(userText: string): Promise<IntentBypassResul
     if (intentKeywords.whatsapp_link.some((k) => lower.includes(k))) {
       return {
         intent: "whatsapp_link",
-        response: "Join the Bits&Bytes WhatsApp community here: https://chat.whatsapp.com/DvAIRLgEEBxISR8bsb9kVg",
+        response: "Join the Bits&Bytes Prayagraj WhatsApp community here: https://chat.whatsapp.com/DvAIRLgEEBxISR8bsb9kVg",
       }
     }
 
@@ -468,7 +458,7 @@ async function classifyIntentBypass(userText: string): Promise<IntentBypassResul
   if (bestIntent === "whatsapp_link") {
     return {
       intent: "whatsapp_link",
-      response: "Join the Bits&Bytes WhatsApp community here: https://chat.whatsapp.com/DvAIRLgEEBxISR8bsb9kVg",
+      response: "Join the Bits&Bytes Prayagraj WhatsApp community here: https://chat.whatsapp.com/DvAIRLgEEBxISR8bsb9kVg",
     }
   }
 
@@ -489,7 +479,7 @@ async function classifyIntentBypass(userText: string): Promise<IntentBypassResul
   }
 }
 
-function mapClientMessagesToOpenAI(messages: ClientMessage[]): OpenAI.Chat.ChatCompletionMessageParam[] {
+function mapClientMessagesToOpenAI(messages: ClientMessage[]): any[] {
   return messages.map((m) => ({
     role: m.role,
     content: m.content,
@@ -536,7 +526,7 @@ async function handleSubmitContactTool(args: any) {
     const { error } = await supabase.from("contacts").insert({
       name,
       email,
-      subject: subject || "Contact via Bits&Bytes assistant",
+      subject: subject || "Contact via Bits&Bytes Prayagraj assistant",
       message,
       source: "assistant",
     })
@@ -562,23 +552,6 @@ async function handleSubmitContactTool(args: any) {
   }
 }
 
-async function handleImageGenTool(args: any) {
-  const prompt = (args?.prompt ?? "").toString().trim()
-  const modelChoice = args?.model_choice === "gemini-3.1" ? "gemini-3.1" : "stable-diffusion-3"
-  const aspectRatio = args?.aspect_ratio ?? "16:9"
-
-  if (!prompt) {
-    return { action: null, result: { success: false, message: "A prompt is required." } }
-  }
-
-  // Instead of waiting 10s here, we instruct the UI to show an aesthetic animation
-  // and trigger the separate API route to actually generate the image.
-  return {
-    action: { type: "generate_image", prompt, modelChoice, aspectRatio },
-    result: { success: true, message: "Image generation triggered. Tell the user it's being generated right now in the chat interface." }
-  }
-}
-
 async function handleGenerateProjectIdeasTool(args: any) {
   const interests = Array.isArray(args?.interests) ? args.interests.map((v: unknown) => String(v)).filter(Boolean) : []
   const techSkills = Array.isArray(args?.tech_skills) ? args.tech_skills.map((v: unknown) => String(v)).filter(Boolean) : []
@@ -588,6 +561,14 @@ async function handleGenerateProjectIdeasTool(args: any) {
     return {
       success: false,
       message: "interests and tech_skills are required.",
+    }
+  }
+
+  const ai = await getOpenAI()
+  if (!ai) {
+    return {
+      success: false,
+      message: "AI service is not available.",
     }
   }
 
@@ -602,7 +583,7 @@ async function handleGenerateProjectIdeasTool(args: any) {
   ].join("\n")
 
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await ai.chat.completions.create({
       model: PRIMARY_MODEL,
       messages: [
         {
@@ -692,10 +673,16 @@ function createImmediateSseResponse(content: string, action?: AssistantAction, m
   return new Response(stream, { headers: SSE_HEADERS })
 }
 
-// get_site_section removed in favor of semantic RAG search
-
 export async function POST(req: NextRequest) {
-  // ─── Rate limiting (10 requests per minute per IP) ───
+  const ai = await getOpenAI()
+  
+  if (!ai) {
+    return NextResponse.json(
+      { error: "AI assistant is not configured. Please configure NVIDIA_NIM_API_KEY or HACKCLUB_PROXY_API_KEY." },
+      { status: 500 }
+    )
+  }
+  
   const forwarded = req.headers.get("x-forwarded-for")
   const ip = forwarded?.split(",")[0]?.trim() ?? req.headers.get("x-real-ip") ?? "anonymous"
 
@@ -715,13 +702,6 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  if (!process.env.HACKCLUB_PROXY_API_KEY) {
-    return NextResponse.json(
-      { error: "HACKCLUB_PROXY_API_KEY is not configured on the server." },
-      { status: 500 }
-    )
-  }
-
   try {
     const body = await req.json()
     const clientMessages = (body?.messages ?? []) as ClientMessage[]
@@ -732,7 +712,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Messages array is required." }, { status: 400 })
     }
 
-    // Build page-aware system context
     const PAGE_LABELS: Record<string, string> = {
       "/": "Home",
       "/about": "About",
@@ -743,7 +722,7 @@ export async function POST(req: NextRequest) {
       "/events": "Events",
     }
     const currentPageLabel = PAGE_LABELS[clientPathname] ?? clientPathname
-    const pageContext = `\n\n**Current Page:** The user is currently viewing the "${currentPageLabel}" page (${clientPathname}). Tailor your answers to be relevant to the content on this page when appropriate. If they ask "what's on this page" or similar, describe what this page contains.`
+    const pageContext = `\n\n**Current Page:** The user is currently viewing the "${currentPageLabel}" page (${clientPathname}). Tailor your answers to be relevant to content on this page when appropriate. If they ask "what's on this page" or similar, describe what this page contains.`
 
     const lastUserMsg = clientMessages.filter(m => m.role === "user").pop()
 
@@ -766,7 +745,7 @@ export async function POST(req: NextRequest) {
       timeStyle: "long",
     })} (IST)`
 
-    const baseMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+    const baseMessages: any[] = [
       {
         role: "system",
         content: SITE_CONTEXT + timeContext + pageContext + frustrationHint,
@@ -787,8 +766,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const runCompletion = async (model: string, messages: OpenAI.Chat.ChatCompletionMessageParam[]) => {
-      return openai.chat.completions.create({
+    const runCompletion = async (model: string, messages: any[]) => {
+      return ai.chat.completions.create({
         model,
         messages,
         tools,
@@ -806,9 +785,9 @@ export async function POST(req: NextRequest) {
       try {
         completion = await runCompletion(PRIMARY_MODEL, currentMessages)
       } catch (err) {
-        const apiError = err as APIError
-        const code = (apiError as any)?.code ?? (apiError as any)?.error?.code
-        const status = (apiError as any)?.status
+        const apiError = err as any
+        const code = apiError?.code ?? apiError?.error?.code
+        const status = apiError?.status
         const shouldFallback =
           code === "model_not_found" ||
           code === "unsupported_parameter" ||
@@ -827,11 +806,8 @@ export async function POST(req: NextRequest) {
       const message = choice?.message
       const finishReason = choice?.finish_reason
 
-      // If the model's output was truncated (hit token limit), skip tool parsing
-      // and ask the model to answer directly without tools
       if (finishReason === "length" && message?.tool_calls && message.tool_calls.length > 0) {
         console.warn("[Assistant] Tool call truncated (finish_reason=length). Retrying without tools.")
-        // Push a system hint to avoid tools and answer directly
         currentMessages.push({
           role: "system" as const,
           content: "Your previous response was truncated. Please answer the user's question directly and concisely WITHOUT using any tools.",
@@ -840,11 +816,9 @@ export async function POST(req: NextRequest) {
       }
 
       if (!message?.tool_calls || message.tool_calls.length === 0) {
-        break // No more tool calls required
+        break
       }
 
-      // HackClub API requires content to be a string (not null).
-      // When the model makes tool calls, the SDK sets content to null.
       currentMessages.push({
         ...message,
         content: message.content ?? "",
@@ -857,21 +831,18 @@ export async function POST(req: NextRequest) {
           toolArgs = toolCall.function.arguments ? JSON.parse(toolCall.function.arguments) : {}
         } catch (parseErr) {
           console.error(`[Assistant] Failed to parse tool args for "${toolName}":`, toolCall.function.arguments)
-          // Attempt basic recovery: try to extract JSON from partial output
           const rawArgs = toolCall.function.arguments ?? ""
           try {
-            // Try to close any unclosed braces and parse
             const repaired = rawArgs.replace(/,\s*$/, "") + (rawArgs.includes("{") && !rawArgs.endsWith("}") ? "}" : "")
             toolArgs = JSON.parse(repaired)
             console.log(`[Assistant] Recovered partial tool args for "${toolName}"`)
           } catch {
             toolArgs = {}
-            // Tell the model the tool call failed so it can recover
             currentMessages.push({
               role: "tool",
               tool_call_id: toolCall.id,
               content: JSON.stringify({ success: false, error: `Tool arguments were malformed and could not be parsed. Please try answering the user directly without this tool, or retry with simpler arguments.` }),
-            } as OpenAI.Chat.ChatCompletionToolMessageParam)
+            } as any)
             continue
           }
         }
@@ -900,10 +871,6 @@ export async function POST(req: NextRequest) {
           const textSnippet = (toolArgs?.textSnippet ?? "").toString()
           toolResult = { success: true, textSnippet }
           actionToClient = { type: "highlight" as const, textSnippet }
-        } else if (toolName === "generate_image") {
-          const res = await handleImageGenTool(toolArgs)
-          toolResult = res.result
-          if (res.action) actionToClient = res.action as any
         } else if (toolName === "generate_project_ideas") {
           toolResult = await handleGenerateProjectIdeasTool(toolArgs)
         } else if (toolName === "submit_sponsor_inquiry") {
@@ -916,7 +883,7 @@ export async function POST(req: NextRequest) {
           role: "tool",
           tool_call_id: toolCall.id,
           content: JSON.stringify(toolResult),
-        } as OpenAI.Chat.ChatCompletionToolMessageParam)
+        } as any)
       }
     }
 
@@ -925,7 +892,7 @@ export async function POST(req: NextRequest) {
         sessionId,
         pathname: clientPathname,
         ip,
-      }, latestUserEmbedding, lastUserMsg?.content)
+      }, latestUserEmbedding, lastUserMsg?.content, ai)
     } catch (streamErr) {
       console.error("Assistant stream error after tool call:", streamErr)
       return NextResponse.json(
@@ -944,13 +911,14 @@ export async function POST(req: NextRequest) {
 
 async function streamAssistantResponse(
   model: string,
-  messages: OpenAI.Chat.ChatCompletionMessageParam[],
+  messages: any[],
+  ai: any,
   action?: AssistantAction,
   sessionMeta?: { sessionId: string; pathname: string; ip: string },
   latestUserEmbedding?: number[] | null,
   latestUserText?: string
 ) {
-  const completion = await openai.chat.completions.create({
+  const completion = await ai.chat.completions.create({
     model,
     messages,
     max_tokens: 600,
@@ -981,7 +949,6 @@ async function streamAssistantResponse(
 
         send({ type: "done", action: action ?? null })
 
-        // Save session after stream done
         if (sessionMeta?.sessionId) {
           try {
             const { createClient } = await import("@supabase/supabase-js")
@@ -992,7 +959,6 @@ async function streamAssistantResponse(
 
             const finalMessages = [...messages, { role: "assistant", content: fullAssistantContent }]
 
-            // Insert/update chat session asynchronously
             supabase.from("chat_sessions").upsert({
               session_id: sessionMeta.sessionId,
               messages: finalMessages,

@@ -5,7 +5,7 @@ interface GlassContainerProps {
     children: React.ReactNode;
     className?: string;
     containerClassName?: string;
-    glowColor?: "pink" | "purple" | "both" | "none";
+    glowColor?: "pink" | "purple" | "both" | "none" | "teal" | "cyan" | "amber";
     animated?: boolean;
 }
 
@@ -42,10 +42,19 @@ export function GlassContainer({
 
             {/* Ambient glows */}
             {(glowColor === "pink" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-(--brand-pink)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-pink-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
             {(glowColor === "purple" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-(--brand-purple)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-purple-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {glowColor === "teal" && (
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-teal-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {glowColor === "cyan" && (
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-cyan-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+            )}
+            {glowColor === "amber" && (
+                <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full bg-amber-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
         </div>
     );

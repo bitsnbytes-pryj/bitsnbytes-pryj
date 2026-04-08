@@ -1,0 +1,6 @@
+# pnpm workspace configuration for Bits&Bytes platform
+packages:
+  - 'frontend'
+  - 'backend'
+  - 'admin-backend'
+  - 'shared'

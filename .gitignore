@@ -1,31 +1,105 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# =============================================
+# Dependencies
+# =============================================
+node_modules/
+.pnpm-store/
 .pnpm-debug.log*
 
-# env files
+# =============================================
+# Build Output
+# =============================================
+# Next.js
+/.next/
+/out/
+/frontend/.next/
+/frontend/out/
+
+# TypeScript
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# =============================================
+# Environment Files
+# =============================================
+.env
+.env.local
+.env.*.local
 **/.env*
 !**/.env.example
 
-# vercel
-.vercel
+# =============================================
+# IDE & Editors
+# =============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# typescript
+# =============================================
+# OS Files
+# =============================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =============================================
+# Logs
+# =============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================================
+# Testing
+# =============================================
+coverage/
+.nyc_output/
+
+# =============================================
+# Deployment
+# =============================================
+.vercel/
+.vercel.json.bak
+
+# =============================================
+# Temporary & Cache Files
+# =============================================
+tmp/
+temp/
+*.tmp
+*.temp
+.npm
+*.tgz
+
+# =============================================
+# Package-specific
+# =============================================
+# Frontend
+/frontend/build/
+/frontend/comic/
+/frontend/stickers/
+/frontend/stickers_nobg/
+
+# Backend
+/backend/dist/
+
+# Admin Backend
+/admin-backend/dist/
+
+# Shared
+/shared/dist/
+
+# =============================================
+# Debug
+# =============================================
 *.tsbuildinfo
-next-env.d.ts
-comic/
-stickers/
-stickers_nobg/
+.eslintcache
+
+# =============================================
+# Husky (if not using)
+# =============================================
+.husky/

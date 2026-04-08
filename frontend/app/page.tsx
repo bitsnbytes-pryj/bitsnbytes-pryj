@@ -9,13 +9,19 @@ import {
   Lightbulb,
   Trophy,
   Sparkles,
+  Code,
+  Calendar,
+  Zap,
+  Globe,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-import { HeroFuturistic } from "@/components/ui/hero-futuristic";
+import Hero from "@/components/hero";
 import { PageSection } from "@/components/page-section";
-import { Features } from "@/components/ui/features-8";
+import { BentoGrid, AnimatedSection } from "@/components/ui/bento-grid";
+import { InteractiveConfluence } from "@/components/ui/interactive-confluence";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import {
   Card,
   CardContent,
@@ -59,12 +65,57 @@ const stats = [
   { value: "12+", label: "Events hosted", detail: "at the Sangam" },
 ];
 
+// Bento grid feature items
+const featureItems = [
+  {
+    id: "hackathons",
+    title: "Premium Hackathons",
+    description: "48-hour intensive building experiences where ideas become reality. Connect with mentors, learn new tech, and ship products.",
+    icon: <Zap className="w-6 h-6 text-[#f59e0b]" />,
+    size: "lg" as const,
+  },
+  {
+    id: "projects",
+    title: "Real Projects",
+    description: "Build production-grade applications, AI tools, and community platforms.",
+    icon: <Code className="w-5 h-5 text-[#0d9488]" />,
+    size: "md" as const,
+  },
+  {
+    id: "community",
+    title: "Vibrant Community",
+    description: "Connect with 200+ ambitious teen builders across Prayagraj.",
+    icon: <Users className="w-5 h-5 text-[#22d3ee]" />,
+    size: "sm" as const,
+  },
+  {
+    id: "events",
+    title: "Tech Events",
+    description: "Workshops, meetups, and learning sessions every month.",
+    icon: <Calendar className="w-5 h-5 text-[#f59e0b]" />,
+    size: "sm" as const,
+  },
+  {
+    id: "global",
+    title: "Global Network",
+    description: "Part of the Bits&Bytes network connecting builders worldwide.",
+    icon: <Globe className="w-5 h-5 text-[#0d9488]" />,
+    size: "md" as const,
+  },
+];
+
 export default function Home() {
   return (
     <>
       <WebGLShader />
+      <ScrollProgress />
       <div className="flex flex-col w-full max-w-full overflow-x-hidden">
-        <HeroFuturistic />
+        <Hero />
+
+        {/* WOW Factor: Interactive Confluence Map */}
+        <AnimatedSection className="w-full">
+          <InteractiveConfluence className="rounded-none" />
+        </AnimatedSection>
 
         <PageSection
           eyebrow="Our Impact"
@@ -72,26 +123,27 @@ export default function Home() {
           description="Bits&Bytes Prayagraj is where young minds converge to build, learn, and ship real technology—from AI prototypes to community platforms."
         >
           <div className="grid gap-6 md:grid-cols-3">
-            {stats.map((stat) => (
-              <GlassContainer
-                key={stat.label}
-                className="p-8"
-                glowColor={stat.label === "Projects shipped" ? "teal" : stat.label === "Events hosted" ? "amber" : "cyan"}
-              >
-                <div className="space-y-4">
-                  <p className="text-5xl font-black text-white tracking-tighter">
-                    {stat.value}
-                  </p>
-                  <div>
-                    <h3 className="text-xl font-bold text-white uppercase tracking-tight">
-                      {stat.label}
-                    </h3>
-                    <p className="text-base text-white/60 font-medium">
-                      {stat.detail}
+            {stats.map((stat, i) => (
+              <AnimatedSection key={stat.label} delay={i * 0.1}>
+                <GlassContainer
+                  className="p-8"
+                  glowColor={stat.label === "Projects shipped" ? "teal" : stat.label === "Events hosted" ? "amber" : "cyan"}
+                >
+                  <div className="space-y-4">
+                    <p className="text-5xl font-black text-white tracking-tighter">
+                      {stat.value}
                     </p>
+                    <div>
+                      <h3 className="text-xl font-bold text-white uppercase tracking-tight">
+                        {stat.label}
+                      </h3>
+                      <p className="text-base text-white/60 font-medium">
+                        {stat.detail}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </GlassContainer>
+                </GlassContainer>
+              </AnimatedSection>
             ))}
           </div>
         </PageSection>
@@ -102,7 +154,7 @@ export default function Home() {
           description="Prayagraj's space for ambitious teenagers to ship meaningful tech through premium hackathons, design squads, and real-world product launches."
           align="center"
         >
-          <Features />
+          <BentoGrid items={featureItems} />
         </PageSection>
 
         <Partners />

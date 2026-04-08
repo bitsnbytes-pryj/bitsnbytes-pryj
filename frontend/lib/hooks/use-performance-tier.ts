@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 export type PerformanceTier = "high" | "mid" | "low";
 
-interface PerformanceCapabilities {
+export interface PerformanceCapabilities {
   tier: PerformanceTier;
   cpuCores: number;
   deviceMemory: number;
@@ -12,15 +12,19 @@ interface PerformanceCapabilities {
   reducedMotion: boolean;
   isMobile: boolean;
   isTouchDevice: boolean;
+  canUseWebGL: boolean;
+  canUseParticles: boolean;
+  canUseBlur: boolean;
+  canUseComplexAnimations: boolean;
 }
 
 /**
  * Returns maximum performance capabilities.
  * Performance optimizations have been disabled to ensure all content
- * and animations are always visible.
+ * and animations are always visible on all devices.
  */
 export function usePerformanceTier(): PerformanceCapabilities {
-  const [capabilities, setCapabilities] = useState<PerformanceCapabilities>({
+  return useMemo(() => ({
     tier: "high",
     cpuCores: 8,
     deviceMemory: 8,
@@ -28,22 +32,11 @@ export function usePerformanceTier(): PerformanceCapabilities {
     reducedMotion: false,
     isMobile: false,
     isTouchDevice: false,
-  });
-
-  useEffect(() => {
-    // Always set to high performance
-    setCapabilities({
-      tier: "high",
-      cpuCores: navigator.hardwareConcurrency || 8,
-      deviceMemory: (navigator as any).deviceMemory || 8,
-      hasGpu: true,
-      reducedMotion: false,
-      isMobile: false,
-      isTouchDevice: false,
-    });
-  }, []);
-
-  return capabilities;
+    canUseWebGL: true,
+    canUseParticles: true,
+    canUseBlur: true,
+    canUseComplexAnimations: true,
+  }), []);
 }
 
 export default usePerformanceTier;

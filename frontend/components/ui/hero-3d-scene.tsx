@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sparkles, Environment } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
 // Floating geometric shape component
@@ -241,9 +241,6 @@ function Scene() {
         opacity={0.5}
         color="#f59e0b"
       />
-      
-      {/* Environment for reflections */}
-      <Environment preset="night" />
     </>
   );
 }

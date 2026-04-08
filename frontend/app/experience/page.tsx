@@ -89,64 +89,31 @@ function ExperienceNav() {
 }
 
 function useDeviceCapabilities() {
-  const [capabilities, setCapabilities] = useState({
-    canRunWebGL: false,
+  // Always return high-end capabilities to show full experience
+  const [capabilities] = useState({
+    canRunWebGL: true,
     isMobile: false,
     isLowEnd: false,
   });
-
-  useEffect(() => {
-    const checkCapabilities = async () => {
-      const canvas = document.createElement("canvas");
-      const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
-      const hasWebGL = !!gl;
-
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      ) || window.innerWidth < 768;
-
-      const cpuCores = navigator.hardwareConcurrency || 4;
-      // @ts-expect-error deviceMemory is non-standard
-      const memory = navigator.deviceMemory || 4;
-      const isLowEnd = cpuCores <= 4 || memory <= 4;
-
-      setCapabilities({
-        canRunWebGL: hasWebGL,
-        isMobile,
-        isLowEnd,
-      });
-    };
-
-    checkCapabilities();
-  }, []);
 
   return capabilities;
 }
 
 export default function ExperiencePage() {
   const [mounted, setMounted] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
   const capabilities = useDeviceCapabilities();
 
   useEffect(() => {
     setMounted(true);
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   if (!mounted) {
     return <ExperienceLoader />;
   }
 
-  const showMobileExperience = capabilities.isMobile || capabilities.isLowEnd || reducedMotion;
-  const showWebGLExperience = capabilities.canRunWebGL && !showMobileExperience;
+  // Always show WebGL experience, ignore reduced motion and device capabilities
+  const showMobileExperience = false;
+  const showWebGLExperience = true;
 
   return (
     <div className="fixed inset-0 bg-[#0A1628] overflow-hidden">

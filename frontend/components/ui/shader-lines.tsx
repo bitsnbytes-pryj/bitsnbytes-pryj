@@ -57,7 +57,7 @@ export function ShaderAnimation() {
     camera.position.z = 1
 
     const scene = new THREE.Scene()
-    const geometry = new THREE.PlaneBufferGeometry(2, 2)
+    const geometry = new THREE.PlaneGeometry(2, 2)
 
     const uniforms = {
       time: { type: "f", value: 1.0 },

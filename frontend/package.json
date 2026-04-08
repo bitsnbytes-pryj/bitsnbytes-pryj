@@ -84,6 +84,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.183.1",
     "cross-env": "^7.0.3",
     "dotenv": "^17.3.1",
     "postcss": "^8.5",

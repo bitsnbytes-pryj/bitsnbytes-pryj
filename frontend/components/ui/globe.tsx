@@ -10,19 +10,7 @@ const RING_PROPAGATION_SPEED = 3;
 const aspect = 1.2;
 const cameraZ = 300;
 
-// Detect Safari/Firefox or Mobile for performance adjustments
-const isMobile =
-  typeof navigator !== "undefined" &&
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-const isSafari =
-  typeof navigator !== "undefined" &&
-  /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const isFirefox =
-  typeof navigator !== "undefined" &&
-  navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
-const isLowPerfBrowser = isSafari || isFirefox || isMobile;
+// Always use full quality - performance throttling removed
 
 type Position = {
   order: number;
@@ -71,34 +59,30 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const frameCountRef = useRef(0);
 
-  // Reduce quality on Safari/Firefox
+  // Always use full quality settings
   const defaultProps = useMemo(
     () => ({
-      pointSize: isLowPerfBrowser ? 0.5 : 1,
+      pointSize: 1,
       atmosphereColor: "#ffffff",
-      showAtmosphere: !isLowPerfBrowser, // Disable atmosphere on low-perf browsers
+      showAtmosphere: true,
       atmosphereAltitude: 0.1,
       polygonColor: "rgba(255,255,255,0.7)",
       globeColor: "#1d072e",
       emissive: "#000000",
       emissiveIntensity: 0.1,
       shininess: 0.9,
-      arcTime: isLowPerfBrowser ? 3000 : 2000, // Slower animations
+      arcTime: 2000,
       arcLength: 0.9,
-      rings: isLowPerfBrowser ? 0 : 1, // Disable rings on low-perf browsers
-      maxRings: isLowPerfBrowser ? 1 : 3,
+      rings: 1,
+      maxRings: 3,
       ...globeConfig,
     }),
     [globeConfig],
   );
 
-  // Throttle rendering on low-perf browsers
+  // Frame tracking for animations (no throttling)
   useFrame(() => {
-    if (isLowPerfBrowser) {
-      frameCountRef.current++;
-      // Skip every other frame on Safari/Firefox
-      if (frameCountRef.current % 2 !== 0) return;
-    }
+    frameCountRef.current++;
   });
 
   // Initialize globe once
@@ -178,7 +162,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     // Configure globe
     globe
       .hexPolygonsData(countries.features)
-      .hexPolygonResolution(isLowPerfBrowser ? 1 : 2) // Lower resolution for better performance
+      .hexPolygonResolution(2) // Full resolution
       .hexPolygonMargin(0.7)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
@@ -260,10 +244,8 @@ export function WebGLRendererConfig() {
   const { gl, size } = useThree();
 
   useEffect(() => {
-    // Reduce pixel ratio on Safari/Firefox for better performance
-    const pixelRatio = isLowPerfBrowser
-      ? Math.min(window.devicePixelRatio, 1)
-      : Math.min(window.devicePixelRatio, 1.5);
+    // Always use high quality pixel ratio
+    const pixelRatio = Math.min(window.devicePixelRatio, 2);
     gl.setPixelRatio(pixelRatio);
     gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
@@ -326,12 +308,12 @@ export function World(props: WorldProps) {
         scene={scene}
         camera={camera}
         gl={{
-          antialias: !isLowPerfBrowser, // Disable antialiasing on Safari/Firefox
+          antialias: true, // Always enable antialiasing
           alpha: true,
-          powerPreference: isLowPerfBrowser ? "low-power" : "default",
+          powerPreference: "default",
         }}
-        dpr={isLowPerfBrowser ? [1, 1] : [1, 2]}
-        frameloop={isLowPerfBrowser ? "demand" : "always"}
+        dpr={[1, 2]}
+        frameloop="always"
       >
         <WebGLRendererConfig />
         <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
@@ -354,9 +336,7 @@ export function World(props: WorldProps) {
           enableZoom={false}
           minDistance={cameraZ}
           maxDistance={cameraZ}
-          autoRotateSpeed={
-            globeConfig.autoRotateSpeed ?? (isLowPerfBrowser ? 0.5 : 1)
-          }
+          autoRotateSpeed={globeConfig.autoRotateSpeed ?? 1}
           autoRotate={globeConfig.autoRotate ?? true}
           minPolarAngle={Math.PI / 3.5}
           maxPolarAngle={Math.PI - Math.PI / 3}

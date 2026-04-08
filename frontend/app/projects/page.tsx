@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ExternalLink, Github, Filter, X } from "lucide-react";
+import { ExternalLink, Github, Filter, X, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { PageSection } from "@/components/page-section";
 import { Button } from "@/components/ui/button";
@@ -234,7 +235,7 @@ export default function Projects() {
           </div>
         </PageSection>
 
-        {/* Featured Projects */}
+        {/* Featured Projects - 3D Enhanced */}
         <PageSection
           align="center"
           eyebrow="Featured"
@@ -242,28 +243,74 @@ export default function Projects() {
           description="Our most impactful builds that showcase what high-agency teen developers can accomplish together."
         >
           <div className="grid gap-8 md:grid-cols-2">
-            {featuredProjects.map((project) => (
-              <div
+            {featuredProjects.map((project, idx) => (
+              <motion.div
                 key={project.id}
-                className="glass-card group relative isolate overflow-hidden shadow-xl hover:shadow-[var(--glow-strong)] transition-all duration-300"
+                className="glass-card group relative isolate overflow-hidden shadow-xl"
+                initial={{ opacity: 0, y: 50, rotateX: -10 }}
+                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                whileHover={{ 
+                  scale: 1.02, 
+                  rotateY: 2,
+                  boxShadow: "0 25px 50px -12px rgba(13, 148, 136, 0.4)"
+                }}
+                style={{ 
+                  perspective: "1000px",
+                  transformStyle: "preserve-3d"
+                }}
               >
+                {/* Animated glow border */}
+                <motion.div 
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: "linear-gradient(135deg, #0d9488, #22d3ee, #0d9488)",
+                    padding: "2px",
+                  }}
+                >
+                  <div className="w-full h-full bg-[#0A1628] rounded-xl" />
+                </motion.div>
+
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  
+                  {/* Animated sparkle */}
+                  <motion.div 
+                    className="absolute top-4 right-4"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Sparkles className="w-5 h-5 text-[#f59e0b]" />
+                  </motion.div>
+                  
                   <div className="absolute top-4 left-4">
-                    <span className="inline-flex items-center rounded-full bg-teal-500 px-3 py-1 text-xs font-semibold text-white">
+                    <motion.span 
+                      className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#0d9488] to-[#22d3ee] px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-[#0d9488]/30"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Sparkles className="w-3 h-3" />
                       Featured
-                    </span>
+                    </motion.span>
                   </div>
+
+                  {/* Shine effect */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
+                  />
                 </div>
                 <div className="p-6 space-y-4">
                   <div>
-                    <h3 className="font-display text-xl font-bold text-foreground dark:text-white">
+                    <h3 className="font-display text-xl font-bold text-foreground dark:text-white group-hover:text-[#0d9488] transition-colors">
                       {project.title}
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground line-clamp-4">
@@ -271,25 +318,29 @@ export default function Projects() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {project.tags.slice(0, 3).map((tag) => (
-                      <span
+                    {project.tags.slice(0, 3).map((tag, tagIdx) => (
+                      <motion.span
                         key={tag}
                         className="rounded-full border border-white/20 bg-white/5 px-2 py-0.5 text-xs text-muted-foreground"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: tagIdx * 0.1 }}
                       >
                         {tag}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex -space-x-2">
                       {project.team.slice(0, 3).map((member, i) => (
-                        <div
+                        <motion.div
                           key={member}
-                          className="h-8 w-8 rounded-full border-2 border-background bg-[var(--brand-pink)]/20 flex items-center justify-center text-xs font-medium text-[var(--brand-pink)]"
+                          className="h-8 w-8 rounded-full border-2 border-background bg-gradient-to-br from-[#0d9488]/30 to-[#22d3ee]/30 flex items-center justify-center text-xs font-medium text-[#0d9488]"
                           style={{ zIndex: 3 - i }}
+                          whileHover={{ scale: 1.2, zIndex: 10 }}
                         >
                           {member[0]}
-                        </div>
+                        </motion.div>
                       ))}
                       {project.team.length > 3 && (
                         <div className="h-8 w-8 rounded-full border-2 border-background bg-white/10 flex items-center justify-center text-xs text-muted-foreground">
@@ -299,29 +350,33 @@ export default function Projects() {
                     </div>
                     <div className="flex gap-2">
                       {project.links?.github && (
-                        <Link
-                          href={project.links.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors"
-                        >
-                          <Github className="h-4 w-4" />
-                        </Link>
+                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                          <Link
+                            href={project.links.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-full border border-white/20 hover:border-[#0d9488] hover:bg-[#0d9488]/10 transition-colors"
+                          >
+                            <Github className="h-4 w-4" />
+                          </Link>
+                        </motion.div>
                       )}
                       {project.links?.live && (
-                        <Link
-                          href={project.links.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Link>
+                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                          <Link
+                            href={project.links.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-full border border-white/20 hover:border-[#0d9488] hover:bg-[#0d9488]/10 transition-colors"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </Link>
+                        </motion.div>
                       )}
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </PageSection>

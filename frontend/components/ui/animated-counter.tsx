@@ -1,74 +1,68 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { counterUp } from "@/lib/motion";
+import { motion, useSpring, useInView } from "framer-motion";
 
 interface AnimatedCounterProps {
   value: number;
-  suffix?: string;
-  prefix?: string;
   duration?: number;
-  delay?: number;
+  prefix?: string;
+  suffix?: string;
   className?: string;
+  once?: boolean;
 }
 
+/**
+ * Animated counter that counts from 0 to target value.
+ * Uses spring physics for smooth animation.
+ */
 export function AnimatedCounter({
   value,
-  suffix = "",
+  duration = 1.5,
   prefix = "",
-  duration = 2000,
-  delay = 0,
-  className = "",
+  suffix = "",
+  className,
+  once = true,
 }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once, margin: "-50px" });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  const spring = useSpring(0, {
+    stiffness: 50,
+    damping: 15,
+    duration: duration * 1000,
+  });
 
   useEffect(() => {
-    if (isInView && !isVisible) {
-      setIsVisible(true);
-      const startTime = performance.now();
-      const endTime = startTime + duration;
-
-      const animate = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function: easeOutExpo
-        const easeOutExpo = (t: number) => {
-          return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-        };
-
-        const easedProgress = easeOutExpo(progress);
-        const currentCount = Math.floor(easedProgress * value);
-        setCount(currentCount);
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-
-      const delayedStart = setTimeout(() => {
-        requestAnimationFrame(animate);
-      }, delay);
-
-      return () => clearTimeout(delayedStart);
+    if (isInView && !hasAnimated) {
+      spring.set(value);
+      setHasAnimated(true);
     }
-  }, [isInView, isVisible, value, duration, delay]);
+  }, [isInView, value, spring, hasAnimated]);
+
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const unsubscribe = spring.on("change", (latest) => {
+      setDisplayValue(Math.round(latest));
+    });
+    return () => unsubscribe();
+  }, [spring]);
 
   return (
     <motion.span
       ref={ref}
       className={className}
-      initial="hidden"
-      animate={isVisible ? "visible" : "hidden"}
-      variants={counterUp}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
     >
       {prefix}
-      {count.toLocaleString()}
+      {displayValue}
       {suffix}
     </motion.span>
   );
 }
+
+export default AnimatedCounter;

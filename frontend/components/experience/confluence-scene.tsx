@@ -423,7 +423,7 @@ function KeyboardHint() {
   );
 }
 
-export function ConfluenceScene({ onClose }: { onClose: () => void }) {
+export function ConfluenceScene({ onClose = () => {} }: { onClose?: () => void }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeNode = EXPERIENCE_NODES[activeIndex];
 

@@ -222,7 +222,7 @@ function AnimatedBackground() {
   );
 }
 
-export function MobileExperience({ onClose }: { onClose: () => void }) {
+export function MobileExperience({ onClose = () => {} }: { onClose?: () => void }) {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0A1628] via-[#0d1f35] to-[#0A1628]">
       <AnimatedBackground />

@@ -25,16 +25,12 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
         if (!canvas) return
         if (!isVisible) return; // Pause when not visible
 
-        const ctxMaybe = canvas.getContext('2d', { alpha: false }) // Optimization: Disable alpha if possible
+        const ctxMaybe = canvas.getContext('2d', { alpha: false })
         if (!ctxMaybe) return
         const ctx: CanvasRenderingContext2D = ctxMaybe
 
-        // Detect low-perf
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const isLowPerf = isMobile || window.innerWidth < 768;
-
-        // Base settings
-        const dpr = Math.min(window.devicePixelRatio || 1, isLowPerf ? 1 : 2)
+        // Always use full quality - performance throttling removed
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
         canvas.width = size * dpr
         canvas.height = size * dpr
         canvas.style.width = `${size}px`
@@ -60,7 +56,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                 this.y = y
                 this.originalX = x
                 this.originalY = y
-                this.size = isLowPerf ? 1.5 : 2
+                this.size = 2 // Full size
                 this.order = order
                 this.velocity = {
                     x: (Math.random() - 0.5) * 2,
@@ -115,9 +111,9 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
             }
         }
 
-        // Create particle grid - Reduced size for performance
+        // Create particle grid - Full grid size
         const particles: Particle[] = []
-        const gridSize = isLowPerf ? 15 : 25
+        const gridSize = 25 // Always full grid
         const spacing = size / gridSize
 
         for (let i = 0; i < gridSize; i++) {
@@ -134,7 +130,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
                 particle.neighbors = particles.filter(other => {
                     if (other === particle) return false
                     const distance = Math.hypot(particle.x - other.x, particle.y - other.y)
-                    return distance < (isLowPerf ? 70 : 100)
+                    return distance < 100 // Full distance
                 })
             })
         }
@@ -142,7 +138,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
         let time = 0
         let animationId: number
         let lastFrameTime = 0
-        const frameInterval = 1000 / (isLowPerf ? 30 : 60);
+        const frameInterval = 1000 / 60; // Full 60fps
 
         function animate(currentTime: number) {
             animationId = requestAnimationFrame(animate)
@@ -153,7 +149,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
             ctx.fillStyle = '#000000'
             ctx.fillRect(0, 0, size, size)
 
-            if (time % (isLowPerf ? 60 : 30) === 0) {
+            if (time % 30 === 0) {
                 updateNeighbors()
             }
 
@@ -163,7 +159,7 @@ export function Entropy({ className = "", size = 400 }: EntropyProps) {
 
                 particle.neighbors.forEach(neighbor => {
                     const distance = Math.hypot(particle.x - neighbor.x, particle.y - neighbor.y)
-                    const limit = isLowPerf ? 35 : 50
+                    const limit = 50 // Full limit
                     if (distance < limit) {
                         const alpha = 0.2 * (1 - distance / limit)
                         ctx.strokeStyle = `${particleColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`

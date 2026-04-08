@@ -20,7 +20,7 @@ export function WebGLShader() {
 
   const [isVisible, setIsVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [forceStaticFallback, setForceStaticFallback] = useState(false);
+  const [forceStaticFallback, setForceStaticFallback] = useState(false); // Always show WebGL, never fallback
   const [showStats, setShowStats] = useState(false);
 
   // Stats state
@@ -114,11 +114,8 @@ export function WebGLShader() {
       // @ts-expect-error deviceMemory is non-standard but widely supported in Chromium
       memory = navigator.deviceMemory || 4;
 
-      if (concurrency <= 2 || memory <= 2) {
-        // Extremely low end device, skip WebGL entirely to save battery and avoid panics
-        setForceStaticFallback(true);
-        return;
-      } else if (concurrency <= 4 || memory <= 4) {
+      // Always run WebGL regardless of hardware - removed low-end device check
+      if (concurrency <= 4 || memory <= 4) {
         // Lower end device, start with conservative defaults
         dprMultiplier = 1.0;
       }
@@ -404,7 +401,8 @@ export function WebGLShader() {
     const animate = (currentTime: number) => {
       animationRef.current = requestAnimationFrame(animate);
 
-      if (!isVisible || prefersReducedMotion) return;
+      // Always animate - ignore reduced motion preference
+      if (!isVisible) return;
 
       const elapsed = currentTime - lastFrameTimeRef.current;
 
@@ -477,20 +475,7 @@ export function WebGLShader() {
     };
   }, [isVisible, prefersReducedMotion, forceStaticFallback]);
 
-  // If reduced motion is preferred or hardware is too weak, show a static gradient instead
-  if (prefersReducedMotion || forceStaticFallback) {
-    return (
-      <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(135deg, #0A1628 0%, #0d9488 50%, #f59e0b 100%)",
-          opacity: 0.6,
-        }}
-      />
-    );
-  }
-
+  // Always render the WebGL shader - ignore reduced motion preference
   return (
     <>
       <canvas

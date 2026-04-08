@@ -199,3 +199,162 @@ export const messageSlide: Variants = {
     },
   },
 }
+
+/**
+ * Shimmer effect for loading states
+ */
+export const shimmer: Variants = {
+  initial: {
+    backgroundPosition: "200% 0",
+  },
+  animate: {
+    backgroundPosition: "-200% 0",
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "linear",
+    },
+  },
+}
+
+/**
+ * Typewriter cursor blink
+ */
+export const cursorBlink: Variants = {
+  initial: { opacity: 1 },
+  animate: {
+    opacity: [1, 0, 1],
+    transition: {
+      duration: 0.8,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+}
+
+/**
+ * Scale bounce for interactive elements
+ */
+export const scaleBounce: Variants = {
+  initial: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+  tap: {
+    scale: 0.95,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+}
+
+/**
+ * Slide in from direction
+ */
+export const slideIn: Variants = {
+  hidden: (direction: "up" | "down" | "left" | "right" = "up") => {
+    const offset = 50
+    switch (direction) {
+      case "up":
+        return { opacity: 0, y: offset }
+      case "down":
+        return { opacity: 0, y: -offset }
+      case "left":
+        return { opacity: 0, x: offset }
+      case "right":
+        return { opacity: 0, x: -offset }
+    }
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+/**
+ * Parallax layer - moves based on scroll progress
+ */
+export const parallaxLayer: Variants = {
+  initial: (depth: number = 1) => ({
+    y: 0,
+  }),
+  animate: (depth: number = 1) => ({
+    y: depth * -50,
+    transition: {
+      type: "tween",
+      ease: "linear",
+    },
+  }),
+}
+
+/**
+ * Magnetic hover effect
+ */
+export const magneticHover: Variants = {
+  rest: {
+    x: 0,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 150,
+      damping: 15,
+    },
+  },
+  hover: {
+    transition: {
+      type: "spring",
+      stiffness: 150,
+      damping: 15,
+    },
+  },
+}
+
+/**
+ * Reveal animation for images and cards
+ */
+export const revealFromBottom: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    clipPath: "inset(100% 0 0 0)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    clipPath: "inset(0% 0 0 0)",
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+/**
+ * Fade with blur
+ */
+export const fadeBlur: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(10px)",
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+}

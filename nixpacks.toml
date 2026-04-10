@@ -1,0 +1,10 @@
+[phases.setup]
+
+[phases.install]
+cmd = "pnpm install --frozen-lockfile"
+
+[phases.build]
+cmd = "pnpm --filter bnb-prayagraj-api build"
+
+[start]
+cmd = "pnpm --filter bnb-prayagraj-api start"

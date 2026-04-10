@@ -9,3 +9,6 @@ cmd = "pnpm --filter bnb-prayagraj-api build"
 
 [start]
 cmd = "pnpm --filter bnb-prayagraj-api start"
+
+[variables]
+NIXPACKS_NODE_VERSION = "22"

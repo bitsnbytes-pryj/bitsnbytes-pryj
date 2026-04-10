@@ -6,7 +6,7 @@ import { detectFrustration } from "@/lib/sentiment"
 let openai: any = null
 
 async function getOpenAI() {
-  if (!process.env.ZAI_API_KEY) {
+  if (!process.env.HACKCLUB_PROXY_API_KEY) {
     return null
   }
   
@@ -15,8 +15,8 @@ async function getOpenAI() {
   try {
     const { OpenAI } = await import("openai")
     openai = new OpenAI({
-      apiKey: process.env.ZAI_API_KEY,
-      baseURL: "https://api.z.ai/api/paas/v4",
+      apiKey: process.env.HACKCLUB_PROXY_API_KEY,
+      baseURL: "https://ai.hackclub.com/proxy/v1",
     })
     return openai
   } catch (error) {
@@ -25,7 +25,7 @@ async function getOpenAI() {
   }
 }
 
-const MODEL = "glm-4.7-flash"
+const MODEL = "qwen/qwen3-32b"
 
 const SSE_HEADERS = {
   "Content-Type": "text/event-stream",
@@ -674,7 +674,7 @@ export async function POST(req: NextRequest) {
   
   if (!ai) {
     return NextResponse.json(
-      { error: "AI assistant is not configured. Please configure ZAI_API_KEY." },
+      { error: "AI assistant is not configured. Please configure HACKCLUB_PROXY_API_KEY." },
       { status: 500 }
     )
   }

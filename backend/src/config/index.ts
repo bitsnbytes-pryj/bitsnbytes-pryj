@@ -1,59 +1,58 @@
 import dotenv from 'dotenv';
-import { z } from 'zod';
+import path from 'path';
 
-dotenv.config();
+// Load environment variables
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const configSchema = z.object({
-  port: z.number().default(3000),
-  nodeEnv: z.enum(['development', 'production', 'test']).default('development'),
-  supabase: z.object({
-    url: z.string().url(),
-    anonKey: z.string(),
-    serviceRoleKey: z.string(),
-  }),
-  smtp: z.object({
-    host: z.string().default('smtp.gmail.com'),
-    port: z.number().default(587),
-    user: z.string(),
-    appPassword: z.string(),
-  }),
-  adminEmail: z.string().email(),
-  corsOrigins: z.array(z.string()),
-  rateLimit: z.object({
-    windowMs: z.number().default(900000), // 15 minutes
-    maxRequests: z.number().default(100),
-  }),
-});
+export const config = {
+  // Server
+  port: parseInt(process.env.PORT || '3000', 10),
+  nodeEnv: process.env.NODE_ENV || 'development',
+  
+  // Supabase
+  supabase: {
+    url: process.env.SUPABASE_URL || '',
+    anonKey: process.env.SUPABASE_ANON_KEY || '',
+    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  },
+  
+  // JWT
+  jwt: {
+    secret: process.env.JWT_SECRET || 'your-jwt-secret-change-in-production',
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+  },
+  
+  // CORS
+  cors: {
+    origins: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'],
+  },
+  
+  // Rate Limiting
+  rateLimit: {
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10), // 15 minutes
+    maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '500', 10),
+    loginWindowMs: parseInt(process.env.LOGIN_RATE_LIMIT_WINDOW_MS || '900000', 10),
+    loginMaxRequests: parseInt(process.env.LOGIN_RATE_LIMIT_MAX_REQUESTS || '5', 10),
+  },
+  
+  // Password Hashing
+  bcrypt: {
+    rounds: parseInt(process.env.BCRYPT_ROUNDS || '10', 10),
+  },
+  
+  // SMTP / Email
+  smtp: {
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    user: process.env.SMTP_USER || '',
+    appPassword: process.env.SMTP_APP_PASSWORD || '',
+  },
+  
+  // Admin Email (for notifications)
+  adminEmail: process.env.ADMIN_EMAIL || 'admin@bnbprayagraj.com',
+  
+  // Webhook API Key (for external services)
+  webhookApiKey: process.env.WEBHOOK_API_KEY || 'your-webhook-api-key-change-in-production',
+} as const;
 
-type Config = z.infer<typeof configSchema>;
-
-function loadConfig(): Config {
-  const corsOrigins = process.env.CORS_ORIGINS?.split(',').map(origin => origin.trim()) ?? [
-    'http://localhost:3000',
-  ];
-
-  return configSchema.parse({
-    port: parseInt(process.env.PORT ?? '3000', 10),
-    nodeEnv: process.env.NODE_ENV ?? 'development',
-    supabase: {
-      url: process.env.SUPABASE_URL ?? '',
-      anonKey: process.env.SUPABASE_ANON_KEY ?? '',
-      serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
-    },
-    smtp: {
-      host: process.env.SMTP_HOST ?? 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT ?? '587', 10),
-      user: process.env.SMTP_USER ?? '',
-      appPassword: process.env.SMTP_APP_PASSWORD ?? '',
-    },
-    adminEmail: process.env.ADMIN_EMAIL ?? 'bitsnbytes.prayagraj@gmail.com',
-    corsOrigins,
-    rateLimit: {
-      windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? '900000', 10),
-      maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? '100', 10),
-    },
-  });
-}
-
-export const config = loadConfig();
-export type { Config };
+export default config;

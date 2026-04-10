@@ -1,11 +1,12 @@
-// Admin API client for communicating with the admin backend
+// Admin API client for communicating with the consolidated backend
 
-const ADMIN_API_URL = process.env.NEXT_PUBLIC_ADMIN_API_URL || 'http://localhost:3001';
+const ADMIN_API_URL = process.env.NEXT_PUBLIC_ADMIN_API_URL || 'http://localhost:3000';
 
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
+  total?: number;
 }
 
 interface LoginResponse {
@@ -17,17 +18,6 @@ interface LoginResponse {
   };
   token: string;
   expiresAt: string;
-}
-
-interface PaginatedResponse<T> {
-  items: T[];
-  pagination: {
-    page: number;
-    limit: number;
-    totalItems: number;
-    totalPages: number;
-    hasMore: boolean;
-  };
 }
 
 // Helper to get token from localStorage
@@ -85,7 +75,8 @@ async function fetchApi<T>(
     
     return {
       success: true,
-      data,
+      data: data.data,
+      total: data.total,
     };
   } catch (error) {
     return {
@@ -133,22 +124,22 @@ export const eventsApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/events?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/events?${searchParams.toString()}`);
   },
   
-  get: (id: string) => fetchApi<any>(`/events/${id}`),
+  get: (id: string) => fetchApi<any>(`/admin/events/${id}`),
   
-  create: (data: any) => fetchApi<any>('/events', {
+  create: (data: any) => fetchApi<any>('/admin/events', {
     method: 'POST',
     body: JSON.stringify(data),
   }),
   
-  update: (id: string, data: any) => fetchApi<any>(`/events/${id}`, {
+  update: (id: string, data: any) => fetchApi<any>(`/admin/events/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }),
   
-  delete: (id: string) => fetchApi<void>(`/events/${id}`, {
+  delete: (id: string) => fetchApi<void>(`/admin/events/${id}`, {
     method: 'DELETE',
   }),
 };
@@ -162,22 +153,22 @@ export const teamApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/team?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/team?${searchParams.toString()}`);
   },
   
-  get: (id: string) => fetchApi<any>(`/team/${id}`),
+  get: (id: string) => fetchApi<any>(`/admin/team/${id}`),
   
-  create: (data: any) => fetchApi<any>('/team', {
+  create: (data: any) => fetchApi<any>('/admin/team', {
     method: 'POST',
     body: JSON.stringify(data),
   }),
   
-  update: (id: string, data: any) => fetchApi<any>(`/team/${id}`, {
+  update: (id: string, data: any) => fetchApi<any>(`/admin/team/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }),
   
-  delete: (id: string) => fetchApi<void>(`/team/${id}`, {
+  delete: (id: string) => fetchApi<void>(`/admin/team/${id}`, {
     method: 'DELETE',
   }),
 };
@@ -191,22 +182,22 @@ export const projectsApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/projects?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/projects?${searchParams.toString()}`);
   },
   
-  get: (id: string) => fetchApi<any>(`/projects/${id}`),
+  get: (id: string) => fetchApi<any>(`/admin/projects/${id}`),
   
-  create: (data: any) => fetchApi<any>('/projects', {
+  create: (data: any) => fetchApi<any>('/admin/projects', {
     method: 'POST',
     body: JSON.stringify(data),
   }),
   
-  update: (id: string, data: any) => fetchApi<any>(`/projects/${id}`, {
+  update: (id: string, data: any) => fetchApi<any>(`/admin/projects/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }),
   
-  delete: (id: string) => fetchApi<void>(`/projects/${id}`, {
+  delete: (id: string) => fetchApi<void>(`/admin/projects/${id}`, {
     method: 'DELETE',
   }),
 };
@@ -220,22 +211,22 @@ export const rolesApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/roles?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/roles?${searchParams.toString()}`);
   },
   
-  get: (id: string) => fetchApi<any>(`/roles/${id}`),
+  get: (id: string) => fetchApi<any>(`/admin/roles/${id}`),
   
-  create: (data: any) => fetchApi<any>('/roles', {
+  create: (data: any) => fetchApi<any>('/admin/roles', {
     method: 'POST',
     body: JSON.stringify(data),
   }),
   
-  update: (id: string, data: any) => fetchApi<any>(`/roles/${id}`, {
+  update: (id: string, data: any) => fetchApi<any>(`/admin/roles/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
   }),
   
-  delete: (id: string) => fetchApi<void>(`/roles/${id}`, {
+  delete: (id: string) => fetchApi<void>(`/admin/roles/${id}`, {
     method: 'DELETE',
   }),
 };
@@ -249,7 +240,7 @@ export const submissionsApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/submissions/contacts?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/submissions/contacts?${searchParams.toString()}`);
   },
   
   joinApplications: (params: Record<string, string | number | boolean> = {}) => {
@@ -259,24 +250,72 @@ export const submissionsApi = {
         searchParams.append(key, String(value));
       }
     });
-    return fetchApi<PaginatedResponse<any>>(`/submissions/join?${searchParams.toString()}`);
+    return fetchApi<any[]>(`/admin/submissions/join?${searchParams.toString()}`);
   },
   
-  updateContactStatus: (id: string, status: string) => 
-    fetchApi<any>(`/submissions/contacts/${id}/status`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
+  eventRegistrations: (params: Record<string, string | number | boolean> = {}) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') {
+        searchParams.append(key, String(value));
+      }
+    });
+    return fetchApi<any[]>(`/admin/submissions/event-registrations?${searchParams.toString()}`);
+  },
+  
+  roleApplications: (params: Record<string, string | number | boolean> = {}) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') {
+        searchParams.append(key, String(value));
+      }
+    });
+    return fetchApi<any[]>(`/admin/submissions/role-applications?${searchParams.toString()}`);
+  },
+  
+  feedback: (params: Record<string, string | number | boolean> = {}) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') {
+        searchParams.append(key, String(value));
+      }
+    });
+    return fetchApi<any[]>(`/admin/submissions/feedback?${searchParams.toString()}`);
+  },
+  
+  updateContact: (id: string, data: any) => 
+    fetchApi<any>(`/admin/submissions/contacts/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
     }),
   
-  updateJoinStatus: (id: string, status: string) =>
-    fetchApi<any>(`/submissions/join/${id}/status`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
+  updateJoinApplication: (id: string, data: any) =>
+    fetchApi<any>(`/admin/submissions/join/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+  
+  updateEventRegistration: (id: string, data: any) =>
+    fetchApi<any>(`/admin/submissions/event-registrations/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+  
+  updateRoleApplication: (id: string, data: any) =>
+    fetchApi<any>(`/admin/submissions/role-applications/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+  
+  updateFeedback: (id: string, data: any) =>
+    fetchApi<any>(`/admin/submissions/feedback/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
     }),
 };
 
 // Dashboard API
 export const dashboardApi = {
-  getStats: () => fetchApi<any>('/dashboard/stats'),
-  getRecentActivity: () => fetchApi<any>('/dashboard/activity'),
+  getStats: () => fetchApi<any>('/admin/dashboard/stats'),
+  getActivity: (limit: number = 10) => fetchApi<any[]>(`/admin/dashboard/activity?limit=${limit}`),
 };

@@ -10,7 +10,7 @@ export const corsMiddleware = cors({
     }
 
     // Check if origin is allowed
-    if (config.corsOrigins.includes(origin)) {
+    if (config.cors.origins.includes(origin)) {
       callback(null, true);
       return;
     }

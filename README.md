@@ -1,23 +1,57 @@
 # Bits&Bytes Official Website
 
-Official platform for Bits&Bytes, a teen-led coding community based in Lucknow, India. This repository powers the public website, community pages, and an AI assistant with retrieval and tool-calling support.
+Official platform for Bits&Bytes, a teen-led coding community based in Lucknow, India. This repository powers the public website, community pages, admin dashboard, and an AI assistant with retrieval and tool-calling support.
 
 ## What This Project Includes
 
-- Next.js App Router website for community pages, events, projects, join, and contact.
-- AI assistant API with SSE streaming responses and tool-calling flows.
-- Semantic search (RAG) over selected site content using embeddings.
-- Supabase-backed forms and chat session persistence.
-- Production-oriented frontend with 3D/interactive UI components.
+- **Frontend**: Next.js App Router website for community pages, events, projects, join, and contact
+- **Admin Dashboard**: Admin panel for managing events, team, projects, roles, and submissions
+- **Backend API**: Express.js API for authenticated admin operations and public form submissions
+- **AI Assistant**: SSE streaming responses and tool-calling flows with semantic search (RAG)
+- **Database**: Supabase (PostgreSQL) for data storage
+
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│    Frontend     │────▶│    Supabase     │◀────│    Backend      │
+│   (Next.js)     │     │   (PostgreSQL)  │     │    (Express)    │
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+      ▲                                                ▲
+      │                                                │
+      │         Public reads (anon key)                │
+      │         Authenticated writes (JWT)             │
+      └────────────────────────────────────────────────┘
+```
+
+- **Frontend reads directly from Supabase** using the anon key for public data
+- **Backend handles all writes** with JWT authentication for admin operations
+- **Webhook routes** allow public form submissions with API key validation
 
 ## Tech Stack
 
-- Framework: Next.js 16, React 19, TypeScript 5
-- Styling/UI: Tailwind CSS 4, Radix UI, custom animated components
-- Data: Supabase (PostgreSQL)
-- AI: OpenAI SDK against Hack Club proxy endpoints
-- Deployment: Vercel
-- Package manager: pnpm
+| Component | Technology |
+|-----------|------------|
+| Frontend | Next.js 16, React 19, TypeScript 5 |
+| Backend | Express.js, TypeScript |
+| Styling/UI | Tailwind CSS 4, Radix UI, custom animated components |
+| Database | Supabase (PostgreSQL) |
+| AI | OpenAI SDK against Hack Club proxy endpoints |
+| Deployment | Vercel (frontend), any Node.js host (backend) |
+| Package manager | pnpm (workspaces) |
+
+## Required APIs & Services
+
+| Service | Required | Purpose |
+|---------|----------|---------|
+| **Supabase** | ✅ Yes | Database, real-time subscriptions, storage |
+| **Z.ai / Hack Club Proxy** | ✅ Yes* | AI assistant and embedding generation |
+| **SMTP Server** | Optional | Email notifications for form submissions |
+| **Google Search Console** | Optional | SEO verification |
+
+*Required only if using the AI assistant feature.
 
 ## Getting Started
 
@@ -25,8 +59,8 @@ Official platform for Bits&Bytes, a teen-led coding community based in Lucknow, 
 
 - Node.js 20+
 - pnpm 9+
-- A Supabase project
-- A Hack Club proxy API key for AI endpoints
+- A Supabase project (see [Database Setup](#database-setup))
+- Z.ai API key for AI endpoints (optional)
 
 ### 2. Install Dependencies
 
@@ -34,163 +68,275 @@ Official platform for Bits&Bytes, a teen-led coding community based in Lucknow, 
 pnpm install
 ```
 
-### 3. Configure Environment Variables
+### 3. Database Setup
 
-Copy `.env.example` to `.env.local` and fill in values.
+The complete database schema is in [`database.txt`](./database.txt) at the project root.
 
-Required in practice (based on current code paths):
+**To set up the database:**
+
+1. Go to your Supabase project dashboard
+2. Navigate to **SQL Editor**
+3. Copy the contents of `database.txt`
+4. Paste and execute the SQL
+
+This creates all necessary tables:
+- `admin_users` - Admin authentication
+- `events`, `team_members`, `projects`, `roles` - Content management
+- `contacts`, `join_applications`, `event_registrations`, `role_applications`, `feedback` - Submissions
+- `audit_logs` - Audit trail for admin actions
+
+### 4. Configure Environment Variables
+
+#### Frontend (`frontend/.env.local`)
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-HACKCLUB_PROXY_API_KEY=...
-GOOGLE_SITE_VERIFICATION=...
+# Supabase Configuration (required)
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# Backend API URL (required for admin dashboard)
+NEXT_PUBLIC_ADMIN_API_URL=http://localhost:3000
+
+# AI Configuration (required for AI assistant)
+ZAI_API_KEY=your-zai-api-key
+
+# Optional
+OSM_API_KEY=your-osm-api-key
+GOOGLE_SITE_VERIFICATION=your-google-site-verification-code
 ```
 
-Optional:
+#### Backend (`backend/.env`)
 
 ```env
-OSM_API_KEY=...
-NVIDIA_KEY=...
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Supabase (required)
+SUPABASE_URL=your-supabase-project-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+
+# JWT Authentication (required)
+JWT_SECRET=your-jwt-secret-change-in-production
+JWT_EXPIRES_IN=7d
+
+# CORS (comma-separated origins)
+CORS_ORIGIN=http://localhost:3000,https://gobitsnbytes.org
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=500
+LOGIN_RATE_LIMIT_WINDOW_MS=900000
+LOGIN_RATE_LIMIT_MAX_REQUESTS=5
+
+# Password Hashing
+BCRYPT_ROUNDS=10
+
+# Email Notifications (optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_APP_PASSWORD=your-app-password
+ADMIN_EMAIL=admin@bnbprayagraj.com
+
+# Webhook API Key (for public form submissions)
+WEBHOOK_API_KEY=your-webhook-api-key-change-in-production
 ```
 
-Notes:
-- `HACKCLUB_PROXY_API_KEY` is required for the assistant and embedding generation.
-- `NVIDIA_KEY` is required only for the Stable Diffusion image generation branch.
-- `OSM_API_KEY` is currently referenced by the voice route.
+### 5. Seed Admin User
 
-### 4. Run Locally
+After setting up the database, create the default admin user:
 
+```bash
+pnpm --filter bnb-prayagraj-api seed
+```
+
+**Default credentials:**
+- Email: `admin@bnbprayagraj.com`
+- Password: `pass123`
+
+⚠️ **Change the password immediately after first login!**
+
+### 6. Run Development Servers
+
+**Run both frontend and backend:**
+
+```bash
+# Terminal 1 - Backend
+pnpm --filter bnb-prayagraj-api dev
+
+# Terminal 2 - Frontend
+pnpm --filter frontend dev
+```
+
+Or use concurrently (if installed):
 ```bash
 pnpm dev
 ```
 
-App runs at `http://localhost:3000`.
+**Ports:**
+- Frontend: `http://localhost:3001` (or next available)
+- Backend: `http://localhost:3000`
 
 ## Available Scripts
 
-- `pnpm dev` - Run development server
-- `pnpm build` - Production build
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint
+### Root Level
+
+```bash
+pnpm install          # Install all dependencies
+pnpm dev              # Run all workspaces in dev mode
+pnpm build            # Build all workspaces
+```
+
+### Frontend
+
+```bash
+pnpm --filter frontend dev       # Development server
+pnpm --filter frontend build     # Production build
+pnpm --filter frontend start     # Start production server
+pnpm --filter frontend lint      # Run ESLint
+```
+
+### Backend
+
+```bash
+pnpm --filter bnb-prayagraj-api dev       # Development server with hot reload
+pnpm --filter bnb-prayagraj-api build     # Compile TypeScript
+pnpm --filter bnb-prayagraj-api start     # Run compiled server
+pnpm --filter bnb-prayagraj-api seed      # Seed admin user
+```
+
+### Shared Package
+
+```bash
+pnpm --filter @bitsnbytes/shared build    # Build shared package
+```
 
 ## Project Structure
 
-```text
-.
-|- app/                     # Next.js App Router pages and API routes
-|  |- api/
-|  |  |- assistant/         # AI assistant, feedback, image, voice
-|  |  |- join/              # Join form ingestion
-|  |  |- discord/           # Discord-related endpoint(s)
-|  |- about/ contact/ events/ impact/ join/ projects/ faq/ ...
-|- components/              # Shared and UI components
-|- lib/                     # RAG, Supabase, rate limit, sentiment, team logic
-|- public/                  # Static assets (images, llms.txt, sitemap, etc.)
-|- scripts/embed-site.ts    # Embeds selected docs into site_embeddings table
-|- comic/                   # Comic/sticker generation utilities
+```
+├── frontend/                 # Next.js App Router application
+│   ├── app/                  # Pages and API routes
+│   │   ├── admin/            # Admin dashboard pages
+│   │   └── api/              # API routes (assistant, etc.)
+│   ├── components/           # React components
+│   ├── lib/                  # Utilities, hooks, API clients
+│   ├── public/               # Static assets
+│   └── styles/               # Global styles
+│
+├── backend/                  # Express.js API server
+│   ├── src/
+│   │   ├── auth/             # Authentication utilities
+│   │   ├── config/           # Configuration
+│   │   ├── db/               # Database connection
+│   │   ├── middleware/       # Express middleware
+│   │   ├── routes/           # API routes
+│   │   │   ├── admin/        # Admin CRUD routes
+│   │   │   ├── auth.routes.ts
+│   │   │   └── webhooks.routes.ts
+│   │   ├── scripts/          # Utility scripts (seed)
+│   │   └── services/         # Business logic
+│   └── dist/                 # Compiled JavaScript
+│
+├── shared/                   # Shared types and schemas
+│   └── src/
+│       ├── types/            # TypeScript types
+│       ├── schemas/          # Zod validation schemas
+│       └── constants/        # Shared constants
+│
+├── database.txt              # Complete SQL schema for Supabase
+└── README.md
 ```
 
 ## API Overview
 
-### `POST /api/assistant`
+### Backend API Endpoints
 
-Main AI assistant endpoint.
+#### Authentication (`/auth`)
 
-- Input: user message history, current pathname, session ID
-- Output: `text/event-stream` (SSE) with token streaming and final action payload
-- Includes:
-	- rate limiting (`10 requests/min/IP`)
-	- intent bypass for fast navigation/contact/WhatsApp responses
-	- tool-calling loop
-	- model fallback behavior
-	- optional semantic response cache
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/auth/login` | Admin login | None |
+| POST | `/auth/logout` | Admin logout | JWT |
+| GET | `/auth/me` | Get current user | JWT |
 
-### `POST /api/join`
+#### Admin Routes (`/admin/*`)
 
-Stores join requests in Supabase `join_requests`.
+All admin routes require JWT authentication.
 
-Required fields:
-- `name`
-- `email`
-- `message`
+| Resource | Endpoints |
+|----------|-----------|
+| Events | `GET`, `POST`, `PUT`, `DELETE` `/admin/events` |
+| Team | `GET`, `POST`, `PUT`, `DELETE` `/admin/team` |
+| Projects | `GET`, `POST`, `PUT`, `DELETE` `/admin/projects` |
+| Roles | `GET`, `POST`, `PUT`, `DELETE` `/admin/roles` |
+| Submissions | `GET`, `PUT` `/admin/submissions/*` |
+| Dashboard | `GET` `/admin/dashboard/stats`, `/admin/dashboard/activity` |
 
-Optional fields:
-- `school`
-- `experience`
-- `interests` (array, stored as comma-separated text)
+#### Webhook Routes (`/webhooks/*`)
 
-### `POST /api/assistant/feedback`
+Public form submission endpoints (require `X-Webhook-Key` header).
 
-Appends per-message feedback into `chat_sessions.feedback` in Supabase.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/webhooks/forms/contact` | Submit contact form |
+| POST | `/webhooks/forms/join` | Submit join application |
+| POST | `/webhooks/forms/event-register` | Register for event |
+| POST | `/webhooks/forms/role-apply` | Apply for a role |
+| POST | `/webhooks/forms/feedback` | Submit feedback |
 
-### `POST /api/assistant/image`
+### Frontend API Routes
 
-Image generation endpoint used by assistant tools.
+#### `POST /api/assistant`
 
-- Stable Diffusion path: NVIDIA endpoint (`NVIDIA_KEY`)
-- Gemini path: Hack Club proxy (`HACKCLUB_PROXY_API_KEY`)
+Main AI assistant endpoint with SSE streaming.
 
-## Database Expectations (Supabase)
+#### `POST /api/join`
 
-At minimum, the code currently assumes tables like:
-
-- `join_requests`
-- `chat_sessions`
-- `site_embeddings`
-- `contacts`
-- `sponsor_leads`
-
-Also expected:
-- vector search support for embeddings (used by RAG search flows)
-
-See `TECHNICAL_DOCUMENTATION.md` for deeper schema and function examples.
+Stores join requests in Supabase.
 
 ## Embedding Site Content for RAG
 
-The script `scripts/embed-site.ts` currently reads:
-
-- `public/llms.txt`
-- `agents.md`
-
-Then it generates embeddings and inserts chunks into `site_embeddings`.
-
-Run with:
+The script `scripts/embed-site.ts` generates embeddings for RAG:
 
 ```bash
-pnpm tsx scripts/embed-site.ts
+pnpm --filter frontend tsx scripts/embed-site.ts
 ```
-
-(Use your preferred TS runtime if `tsx` is not installed globally.)
 
 ## Deployment
 
-Configured for Vercel via `vercel.json`.
+### Frontend (Vercel)
 
+Configured via `vercel.json`:
 - Install command: `pnpm install`
 - Build command: `pnpm run build`
 - Framework: `nextjs`
 
-The app also injects git metadata at build time in `next.config.mjs`.
+### Backend
 
-## Operational Notes
+Build and run the compiled server:
 
-- `next.config.mjs` currently has `typescript.ignoreBuildErrors: true`.
-	- This avoids type-check build blocking, but can hide production issues.
-- Rate limiting in `lib/rate-limit.ts` is in-memory.
-	- For multi-instance consistency, move to Redis or a shared store.
+```bash
+pnpm --filter bnb-prayagraj-api build
+pnpm --filter bnb-prayagraj-api start
+```
+
+For production, set `NODE_ENV=production` and use a process manager like PM2 or Docker.
 
 ## Documentation
 
-- High-level technical reference: `TECHNICAL_DOCUMENTATION.md`
-- Organization and team handbook used for assistant context: `agents.md`
+- `backend/README.md` - Backend API documentation
+- `frontend/TECHNICAL_DOCUMENTATION.md` - Frontend technical reference
+- `frontend/agents.md` - Organization context for AI assistant
+- `database.txt` - Complete database schema
 
 ## Contributing
 
-1. Create a feature branch.
-2. Make focused changes.
-3. Run lint/build locally.
-4. Open a PR with context and screenshots for UI work.
+1. Create a feature branch
+2. Make focused changes
+3. Run lint/build locally
+4. Open a PR with context and screenshots for UI work
 
 ## License
 

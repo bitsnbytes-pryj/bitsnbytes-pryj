@@ -18,7 +18,7 @@ export function GlassContainer({
 }: GlassContainerProps) {
     return (
         <div className={cn(
-            "group relative overflow-hidden rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] border border-white/10 bg-white/5 p-1.5 sm:p-2 transition-all duration-500 hover:border-white/20 hover:bg-white/10",
+            "group relative overflow-hidden rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] border border-white/10 bg-[rgba(255,255,255,0.035)] p-1.5 sm:p-2 transition-all duration-500 hover:border-white/15 hover:bg-[rgba(255,255,255,0.05)]",
             "md:backdrop-blur-xl", // Only apply blur on larger screens for mobile performance
             containerClassName
         )}>
@@ -26,11 +26,11 @@ export function GlassContainer({
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
             <div className={cn(
-                "relative overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[2.25rem] border border-white/10 bg-black/20",
+                "relative overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[2.25rem] border border-white/10 bg-[linear-gradient(180deg,rgba(9,21,31,0.9)_0%,rgba(7,16,24,0.94)_100%)]",
                 className
             )}>
                 {/* Animated glass shine */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-transparent opacity-50" />
                 {animated && (
                     <div className="absolute -inset-[100%] aspect-square bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_50%)] animate-[spin_30s_linear_infinite]" />
                 )}
@@ -42,19 +42,19 @@ export function GlassContainer({
 
             {/* Ambient glows */}
             {(glowColor === "pink" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-pink-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[rgba(31,122,114,0.18)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
             {(glowColor === "purple" || glowColor === "both") && (
-                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-purple-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-[rgba(22,54,73,0.22)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
             {glowColor === "teal" && (
-                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-teal-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[rgba(31,122,114,0.2)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
             {glowColor === "cyan" && (
-                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-cyan-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -right-24 h-48 w-48 rounded-full bg-[rgba(79,198,192,0.16)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
             {glowColor === "amber" && (
-                <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full bg-amber-500/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full bg-[rgba(212,154,58,0.18)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             )}
         </div>
     );

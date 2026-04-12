@@ -42,7 +42,7 @@ export function GlowingCard({
             )}
             style={{ animationDelay: `${animationDelay}s` }}
         >
-            <div className="relative h-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-2 backdrop-blur-2xl transition-all duration-500 hover:border-white/20 hover:bg-white/10">
+            <div className="relative h-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-[rgba(255,255,255,0.035)] p-2 backdrop-blur-2xl transition-all duration-500 hover:border-white/15 hover:bg-[rgba(255,255,255,0.05)]">
                 {/* Reflective top edge */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent z-20" />
 
@@ -55,7 +55,7 @@ export function GlowingCard({
                     borderWidth={borderWidth}
                 />
 
-                <div className="relative h-full overflow-hidden rounded-[2.25rem] border border-white/10 bg-black/40 p-6 md:p-8 flex flex-col justify-between gap-4">
+                <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[2.25rem] border border-white/10 bg-[linear-gradient(180deg,rgba(9,21,31,0.92)_0%,rgba(7,16,24,0.96)_100%)] p-6 md:p-8">
                     {/* Inner glass shine */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-50" />
 
@@ -65,8 +65,8 @@ export function GlowingCard({
                 </div>
 
                 {/* Ambient glows that sync with group hover */}
-                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-(--brand-pink)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
-                <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-(--brand-purple)/10 blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-[rgba(31,122,114,0.18)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
+                <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-[rgba(22,54,73,0.22)] blur-[80px] transition-opacity duration-500 group-hover:opacity-100 opacity-50" />
             </div>
         </div>
     );
@@ -128,7 +128,7 @@ interface GlowingCardNumberProps {
 export function GlowingCardNumber({ index, className }: GlowingCardNumberProps) {
     return (
         <p className={cn(
-            "text-xs font-semibold uppercase tracking-[0.35em] text-[var(--brand-pink)]",
+            "text-xs font-semibold uppercase tracking-[0.35em] text-[var(--brand-gold-soft)]",
             className
         )}>
             {String(index).padStart(2, '0')}

@@ -185,7 +185,7 @@ export default function Home() {
           {operatingModel.map((item) => (
             <article
               key={item.title}
-              className="rounded-[28px] border border-white/10 bg-white/6 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.12)] backdrop-blur-sm"
+              className="rounded-[28px] border border-white/10 bg-white/[0.06] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.12)] backdrop-blur-sm"
             >
               <div className="flex items-center gap-3 text-[#f0c36e]">
                 <item.icon className="h-5 w-5" />

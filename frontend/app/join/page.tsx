@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { PageSection } from "@/components/page-section";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +12,7 @@ import {
   Rocket,
   Heart,
   Zap,
+  Linkedin,
 } from "lucide-react";
 
 // Lazy load WebGL shader
@@ -27,6 +29,24 @@ const WebGLShader = dynamic(
 
 const NOTION_JOIN_FORM_URL =
   "https://perfect-dinghy-781.notion.site/33949ed2fc338035bd3bef46155035f5?pvs=105";
+
+const founders = [
+  {
+    name: "Aadrika Maurya",
+    image: "/team/aadrika.png",
+    linkedin: "https://in.linkedin.com/in/aadrika-maurya",
+  },
+  {
+    name: "Akshat Singh Kushwaha",
+    image: "/team/akshat.webp",
+    linkedin: "https://www.linkedin.com/in/akshat-singh-kushwaha/",
+  },
+  {
+    name: "Yash Singh",
+    image: "/team/yash.jpeg",
+    linkedin: "https://www.linkedin.com/in/yash-vardhan-singh-a41540270/",
+  },
+];
 
 const benefits = [
   {
@@ -80,9 +100,9 @@ const faqs = [
       "Bits&Bytes is completely free to join. We believe tech education should be accessible to all students.",
   },
   {
-    question: "I'm not from Lucknow. Can I still join?",
+    question: "I'm not from Prayagraj. Can I still join?",
     answer:
-      "Absolutely! While we started in Lucknow, we now have members across India. Most activities happen online via Discord.",
+      "Absolutely. We are a city fork of Bits&Bytes (gobitsnbytes.org) and welcome ambitious teen builders across India. Most collaboration happens online.",
   },
 ];
 
@@ -111,8 +131,7 @@ export default function Join() {
                 Join the crew
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
-                Tell us how you want to build with the Bits&Bytes club. We'll
-                connect you with squads, mentors, and live projects.
+                A city fork of Bits&Bytes (gobitsnbytes.org). Build with founder-led squads, mentors, and live projects.
               </p>
             </div>
           </GlassContainer>
@@ -151,6 +170,48 @@ export default function Join() {
               </div>
             </GlassContainer>
 
+          </div>
+        </PageSection>
+
+        <PageSection
+          align="center"
+          eyebrow="Founders"
+          title="The Founders' of Bits&Bytes"
+          description="Co-founded by Aadrika Maurya, Akshat Singh Kushwaha, and Yash Singh."
+        >
+          <div className="grid gap-6 md:grid-cols-3">
+            {founders.map((founder, index) => (
+              <GlassContainer
+                key={founder.name}
+                className="p-5 md:p-6"
+                glowColor={index % 2 === 0 ? "pink" : "purple"}
+              >
+                <div className="space-y-4">
+                  <div className="relative mx-auto h-52 w-full max-w-[260px] overflow-hidden rounded-2xl border border-white/15">
+                    <Image
+                      src={founder.image}
+                      alt={founder.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 260px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="text-center font-display text-lg font-bold text-white">
+                    {founder.name}
+                  </h3>
+                  <a
+                    href={founder.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-white/20"
+                    aria-label={`${founder.name} LinkedIn profile`}
+                  >
+                    <Linkedin className="h-4 w-4" />
+                    LinkedIn
+                  </a>
+                </div>
+              </GlassContainer>
+            ))}
           </div>
         </PageSection>
 
@@ -242,8 +303,7 @@ export default function Join() {
               Ready to start building?
             </h2>
             <p className="text-sm sm:text-base text-white/70 px-4 sm:px-0">
-              Join 200+ teen builders who are shipping real projects and growing
-              together.
+              Join the city fork community and ship real products with ambitious teen builders.
             </p>
             <Button
               asChild

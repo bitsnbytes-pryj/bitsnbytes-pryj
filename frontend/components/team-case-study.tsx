@@ -250,10 +250,13 @@ function VolunteerCard({ volunteer }: { volunteer: Volunteer }) {
 }
 
 export default function TeamCaseStudy({ coreTeam, volunteers }: TeamCaseStudyProps) {
+  const hasVolunteers = volunteers.length > 0;
+  const useTwoRows = coreTeam.length > 3;
+
   return (
     <div className="flex flex-col gap-8 sm:gap-16">
       {/* Core Team - CSS Grid with explicit 2 rows for equal heights */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+      <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8", useTwoRows && "lg:grid-rows-2")}>
         {coreTeam.map((member, index) => {
           const bgColor = brandColors[index % brandColors.length];
 
@@ -265,24 +268,28 @@ export default function TeamCaseStudy({ coreTeam, volunteers }: TeamCaseStudyPro
         })}
       </div>
 
-      {/* Divider */}
-      <div className="relative flex items-center justify-center py-4">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/10" />
-        </div>
-        <div className="relative bg-background px-4 sm:px-6">
-          <span className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[var(--brand-pink)]/70">
-            Volunteers
-          </span>
-        </div>
-      </div>
+      {hasVolunteers && (
+        <>
+          {/* Divider */}
+          <div className="relative flex items-center justify-center py-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative bg-background px-4 sm:px-6">
+              <span className="text-xs sm:text-sm font-medium uppercase tracking-widest text-[var(--brand-pink)]/70">
+                Volunteers
+              </span>
+            </div>
+          </div>
 
-      {/* Volunteers Section - Improved Grid for Alignment */}
-      <div className="flex flex-wrap items-start justify-center gap-6 sm:gap-10 md:gap-14 lg:gap-16">
-        {volunteers.map((volunteer) => (
-          <VolunteerCard key={volunteer.id} volunteer={volunteer} />
-        ))}
-      </div>
+          {/* Volunteers Section - Improved Grid for Alignment */}
+          <div className="flex flex-wrap items-start justify-center gap-6 sm:gap-10 md:gap-14 lg:gap-16">
+            {volunteers.map((volunteer) => (
+              <VolunteerCard key={volunteer.id} volunteer={volunteer} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

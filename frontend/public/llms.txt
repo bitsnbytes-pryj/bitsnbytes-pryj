@@ -62,7 +62,6 @@ Bits&Bytes is India's boldest teen-led code club and nonprofit, based in Lucknow
 ## Website Structure
 - **/** - Homepage with overview and impact stats
 - **/about** - Team profiles and mission details
-- **/projects** - Showcase of 15+ teen-built projects
 - **/events** - Upcoming hackathons and workshops
 - **/impact** - Community statistics and success stories
 - **/join** - Free membership application
@@ -87,4 +86,3 @@ Bits&Bytes is India's boldest teen-led code club and nonprofit, based in Lucknow
 
 ---
 Last updated: February 2026
-

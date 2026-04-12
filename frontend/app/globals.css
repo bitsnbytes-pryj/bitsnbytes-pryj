@@ -4,136 +4,108 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    /* Prayagraj/Sangam-inspired color palette - Premium Edition */
-    /* Deep River - Dark base tones */
-    --brand-deep-river: #030712;
-    --brand-river-depth: #0a1628;
-    --brand-water-blue: #1a3a5c;
-    
-    /* Confluence - Primary accent */
-    --brand-teal: #0d9488;
-    --brand-teal-light: #14b8a6;
-    --brand-teal-dark: #0f766e;
-    
-    /* Aqua Glow - Hover and highlights */
-    --brand-aqua: #22d3ee;
-    --brand-aqua-soft: #67e8f9;
-    --brand-aqua-glow: rgba(103, 232, 249, 0.3);
-    
-    /* Mist - Text and contrast */
-    --brand-mist: #f0f9ff;
-    --brand-mist-soft: #e0f2fe;
-    
-    /* Sangam Gold - Premium accents (restrained) */
-    --brand-gold: #fbbf24;
-    --brand-gold-soft: #fcd34d;
-    --brand-gold-muted: rgba(251, 191, 36, 0.15);
-    
-    /* Stone - Neutral tones */
-    --brand-stone: #78716c;
-    --brand-stone-light: #a8a29e;
-    
-    /* Legacy compatibility */
+    --brand-deep-river: #06131d;
+    --brand-river-depth: #0c1d29;
+    --brand-water-blue: #163649;
+    --brand-teal: #1f7a72;
+    --brand-teal-light: #29a39a;
+    --brand-teal-dark: #165d57;
+    --brand-aqua: #4fc6c0;
+    --brand-aqua-soft: #86ddd8;
+    --brand-aqua-glow: rgba(79, 198, 192, 0.24);
+    --brand-mist: #e7f0f2;
+    --brand-mist-soft: #c6d6dc;
+    --brand-gold: #d49a3a;
+    --brand-gold-soft: #f0c36e;
+    --brand-gold-muted: rgba(212, 154, 58, 0.16);
+    --brand-stone: #73818a;
+    --brand-stone-light: #9ca8af;
     --brand-deep-blue: var(--brand-river-depth);
-    --brand-saffron: #f59e0b;
-    --brand-amber: #fbbf24;
-    --brand-sandstone: #fef3c7;
-    --brand-cream: #f5f0e6;
-    --brand-midnight: #0f172a;
-    --brand-navy: #1e293b;
-    
-    /* Experience Mode Colors */
-    --experience-bg: #030712;
-    --experience-river-1: #0d9488;
-    --experience-river-2: #f59e0b;
-    --experience-river-3: #8b5cf6;
-    --experience-confluence: linear-gradient(135deg, #0d9488, #22d3ee, #f59e0b);
-
-    /* Primary brand color - deep water blue */
-    --brand-purple: var(--brand-deep-blue);
-    --brand-plum: var(--brand-water-blue);
-    --brand-pink: var(--brand-teal);
-    --brand-coral: var(--brand-saffron);
-    --brand-ink: var(--brand-midnight);
-
-    --background: var(--brand-cream);
-    --foreground: var(--brand-midnight);
-    --card: #ffffff;
-    --card-foreground: var(--brand-navy);
-    --popover: #ffffff;
-    --popover-foreground: var(--brand-navy);
-    --muted: rgba(15, 23, 42, 0.06);
-    --muted-foreground: rgba(15, 23, 42, 0.75);
-    --border: rgba(26, 58, 92, 0.15);
-    --input: rgba(15, 23, 42, 0.08);
-
-    --primary: var(--brand-deep-blue);
-    --primary-foreground: #ffffff;
-    --secondary: rgba(26, 58, 92, 0.1);
-    --secondary-foreground: var(--brand-water-blue);
-    --accent: var(--brand-cyan);
-    --accent-foreground: #ffffff;
-    --destructive: #f04438;
-    --destructive-foreground: #ffffff;
-
-    --ring: rgba(13, 148, 136, 0.4);
+    --brand-saffron: #d49a3a;
+    --brand-amber: #d49a3a;
+    --brand-sandstone: #d8c7a5;
+    --brand-cream: #0b1721;
+    --brand-midnight: #081019;
+    --brand-navy: #0f2533;
+    --experience-bg: #06131d;
+    --experience-river-1: #1f7a72;
+    --experience-river-2: #d49a3a;
+    --experience-river-3: #163649;
+    --experience-confluence: linear-gradient(135deg, #1f7a72, #4fc6c0, #d49a3a);
+    --brand-purple: #123042;
+    --brand-plum: #1a4157;
+    --brand-pink: var(--brand-teal-light);
+    --brand-coral: var(--brand-gold);
+    --brand-ink: #06131d;
+    --background: #06131d;
+    --foreground: #edf4f5;
+    --card: rgba(10, 25, 36, 0.86);
+    --card-foreground: #edf4f5;
+    --popover: rgba(7, 18, 27, 0.96);
+    --popover-foreground: #edf4f5;
+    --muted: rgba(237, 244, 245, 0.06);
+    --muted-foreground: rgba(214, 226, 229, 0.74);
+    --border: rgba(191, 217, 223, 0.12);
+    --input: rgba(237, 244, 245, 0.1);
+    --primary: #1f7a72;
+    --primary-foreground: #f7fbfb;
+    --secondary: rgba(237, 244, 245, 0.06);
+    --secondary-foreground: #dce8ea;
+    --accent: #d49a3a;
+    --accent-foreground: #1c1305;
+    --destructive: #f87171;
+    --destructive-foreground: #1f0508;
+    --ring: rgba(79, 198, 192, 0.34);
     --radius: 18px;
-
-    --glow-strong: 0 15px 50px rgba(13, 148, 136, 0.25);
-    --glow-soft: 0 8px 30px rgba(26, 58, 92, 0.12);
-    --shadow-card: 0 15px 45px rgba(15, 23, 42, 0.05);
-
-    --chart-1: oklch(0.55 0.18 220);
-    --chart-2: oklch(0.6 0.14 180);
-    --chart-3: oklch(0.45 0.08 260);
-    --chart-4: oklch(0.85 0.12 45);
-    --chart-5: oklch(0.78 0.15 30);
-
-    --sidebar: #f5f0e6;
-    --sidebar-foreground: var(--brand-midnight);
-    --sidebar-primary: var(--brand-deep-blue);
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: rgba(13, 148, 136, 0.08);
-    --sidebar-accent-foreground: var(--brand-deep-blue);
-    --sidebar-border: rgba(15, 23, 42, 0.08);
-    --sidebar-ring: rgba(13, 148, 136, 0.4);
+    --glow-strong: 0 22px 80px rgba(31, 122, 114, 0.22);
+    --glow-soft: 0 12px 40px rgba(6, 19, 29, 0.34);
+    --shadow-card: 0 24px 70px rgba(0, 8, 14, 0.42);
+    --chart-1: oklch(0.58 0.13 206);
+    --chart-2: oklch(0.66 0.11 177);
+    --chart-3: oklch(0.74 0.14 68);
+    --chart-4: oklch(0.69 0.09 235);
+    --chart-5: oklch(0.61 0.11 34);
+    --sidebar: rgba(8, 17, 26, 0.9);
+    --sidebar-foreground: #edf4f5;
+    --sidebar-primary: #1f7a72;
+    --sidebar-primary-foreground: #f7fbfb;
+    --sidebar-accent: rgba(237, 244, 245, 0.06);
+    --sidebar-accent-foreground: #edf4f5;
+    --sidebar-border: rgba(191, 217, 223, 0.12);
+    --sidebar-ring: rgba(79, 198, 192, 0.34);
 }
 
 .dark {
-    --background: #05020a;
-    --foreground: #f6ecff;
-    --card: rgba(10, 7, 19, 0.85);
-    --card-foreground: #f8f0ff;
-    --popover: rgba(7, 4, 12, 0.95);
-    --popover-foreground: #ffffff;
-    --muted: rgba(248, 240, 255, 0.08);
-    --muted-foreground: rgba(246, 236, 255, 0.8);
-    --border: rgba(248, 240, 255, 0.08);
-    --input: rgba(248, 240, 255, 0.12);
-
-    --primary: #f8f0ff;
-    --primary-foreground: #1b0b2c;
-    --secondary: rgba(248, 240, 255, 0.08);
-    --secondary-foreground: #f8f0ff;
-    --accent: var(--brand-coral);
-    --accent-foreground: #411256;
+    --background: #06131d;
+    --foreground: #edf4f5;
+    --card: rgba(10, 25, 36, 0.86);
+    --card-foreground: #edf4f5;
+    --popover: rgba(7, 18, 27, 0.96);
+    --popover-foreground: #edf4f5;
+    --muted: rgba(237, 244, 245, 0.06);
+    --muted-foreground: rgba(214, 226, 229, 0.74);
+    --border: rgba(191, 217, 223, 0.12);
+    --input: rgba(237, 244, 245, 0.1);
+    --primary: #1f7a72;
+    --primary-foreground: #f7fbfb;
+    --secondary: rgba(237, 244, 245, 0.06);
+    --secondary-foreground: #dce8ea;
+    --accent: #d49a3a;
+    --accent-foreground: #1c1305;
     --destructive: #f87171;
     --destructive-foreground: #1f0508;
-
-    --ring: rgba(255, 172, 172, 0.45);
-
-    --glow-strong: 0 25px 90px rgba(228, 90, 146, 0.35);
-    --glow-soft: 0 12px 40px rgba(9, 0, 25, 0.6);
-    --shadow-card: 0 25px 70px rgba(1, 0, 8, 0.7);
-
-    --sidebar: rgba(5, 2, 10, 0.78);
-    --sidebar-foreground: #f8f0ff;
-    --sidebar-primary: #f8f0ff;
-    --sidebar-primary-foreground: #1b0b2c;
-    --sidebar-accent: rgba(248, 240, 255, 0.08);
-    --sidebar-accent-foreground: #f8f0ff;
-    --sidebar-border: rgba(248, 240, 255, 0.1);
-    --sidebar-ring: rgba(255, 172, 172, 0.35);
+    --ring: rgba(79, 198, 192, 0.34);
+    --glow-strong: 0 22px 80px rgba(31, 122, 114, 0.22);
+    --glow-soft: 0 12px 40px rgba(6, 19, 29, 0.34);
+    --shadow-card: 0 24px 70px rgba(0, 8, 14, 0.42);
+    --sidebar: rgba(8, 17, 26, 0.9);
+    --sidebar-foreground: #edf4f5;
+    --sidebar-primary: #1f7a72;
+    --sidebar-primary-foreground: #f7fbfb;
+    --sidebar-accent: rgba(237, 244, 245, 0.06);
+    --sidebar-accent-foreground: #edf4f5;
+    --sidebar-border: rgba(191, 217, 223, 0.12);
+    --sidebar-ring: rgba(79, 198, 192, 0.34);
 }
 
 @theme inline {
@@ -268,6 +240,35 @@
         transform: translateZ(0);
     }
 
+    .city-fork-panel {
+        background:
+            linear-gradient(145deg, rgba(13, 28, 39, 0.9) 0%, rgba(10, 22, 31, 0.96) 100%);
+        border: 1px solid rgba(191, 217, 223, 0.12);
+        border-radius: 1.75rem;
+        box-shadow:
+            0 24px 70px rgba(0, 8, 14, 0.34),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .city-fork-pill {
+        @apply inline-flex items-center rounded-full px-3 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em];
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(191, 217, 223, 0.12);
+        color: #dce8ea;
+        box-shadow: 0 10px 30px rgba(0, 8, 14, 0.18);
+    }
+
+    .city-fork-grid {
+        background-image:
+            linear-gradient(rgba(220, 232, 234, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(220, 232, 234, 0.05) 1px, transparent 1px),
+            linear-gradient(135deg, rgba(212, 154, 58, 0.08), transparent 50%);
+        background-size: 68px 68px, 68px 68px, 100% 100%;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.4));
+    }
+
     .tag-chip {
         @apply rounded-full border border-white/10 bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-secondary-foreground shadow-[var(--glow-soft)];
     }
@@ -283,26 +284,14 @@
 
     .bg-grid-faint {
         background-image:
-            linear-gradient(rgba(94, 50, 119, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(94, 50, 119, 0.08) 1px, transparent 1px);
+            linear-gradient(rgba(220, 232, 234, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(220, 232, 234, 0.03) 1px, transparent 1px);
         background-size: 120px 120px;
     }
 
     .bg-noise-texture {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='1' height='1' fill='rgba(255,255,255,0.25)'/%3E%3C/svg%3E");
-        background-size: 300px 300px;
-    }
-
-    .dark .bg-grid-faint {
-        background-image:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg,
-                rgba(255, 255, 255, 0.03) 1px,
-                transparent 1px);
-    }
-
-    .dark .bg-noise-texture {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='1' height='1' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E");
+        background-size: 300px 300px;
     }
 }
 

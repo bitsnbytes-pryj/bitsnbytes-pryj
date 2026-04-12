@@ -178,7 +178,7 @@ export default function RootLayout({
       name: "India",
     },
     sameAs: [
-      "https://www.linkedin.com/company/bitsnbytes-prayagraj",
+      "https://www.linkedin.com/company/gobitsbytes/",
       "https://github.com/bitsnbytes-pryj",
       "https://twitter.com/bitsnbytes_prj",
       "https://www.instagram.com/bitsnbytes-prayagraj",
@@ -251,12 +251,6 @@ export default function RootLayout({
         name: "About Us",
         description: "Learn about Bits&Bytes Prayagraj - the city's teen-led tech community",
         url: "https://gobitsnbytes.org/about",
-      },
-      {
-        "@type": "WebPage",
-        name: "Projects",
-        description: "Explore 15+ projects built by teen developers in Prayagraj",
-        url: "https://gobitsnbytes.org/projects",
       },
       {
         "@type": "WebPage",

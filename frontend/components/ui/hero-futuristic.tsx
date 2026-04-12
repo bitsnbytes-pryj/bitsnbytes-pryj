@@ -282,7 +282,7 @@ export const HeroFuturistic = () => {
                   size="lg"
                   className="rounded-full text-white/70 hover:text-white hover:bg-white/10 px-6"
                 >
-                  <Link href="/projects">View projects</Link>
+                  <Link href="/events">See events</Link>
                 </Button>
               </div>
             </motion.div>

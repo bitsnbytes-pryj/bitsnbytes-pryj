@@ -1,21 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import Image from "next/image";
 import { PageSection } from "@/components/page-section";
-import { LoadingInline } from "@/components/loading-wrapper";
-import { ChapterTimeline } from "@/components/chapter-timeline";
+import { Linkedin } from "lucide-react";
 import {
   GlowingCard,
   GlowingCardTitle,
   GlowingCardDescription,
 } from "@/components/ui/glowing-card";
-
-// Lazy load heavy components
-const TeamCaseStudy = dynamic(() => import("@/components/team-case-study"), {
-  loading: () => <LoadingInline />,
-  ssr: true,
-});
 
 const WebGLShader = dynamic(
   () =>
@@ -56,156 +49,24 @@ const aboutContent = {
   ],
 };
 
-// Prayagraj Chapter Lead - First
-const prayagrajLead = {
-  id: 1,
-  name: "Akshat Kushwaha",
-  role: "Prayagraj Technical Lead",
-  badge: "Prayagraj Lead",
-  image: "/team/akshat.webp",
-  bio: "AI-native systems engineer building production workflows and retrieval architectures at the Sangam. Chapter Lead at STEMist Prayagraj, defining high-performance engineering culture for Prayagraj's builders.",
-  expertise: [
-    "LLMOps / RAG",
-    "Agentic Frameworks", 
-    "Next.js 16 / React 19",
-    "FastAPI / Python",
-    "System Design",
-  ],
-  linkedin: "https://www.linkedin.com/in/akshat-singh-kushwaha/",
-  accentColor: "#0d9488", // Teal for Prayagraj
-  isPrayagrajLead: true,
-};
-
-// Original Foundation Team
-const foundationTeam = [
+const founders = [
+  {
+    id: 1,
+    name: "Aadrika Maurya",
+    image: "/team/aadrika.png",
+    linkedin: "https://in.linkedin.com/in/aadrika-maurya",
+  },
   {
     id: 2,
-    name: "Yash Singh",
-    role: "Founder (Original Foundation)",
-    badge: "Original Foundation",
-    image: "/team/yash.jpeg",
-    bio: "Founder of Bits&Bytes, building high-agency movements. Created Codiva (5-star VS Code extension), IOQM National Qualifier. Educator at STEMist Lucknow.",
-    expertise: [
-      "Mathematics (IOQM)",
-      "Full-Stack Dev",
-      "Three.js",
-      "AI / ML Scaling",
-      "GoDOT Game Dev",
-    ],
-    linkedin: "https://www.linkedin.com/in/yash-vardhan-singh-a41540270/",
-    accentColor: "#3E1E68",
-    isFoundation: true,
+    name: "Akshat Singh Kushwaha",
+    image: "/team/akshat.webp",
+    linkedin: "https://www.linkedin.com/in/akshat-singh-kushwaha/",
   },
   {
     id: 3,
-    name: "Aadrika Maurya",
-    role: "Co-Founder & Chief Creative Strategist",
-    badge: "Original Foundation",
-    image: "/team/aadrika.png",
-    isFeatured: true,
-    bio: "RSI India Alumni who conducted neuroscience research on EEG signals and attention pattern modeling. Regional Manager for CodeDay Kanpur.",
-    expertise: [
-      "Neuroscience (EEG)",
-      "Creative Strategy",
-      "Regional Management",
-      "Brand Development",
-    ],
-    linkedin: "https://in.linkedin.com/in/aadrika-maurya",
-    accentColor: "#E45A92",
-    isFoundation: true,
-  },
-  {
-    id: 4,
-    name: "Devaansh Pathak",
-    role: "Founding Member & Backend Lead",
-    image: "/team/devansh.jpeg",
-    bio: "Manages high-performance backend development and partnership economics.",
-    expertise: [
-      "Backend Architecture",
-      "Database Systems",
-      "Partnership Building",
-      "Community Outreach",
-    ],
-    linkedin: "https://www.linkedin.com/in/devaanshpa/",
-  },
-  {
-    id: 5,
-    name: "Maryam Fatima",
-    role: "Social Media & Promotions Head",
-    image: "/team/maryam.jpeg",
-    bio: "Leading social strategy and impact storytelling. Generated 10k+ impressions for club events. Spearheads visual campaigns for major independent hackathons.",
-    expertise: [
-      "Impact Storytelling",
-      "Visual Design",
-      "Campaign Planning",
-      "Brand Identity",
-    ],
-    linkedin: "https://www.linkedin.com/in/maryam-fatima-9719aa377/",
-  },
-  {
-    id: 6,
-    name: "Sristhi Singh",
-    role: "Operations & Communications Head",
-    image: "/team/srishti.jpeg",
-    bio: "Optimizing internal communication for 100+ members. Ensures smooth collaboration across design/dev squads and city-wide event transitions.",
-    expertise: [
-      "Process Optimization",
-      "Resource Logistics",
-      "Team Communications",
-      "Project Coordination",
-    ],
-    linkedin: "https://www.linkedin.com/in/srishti-singh-ab6a1b391",
-  },
-];
-
-// Volunteers - smaller cards section
-const volunteers = [
-  {
-    id: 11,
-    name: "Jaagruti",
-    image: "/team/jaagruti.jpeg",
-  },
-  {
-    id: 14,
-    name: "Adithya",
-    image: "/team/adhitya.png", // Corrected image path and extension
-    linkedin: "https://www.linkedin.com/in/adithya---k/",
-  },
-  {
-    id: 5,
-    name: "Saksham",
-    image: "/team/saksham.jpeg",
-    linkedin: "https://www.linkedin.com/in/sakshm/",
-  },
-  {
-    id: 10,
-    name: "Kaustubh",
-    image: "/team/kaustubh.jpeg",
-    linkedin: "https://www.linkedin.com/in/kaustubh-shaw-905ab3381/",
-  },
-  {
-    id: 7,
-    name: "Areeb",
-    image: "/team/areeb.png",
-    linkedin: "https://www.linkedin.com/in/areeb-ahmad-066547315/",
-  },
-  {
-    id: 8,
-    name: "Atharva",
-    image: "/team/atharva.jpg",
-    linkedin: "https://www.linkedin.com/in/atharvaupadhyay/",
-  },
-  {
-    id: 9,
-    name: "Kavan",
-    image: "/team/kavan.jpg",
-  },
-
-  {
-    id: 13,
-    name: "Aishwary",
-    image: "/team/aishwary.jpeg",
-    linkedin: "https://www.linkedin.com/in/ashlovesnoodle",
+    name: "Yash Singh",
+    image: "/team/yash.jpeg",
+    linkedin: "https://www.linkedin.com/in/yash-vardhan-singh-a41540270/",
   },
 ];
 
@@ -248,20 +109,41 @@ export default function About() {
 
         <PageSection
           align="center"
-          eyebrow="Team"
-          title="Meet the Agents"
-          description="A tight crew of designers, engineers, and club leads powering Prayagraj's teen-led tech movement."
+          eyebrow="Founders"
+          title="The Founders of Bits&Bytes"
+          description="Bits&Bytes was co-founded by Aadrika Maurya, Akshat Singh Kushwaha, and Yash Singh."
         >
-          <Suspense fallback={<LoadingInline />}>
-            <TeamCaseStudy coreTeam={[prayagrajLead, ...foundationTeam]} volunteers={volunteers} />
-          </Suspense>
-          <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-muted-foreground px-4 sm:px-0">
-            *Roles stay flexible as our team and club grow.
-          </p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {founders.map((founder) => (
+              <GlowingCard key={founder.id}>
+                <div className="space-y-4 p-1">
+                  <div className="relative mx-auto h-52 w-full max-w-[260px] overflow-hidden rounded-2xl border border-white/15">
+                    <Image
+                      src={founder.image}
+                      alt={founder.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 260px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="text-center font-display text-lg font-bold text-white">
+                    {founder.name}
+                  </h3>
+                  <a
+                    href={founder.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-white/20"
+                    aria-label={`${founder.name} LinkedIn profile`}
+                  >
+                    <Linkedin className="h-4 w-4" />
+                    LinkedIn
+                  </a>
+                </div>
+              </GlowingCard>
+            ))}
+          </div>
         </PageSection>
-
-        {/* Chapter Timeline */}
-        <ChapterTimeline />
       </main>
     </>
   );

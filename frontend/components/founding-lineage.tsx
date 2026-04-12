@@ -32,13 +32,23 @@ export function FoundingLineage() {
             {/* Content */}
             <div className="space-y-4">
               <p className="text-white/70 text-sm sm:text-base leading-relaxed">
-                <span className="text-white font-semibold">Bits&Bytes</span> was founded by a team of ambitious teen builders 
-                who believed students could ship real, production-grade products — not just toys.
+                <Link
+                  href="https://gobitsnbytes.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-white underline decoration-white/20 underline-offset-4 transition-colors hover:text-[var(--brand-aqua-soft)]"
+                >
+                  BitsnBytes
+                </Link>{" "}
+                was founded by a team of ambitious teen builders who believed
+                students could ship real, production-grade products, not just
+                toys.
               </p>
 
               <p className="text-white/70 text-sm sm:text-base leading-relaxed">
-                The <span className="text-teal-400 font-semibold">Prayagraj chapter</span> carries this vision forward at the 
-                sacred Sangam, building on the foundation laid by the original team while forging our own path.
+                The <span className="text-teal-400 font-semibold">Prayagraj city fork</span> carries this vision forward at the 
+                sacred Sangam, building on the original team&apos;s work while forging
+                our own path.
               </p>
 
               {/* Attribution line */}
@@ -59,13 +69,13 @@ export function FoundingLineage() {
               {/* Link to original */}
               <div className="flex items-center gap-4 pt-4">
                 <Link
-                  href="https://github.com/gobitsnbytes"
+                  href="https://gobitsnbytes.org"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-xs text-white/50 hover:text-white/80 transition-colors group"
                 >
                   <ExternalLink className="w-3 h-3" />
-                  <span>View original foundation</span>
+                  <span>Visit BitsnBytes</span>
                 </Link>
                 <Link
                   href="/about"
@@ -87,14 +97,14 @@ export function FoundingLineage() {
 export function FoundingLineageCompact() {
   return (
     <div className="flex items-center gap-2 text-white/40 text-xs">
-      <span>A chapter of</span>
+      <span>A city fork of</span>
       <Link
         href="https://gobitsnbytes.org"
         target="_blank"
         rel="noopener noreferrer"
         className="hover:text-white/60 transition-colors underline underline-offset-2"
       >
-        Bits&Bytes
+        BitsnBytes
       </Link>
       <span>· Founded 2024</span>
     </div>

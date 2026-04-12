@@ -1,229 +1,301 @@
-"use client";
-
 import Link from "next/link";
 import {
   ArrowRight,
-  CodeXml,
-  Users,
-  Rocket,
-  Lightbulb,
-  Trophy,
+  Binary,
+  Building2,
+  Hammer,
+  Layers3,
+  MapPinned,
+  Network,
+  Radio,
+  ScanSearch,
   Sparkles,
-  Code,
-  Calendar,
-  Zap,
-  Globe,
 } from "lucide-react";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
 
 import Hero from "@/components/hero";
-import { PageSection } from "@/components/page-section";
-import { BentoGrid, AnimatedSection } from "@/components/ui/bento-grid";
-import { InteractiveConfluence } from "@/components/ui/interactive-confluence";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { LoadingInline } from "@/components/loading-wrapper";
-import { Partners } from "@/components/partners";
-
-// Lazy load heavy components
-const WebGLShader = dynamic(
-  () =>
-    import("@/components/ui/web-gl-shader").then((mod) => ({
-      default: mod.WebGLShader,
-    })),
-  {
-    loading: () => null,
-    ssr: false,
-  },
-);
-
-const Testimonial = dynamic(
-  () =>
-    import("@/components/ui/design-testimonial").then((mod) => ({
-      default: mod.Testimonial,
-    })),
-  {
-    loading: () => <LoadingInline />,
-    ssr: true,
-  },
-);
-
-import { GlassContainer } from "@/components/ui/glass-container";
 import { FoundingLineage } from "@/components/founding-lineage";
-import { ExperienceLauncherCompact } from "@/components/experience/experience-launcher";
+import { PageSection } from "@/components/page-section";
 
-const stats = [
-  { value: "100+", label: "Builders", detail: "across Prayagraj" },
-  { value: "25+", label: "Projects shipped", detail: "from apps to AI" },
-  { value: "12+", label: "Events hosted", detail: "at the Sangam" },
+const proofPoints = [
+  {
+    value: "100+",
+    label: "builders",
+    detail: "active across the city fork",
+  },
+  {
+    value: "25+",
+    label: "projects",
+    detail: "shipped from prototypes to real tools",
+  },
+  {
+    value: "12+",
+    label: "events",
+    detail: "run with public outcomes and visible work",
+  },
 ];
 
-// Bento grid feature items
-const featureItems = [
+const definitionCards = [
   {
-    id: "hackathons",
-    title: "Premium Hackathons",
-    description: "48-hour intensive building experiences where ideas become reality. Connect with mentors, learn new tech, and ship products.",
-    icon: <Zap className="w-6 h-6 text-[#f59e0b]" />,
-    size: "lg" as const,
+    title: "What is Bits&Bytes?",
+    icon: Binary,
+    body: (
+      <>
+        <Link
+          href="https://gobitsnbytes.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-white underline decoration-white/20 underline-offset-4 transition-colors hover:text-[var(--brand-aqua-soft)]"
+        >
+          BitsnBytes
+        </Link>{" "}
+        is a teen-led nonprofit running national-scale hackathons and coding
+        events across India. Born in Lucknow. Built by students, for students.
+        It is designed to get teens building and to ship outcomes publicly.
+      </>
+    ),
   },
   {
-    id: "projects",
-    title: "Real Projects",
-    description: "Build production-grade applications, AI tools, and community platforms.",
-    icon: <Code className="w-5 h-5 text-[#0d9488]" />,
-    size: "md" as const,
+    title: "What is a Fork?",
+    icon: Network,
+    body: (
+      <>
+        A fork is a city-local, student-led node of{" "}
+        <Link
+          href="https://gobitsnbytes.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-white underline decoration-white/20 underline-offset-4 transition-colors hover:text-[var(--brand-aqua-soft)]"
+        >
+          BitsnBytes
+        </Link>
+        . It inherits the mission and the brand. Events, aesthetic, local
+        partnerships, and the city&apos;s own vibe are meant to be defined
+        locally.
+      </>
+    ),
+  },
+];
+
+const operatingModel = [
+  {
+    title: "Builder-first",
+    icon: Hammer,
+    body:
+      "Bits & bytes prayagraj is for people who make things. Work is visible, feedback is direct, and progress matters more than attendance theater.",
   },
   {
-    id: "community",
-    title: "Vibrant Community",
-    description: "Connect with 200+ ambitious teen builders across Prayagraj.",
-    icon: <Users className="w-5 h-5 text-[#22d3ee]" />,
-    size: "sm" as const,
+    title: "Local by default",
+    icon: MapPinned,
+    body:
+      "This fork is tuned to local schools, local timing, local collaborators, and the city's own energy instead of importing a generic student-community template.",
   },
   {
-    id: "events",
-    title: "Tech Events",
-    description: "Workshops, meetups, and learning sessions every month.",
-    icon: <Calendar className="w-5 h-5 text-[#f59e0b]" />,
-    size: "sm" as const,
+    title: "Minimal structure",
+    icon: Layers3,
+    body:
+      "The page stays light, the structure stays clear, and the system stays usable. No clutter, no overexplaining, no corporate filler.",
+  },
+];
+
+const buildModes = [
+  {
+    title: "Hackathons and build sprints",
+    icon: Radio,
+    body:
+      "National-scale energy, locally organized. Fast rooms, real deadlines, demo pressure, public output.",
   },
   {
-    id: "global",
-    title: "Global Network",
-    description: "Part of the Bits&Bytes network connecting builders worldwide.",
-    icon: <Globe className="w-5 h-5 text-[#0d9488]" />,
-    size: "md" as const,
+    title: "Projects with consequence",
+    icon: Building2,
+    body:
+      "Apps, sites, AI tools, infra, internal systems, and experiments that can survive outside a slide deck.",
+  },
+  {
+    title: "Aesthetic with local signal",
+    icon: ScanSearch,
+    body:
+      "Warm stone, river-ink, poster-board texture, sharper typography, and restrained marigold accents instead of the old generic glow-heavy palette.",
   },
 ];
 
 export default function Home() {
   return (
-    <>
-      <WebGLShader />
-      <ScrollProgress />
-      <div className="flex flex-col w-full max-w-full overflow-x-hidden">
-        <Hero />
+    <div className="relative flex w-full max-w-full flex-col overflow-x-hidden">
+      <Hero />
 
-        {/* WOW Factor: Interactive Confluence Map */}
-        <AnimatedSection className="w-full">
-          <InteractiveConfluence className="rounded-none" />
-        </AnimatedSection>
+      <PageSection
+        className="bg-[linear-gradient(180deg,rgba(8,17,26,0.4)_0%,rgba(8,17,26,0.12)_100%)]"
+        eyebrow="Proof"
+        title="Same system. Local signal."
+        description="A bits & bytes fork should still feel like bits & bytes after the city name disappears. The difference is in the local texture, not in losing the core."
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          {proofPoints.map((point) => (
+            <article key={point.label} className="city-fork-panel p-6">
+              <p className="font-display text-4xl font-black tracking-[-0.05em] text-white">
+                {point.value}
+              </p>
+              <h3 className="mt-3 font-display text-xl font-bold text-white">
+                {point.label}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-white/62">
+                {point.detail}
+              </p>
+            </article>
+          ))}
+        </div>
+      </PageSection>
 
-        <PageSection
-          eyebrow="Our Impact"
-          title="Building at the Sangam"
-          description="Bits&Bytes Prayagraj is where young minds converge to build, learn, and ship real technology—from AI prototypes to community platforms."
-        >
-          <div className="grid gap-6 md:grid-cols-3">
-            {stats.map((stat, i) => (
-              <AnimatedSection key={stat.label} delay={i * 0.1}>
-                <GlassContainer
-                  className="p-8"
-                  glowColor={stat.label === "Projects shipped" ? "teal" : stat.label === "Events hosted" ? "amber" : "cyan"}
-                >
-                  <div className="space-y-4">
-                    <p className="text-5xl font-black text-white tracking-tighter">
-                      {stat.value}
-                    </p>
-                    <div>
-                      <h3 className="text-xl font-bold text-white uppercase tracking-tight">
-                        {stat.label}
-                      </h3>
-                      <p className="text-base text-white/60 font-medium">
-                        {stat.detail}
-                      </p>
-                    </div>
-                  </div>
-                </GlassContainer>
-              </AnimatedSection>
+      <PageSection
+        eyebrow="Definitions"
+        title="Keep the mission. Fork the expression."
+        description="The homepage now states the system clearly before it starts styling it."
+      >
+        <div className="grid gap-5 lg:grid-cols-2">
+          {definitionCards.map((card) => (
+            <article key={card.title} className="city-fork-panel p-7">
+              <div className="flex items-center gap-3">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-[var(--brand-aqua-soft)]">
+                  <card.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-2xl font-bold tracking-tight text-white">
+                  {card.title}
+                </h3>
+              </div>
+              <p className="mt-5 text-base leading-7 text-white/68">
+                {card.body}
+              </p>
+            </article>
+          ))}
+        </div>
+      </PageSection>
+
+      <PageSection
+        className="bg-[linear-gradient(180deg,rgba(15,58,73,0.98)_0%,rgba(10,38,48,0.98)_100%)]"
+        eyebrow="Operating Model"
+        title={<span className="text-white">How bits & bytes prayagraj should run</span>}
+        description={
+          <span className="text-white/70">
+            Not a franchise. Not a clone. A fork. The landing page should say
+            that in both structure and tone.
+          </span>
+        }
+      >
+        <div className="grid gap-4 lg:grid-cols-3">
+          {operatingModel.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-[28px] border border-white/10 bg-white/[0.06] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.12)] backdrop-blur-sm"
+            >
+              <div className="flex items-center gap-3 text-[#f0c36e]">
+                <item.icon className="h-5 w-5" />
+                <p className="font-mono text-[0.68rem] uppercase tracking-[0.28em]">
+                  principle
+                </p>
+              </div>
+              <h3 className="mt-5 font-display text-2xl font-bold text-white">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-white/72">
+                {item.body}
+              </p>
+            </article>
+          ))}
+        </div>
+      </PageSection>
+
+      <PageSection
+        eyebrow="Build Modes"
+        title="Designed for people who build, not passive members"
+        description="The landing page now scans like a field board: what this is, how it works, what happens here, and why it feels local."
+      >
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+          <div className="grid gap-4">
+            {buildModes.map((mode) => (
+              <article key={mode.title} className="city-fork-panel p-6">
+                <div className="flex items-center gap-3 text-[var(--brand-aqua-soft)]">
+                  <mode.icon className="h-5 w-5" />
+                  <h3 className="font-display text-xl font-bold text-white">
+                    {mode.title}
+                  </h3>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-white/62">
+                  {mode.body}
+                </p>
+              </article>
             ))}
           </div>
-        </PageSection>
 
-        <PageSection
-          eyebrow="What We Do"
-          title="How We Build"
-          description="Prayagraj's space for ambitious teenagers to ship meaningful tech through premium hackathons, design squads, and real-world product launches."
-          align="center"
-        >
-          <BentoGrid items={featureItems} />
-        </PageSection>
+          <aside className="city-fork-panel flex flex-col justify-between p-7">
+            <div>
+              <p className="font-mono text-[0.68rem] uppercase tracking-[0.28em] text-[var(--brand-gold-soft)]">
+                design checkpoint
+              </p>
+              <h3 className="mt-3 font-display text-3xl font-bold tracking-tight text-white">
+                If the city name disappears, the system should still read as bits
+                & bytes.
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-white/68">
+                The redesign keeps the brand spine intact and lets the city show
+                up through material, rhythm, and tone instead of turning the
+                page into a generic community club site.
+              </p>
+            </div>
 
-        <Partners />
-
-        <PageSection
-          eyebrow="Community"
-          title="Voices from Prayagraj"
-          align="center"
-        >
-          <Suspense fallback={<LoadingInline />}>
-            <Testimonial />
-          </Suspense>
-        </PageSection>
-
-        {/* Chapter Spotlight */}
-        <PageSection
-          eyebrow="Prayagraj Chapter"
-          title="Built at the Sangam"
-          description="Rooted in Prayagraj, connected to the Bits&Bytes foundation. We're the present tense story of teen-led innovation at India's most sacred confluence."
-        >
-          <div className="grid gap-6 lg:grid-cols-2">
-            <GlassContainer className="p-6" glowColor="teal">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-teal-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white">Active Chapter</h3>
-                    <p className="text-xs text-white/50">Prayagraj is live and building</p>
-                  </div>
-                </div>
-                <p className="text-white/70 text-sm">
-                  The Prayagraj chapter operates independently with its own core team, local events, 
-                  and projects. We ship real products and host premium experiences for the city's 
-                  ambitious teen builders.
-                </p>
-                <Link href="/join" className="inline-flex items-center gap-2 text-teal-400 text-sm font-semibold hover:text-teal-300 transition-colors">
-                  Join Prayagraj
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+            <div className="mt-7 rounded-[24px] border border-white/10 bg-white/5 p-5">
+              <div className="flex items-center gap-2 text-[var(--brand-gold-soft)]">
+                <Sparkles className="h-4 w-4" />
+                <span className="font-mono text-[0.68rem] uppercase tracking-[0.24em]">
+                  palette shift
+                </span>
               </div>
-            </GlassContainer>
+              <p className="mt-3 text-sm leading-6 text-white/68">
+                River-ink, sandstone paper, oxidized teal, and marigold accents
+                replace the older purple-heavy startup palette.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </PageSection>
 
-            <GlassContainer className="p-6" glowColor="amber">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                    <Rocket className="w-5 h-5 text-amber-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white">Experience Mode</h3>
-                    <p className="text-xs text-white/50">Try our signature feature</p>
-                  </div>
-                </div>
-                <p className="text-white/70 text-sm">
-                  Dive into an immersive journey through the Prayagraj chapter. Explore our story, 
-                  meet the team, and discover what we're building — all in a stunning 3D environment 
-                  inspired by the Sangam.
-                </p>
-                <ExperienceLauncherCompact />
-              </div>
-            </GlassContainer>
+      <section className="px-4 pb-4 pt-2 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl rounded-[36px] border border-white/10 bg-[linear-gradient(135deg,rgba(10,22,31,0.95)_0%,rgba(9,19,29,0.98)_55%,rgba(7,15,23,0.98)_100%)] p-8 shadow-[0_35px_90px_rgba(0,8,14,0.28)] sm:p-10">
+          <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-[var(--brand-gold-soft)]">
+            next move
+          </p>
+          <div className="mt-4 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <h2 className="font-display text-3xl font-black tracking-[-0.05em] text-white sm:text-4xl">
+                bits & bytes prayagraj is the local fork. The page should feel
+                like it.
+              </h2>
+              <p className="mt-4 text-base leading-7 text-white/68">
+                Sharp structure, local signal, and a color system that feels
+                native instead of borrowed. Everything important stays clear in
+                one fast pass.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/join"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand-teal)] px-6 py-3 text-sm font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--brand-teal-light)]"
+              >
+                Join the fork
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/coc"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/82 transition-colors duration-200 hover:bg-white/[0.08]"
+              >
+                Read the code of conduct
+              </Link>
+            </div>
           </div>
-        </PageSection>
+        </div>
+      </section>
 
-        {/* Founding Lineage Credit */}
-        <FoundingLineage />
-      </div>
-    </>
+      <FoundingLineage />
+    </div>
   );
 }

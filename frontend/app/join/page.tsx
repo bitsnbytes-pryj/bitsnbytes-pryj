@@ -176,7 +176,7 @@ export default function Join() {
         <PageSection
           align="center"
           eyebrow="Founders"
-          title="The Founders' of Bits&Bytes"
+          title="The Founders of Bits&Bytes"
           description="Co-founded by Aadrika Maurya, Akshat Singh Kushwaha, and Yash Singh."
         >
           <div className="grid gap-6 md:grid-cols-3">

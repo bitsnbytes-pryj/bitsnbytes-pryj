@@ -17,7 +17,7 @@ const forkNotes = [
 
 export default function Hero() {
   return (
-    <section className="relative isolate overflow-hidden px-4 pb-16 pt-30 sm:px-6 sm:pb-20 lg:px-8 lg:pt-34">
+    <section className="relative isolate overflow-hidden px-4 pb-16 pt-[7.5rem] sm:px-6 sm:pb-20 lg:px-8 lg:pt-[8.5rem]">
       <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,#06131d_0%,#081722_45%,#091923_100%)]" />
       <div className="absolute inset-0 -z-20 city-fork-grid opacity-55" />
       <div className="absolute inset-x-0 top-0 -z-10 h-72 bg-[radial-gradient(circle_at_top,rgba(79,198,192,0.16),transparent_70%)]" />

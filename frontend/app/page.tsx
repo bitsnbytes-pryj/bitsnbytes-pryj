@@ -286,7 +286,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/coc"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/82 transition-colors duration-200 hover:bg-white/8"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/82 transition-colors duration-200 hover:bg-white/[0.08]"
               >
                 Read the code of conduct
               </Link>

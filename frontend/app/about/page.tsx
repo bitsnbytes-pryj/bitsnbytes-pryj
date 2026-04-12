@@ -110,7 +110,7 @@ export default function About() {
         <PageSection
           align="center"
           eyebrow="Founders"
-          title="The Founders' of Bits&Bytes"
+          title="The Founders of Bits&Bytes"
           description="Bits&Bytes was co-founded by Aadrika Maurya, Akshat Singh Kushwaha, and Yash Singh."
         >
           <div className="grid gap-6 md:grid-cols-3">

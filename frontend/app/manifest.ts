@@ -41,12 +41,6 @@ export default function manifest(): MetadataRoute.Manifest {
         description: "View hackathons and workshops",
         url: "/events",
       },
-      {
-        name: "Our Projects",
-        short_name: "Projects",
-        description: "Explore teen-built projects",
-        url: "/projects",
-      },
     ],
   }
 }

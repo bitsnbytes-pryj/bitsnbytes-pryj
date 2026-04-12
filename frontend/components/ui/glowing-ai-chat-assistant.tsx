@@ -207,7 +207,7 @@ const SMART_FAQ: FaqEntry[] = [
   },
   {
     patterns: ["akshat achievement", "akshat's achievement", "what has akshat done", "akshat projects", "akshats' achievements"],
-    answer: "**Akshat Kushwaha** is Co-Founder and Technical Lead at Bits&Bytes, focused on production-grade systems, AI-native workflows, and platform reliability for club projects.\n\n[See our projects](/projects \"cta\")",
+    answer: "**Akshat Kushwaha** is Co-Founder and Technical Lead at Bits&Bytes, focused on production-grade systems, AI-native workflows, and platform reliability for club projects.\n\n[Meet the team](/about \"cta\")",
   },
 ]
 
@@ -1293,5 +1293,4 @@ const FloatingAiAssistant: React.FC = () => {
 }
 
 export { FloatingAiAssistant }
-
 

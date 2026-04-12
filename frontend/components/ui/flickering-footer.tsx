@@ -213,7 +213,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 };
 
 const socialLinks = [
-    { href: "https://www.linkedin.com/company/bitsnbytes-prayagraj", label: "LinkedIn", icon: Linkedin },
+    { href: "https://www.linkedin.com/company/gobitsbytes/", label: "LinkedIn", icon: Linkedin },
     { href: "https://github.com/bitsnbytes-pryj", label: "GitHub", icon: Github },
     { href: "https://www.instagram.com/bitsnbytes-prayagraj", label: "Instagram", icon: Instagram },
     { href: "https://twitter.com/bitsnbytes_prj", label: "Twitter", icon: Twitter },
@@ -242,24 +242,24 @@ export function FlickeringFooter() {
     const tablet = useMediaQuery("(max-width: 1024px)");
 
     return (
-        <footer id="footer" className="w-full pb-0 mt-12 sm:mt-16 border-t border-white/20 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
+        <footer id="footer" className="mt-12 w-full border-t border-white/10 bg-[linear-gradient(180deg,rgba(8,17,26,0.92)_0%,rgba(6,13,19,0.98)_100%)] pb-0 backdrop-blur-xl sm:mt-16 dark:border-white/10 dark:bg-white/5">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between p-6 sm:p-10 max-w-6xl mx-auto">
                 <div className="flex flex-col items-start justify-start gap-y-4 max-w-xs">
                     <Link href="/" className="flex items-center gap-3">
-                        <div className="relative grid h-10 w-10 place-items-center rounded-xl bg-black text-white shadow-[0_8px_30px_rgba(228,90,146,0.4)]">
-                            <Image src={logo} alt="Bits&Bytes logo" width={28} height={28} className="h-6 w-6 object-contain" priority />
-                            <div className="absolute inset-0 rounded-xl border-2 border-[var(--brand-pink)]" />
+                        <div className="relative grid h-10 w-10 place-items-center rounded-xl bg-[#0f3a49] text-white shadow-[0_14px_34px_rgba(15,58,73,0.28)]">
+                            <Image src={logo} alt="BitsnBytes Prayagraj logo" width={28} height={28} className="h-6 w-6 object-contain" priority />
+                            <div className="absolute inset-0 rounded-xl border border-[#f0c36e]/60" />
                         </div>
                         <div>
-                            <p className="font-display text-base font-semibold text-foreground">Bits&Bytes</p>
-                            <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Teen-led</p>
+                            <p className="font-display text-base font-semibold text-white">BitsnBytes Prayagraj</p>
+                            <p className="text-[10px] uppercase tracking-[0.3em] text-white/45">Teen-led</p>
                         </div>
                     </Link>
-                    <p className="tracking-tight text-muted-foreground text-sm">
-                        Prayagraj's teen-led tech community at the Sangam. Building real products, hosting premium events, and shipping with purpose.
+                    <p className="text-sm tracking-tight text-white/62">
+                        A local bits & bytes fork for teenagers building real products, events, and systems with visible output.
                     </p>
-                    <p className="text-[10px] text-white/40 mt-1">
-                        A chapter of the Bits&Bytes foundation
+                    <p className="mt-1 text-[10px] text-white/35">
+                        A city fork of the Bits&Bytes (gobitsnbytes.org)
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {socialLinks.map(({ href, label, icon: Icon }) => (
@@ -268,7 +268,7 @@ export function FlickeringFooter() {
                                 href={href}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/50 px-3 py-1.5 text-xs backdrop-blur-md transition-colors hover:border-white/50 hover:text-foreground dark:bg-white/10"
+                                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/70 backdrop-blur-md transition-colors hover:border-white/20 hover:text-white dark:bg-white/10"
                             >
                                 <Icon className="h-3.5 w-3.5" />
                                 <span>{label}</span>
@@ -280,11 +280,11 @@ export function FlickeringFooter() {
                     <div className="flex flex-col items-start justify-start md:flex-row md:items-start md:justify-end gap-8 lg:gap-16">
                         {footerLinks.map((column, columnIndex) => (
                             <ul key={columnIndex} className="flex flex-col gap-y-2">
-                                <li className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground">{column.title}</li>
+                                <li className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-white">{column.title}</li>
                                 {column.links.map((link) => (
-                                    <li key={link.id} className="group inline-flex cursor-pointer items-center justify-start gap-1 text-sm text-muted-foreground">
-                                        <Link href={link.url} className="transition-colors hover:text-foreground">{link.title}</Link>
-                                        <div className="flex size-4 items-center justify-center border border-border rounded translate-x-0 transform opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100">
+                                    <li key={link.id} className="group inline-flex cursor-pointer items-center justify-start gap-1 text-sm text-white/55">
+                                        <Link href={link.url} className="transition-colors hover:text-white">{link.title}</Link>
+                                        <div className="flex size-4 items-center justify-center rounded border border-white/10 translate-x-0 transform opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100">
                                             <ChevronRightIcon className="h-3 w-3" />
                                         </div>
                                     </li>
@@ -292,14 +292,14 @@ export function FlickeringFooter() {
                             </ul>
                         ))}
                         <div className="flex flex-col gap-y-2">
-                            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-foreground">Connect</p>
+                            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-white">Connect</p>
                             <a
                                 href="mailto:prayagraj@gobitsnbytes.org"
-                                className="text-white/70 hover:text-white transition-colors"
+                                className="text-white/78 transition-colors hover:text-[var(--brand-aqua-soft)]"
                             >
                                 prayagraj@gobitsnbytes.org
                             </a>
-                            <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <p className="flex items-center gap-2 text-sm text-white/52">
                                 <MapPin className="h-4 w-4 shrink-0" />
                                 Prayagraj, India · At the Sangam
                             </p>
@@ -311,19 +311,19 @@ export function FlickeringFooter() {
                 <div className="absolute inset-0 bg-gradient-to-t from-transparent to-background z-10 from-40%" />
                 <div className="absolute inset-0 mx-4">
                     <FlickeringGrid
-                        text={tablet ? "B&B" : "Bits&Bytes"}
+                        text={tablet ? "B&B" : "BitsnBytes Prayagraj"}
                         fontSize={tablet ? 50 : 80}
                         className="h-full w-full"
                         squareSize={2}
                         gridGap={tablet ? 2 : 3}
-                        color="#0d9488"
+                        color="#4fc6c0"
                         maxOpacity={0.3}
                         flickerChance={0.1}
                     />
                 </div>
             </div>
-            <div className="border-t border-white/10 text-center text-[10px] sm:text-xs py-3 sm:py-4 px-4 w-full text-muted-foreground">
-                © {new Date().getFullYear()} Bits&Bytes. Built with club ❤️.
+            <div className="w-full border-t border-white/10 px-4 py-3 text-center text-[10px] text-white/40 sm:py-4 sm:text-xs">
+                © {new Date().getFullYear()} BitsnBytes Prayagraj. Built with club ❤️.
             </div>
         </footer>
     );

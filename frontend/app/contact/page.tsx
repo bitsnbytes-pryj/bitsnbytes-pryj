@@ -131,8 +131,8 @@ export default function Contact() {
                   <h3 className="font-display text-2xl font-black text-white mb-6">Get in Touch</h3>
                   <div className="space-y-8 max-w-full">
                     {[
-                      { icon: Mail, label: "Email", value: "hello@gobitsnbytes.org", href: "mailto:hello@gobitsnbytes.org", color: "text-(--brand-pink)" },
-                      { icon: MapPin, label: "Location", value: "Lucknow, India", color: "text-(--brand-purple)" },
+                      { icon: Mail, label: "Email", value: "prayagraj@gobitsnbytes.org", href: "mailto:prayagraj@gobitsnbytes.org", color: "text-(--brand-pink)" },
+                      { icon: MapPin, label: "Location", value: "Prayagraj, India", color: "text-(--brand-purple)" },
                       { icon: Clock, label: "Established", value: "Teen-led since 2025", color: "text-blue-400" },
                     ].map((info) => (
                       <div key={info.label} className="flex items-start gap-4 max-w-full">
